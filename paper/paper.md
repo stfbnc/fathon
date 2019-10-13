@@ -1,5 +1,4 @@
 ---
-​---
 title: 'fathon: A Python package for a fast computation of detrendend fluctuation analysis and related algorithms'
 tags:
   - Python
@@ -15,7 +14,6 @@ affiliations:
   - index: 1
 date: 13 October 2019
 bibliography: paper.bib
-​---
 ---
 
 # Summary
