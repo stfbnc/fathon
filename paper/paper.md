@@ -1,17 +1,17 @@
 ---
 title: 'fathon: A Python package for a fast computation of detrendend fluctuation analysis and related algorithms'
 tags:
-  - Python
-  - Cython
-  - Detrended fluctuation analysis
-  - Multifractal spectrum
+ - Python
+ - Cython
+ - Detrended fluctuation analysis
+ - Multifractal spectrum
 authors:
-  - name: Stefano Bianchi
-  - orcid: 0000-0001-6729-8655
-  - affiliation: 1
+ - name: Stefano Bianchi
+ - orcid: 0000-0001-6729-8655
+ - affiliation: 1
 affiliations:
-  - Department of Mathematics and Physics, Roma Tre University
-  - index: 1
+ - Department of Mathematics and Physics, Roma Tre University
+ - index: 1
 date: 13 October 2019
 bibliography: paper.bib
 ---
