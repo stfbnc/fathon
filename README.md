@@ -26,10 +26,10 @@ Under macOS, the default C compiler does not support OpenMP. To exploit parallel
 
 1. Open Terminal and go to the folder where you have downloaded *fathon*
 2. Enter the *fathon* folder
-3. run <code>python  setup.py build_ext -- =/path/to/GSL/includes -- =/path/to/GSL/libs --inplace</code>, where <code>/path/to/GSL/includes</code> and <code>/path/to/GSL/libs</code> are the paths where you have installed the GSL includes and libraries respectively
-4. in the *fathon* folder there are now four files corresponding to the compiled Cyhon code
-5. move the folder *fathon* to the standard location of Python packages (e.g. <code>/your/path/pythonversion/site-packages</code>) or to where you want to use the package
-6. you can now use *fathon* by typing <code>import fathon</code> from Python
+3. Run <code>python  setup.py build_ext -- =/path/to/GSL/includes -- =/path/to/GSL/libs --inplace</code>, where <code>/path/to/GSL/includes</code> and <code>/path/to/GSL/libs</code> are the paths where you have installed the GSL includes and libraries respectively
+4. In the *fathon* folder there are now four files corresponding to the compiled Cyhon code
+5. Move the folder *fathon* to the standard location of Python packages (e.g. <code>/your/path/pythonversion/site-packages</code>) or to where you want to use the package
+6. You can now use *fathon* by typing <code>import fathon</code> from Python
 
 ## Tests
 
@@ -42,7 +42,7 @@ A jupyter notebook can be used (<code>fathon_example.ipynb</code>) to test the f
 
 <code>MFDFA</code> also provides methods for mass exponent τ and multifractal spectrum *f*(α) computation.
 
-<code>DCCA</code> has methods for computing the cross-correlation coefficient ρ_DCCA and the corresponding confidence levels.
+<code>DCCA</code> has methods for computing the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
 
 If you cannot use the notebook, four Python scripts are provided, <code>dfa.py</code>, <code>mfdfa.py</code>, <code>dcca.py</code>, and <code>ht.py</code>.
 
