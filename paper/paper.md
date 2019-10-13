@@ -1,17 +1,17 @@
 ---
 title: 'fathon: A Python package for a fast computation of detrendend fluctuation analysis and related algorithms'
 tags:
- - Python
- - Cython
- - Detrended fluctuation analysis
- - Multifractal spectrum
+  - Python
+  - Cython
+  - Detrended fluctuation analysis
+  - Multifractal spectrum
 authors:
- - name: Stefano Bianchi
- - orcid: 0000-0001-6729-8655
- - affiliation: 1
+  - name: Stefano Bianchi
+    orcid: 0000-0001-6729-8655
+    affiliation: 1
 affiliations:
- - Department of Mathematics and Physics, Roma Tre University
- - index: 1
+  - name: Department of Mathematics and Physics, Roma Tre University
+    index: 1
 date: 13 October 2019
 bibliography: paper.bib
 ---
@@ -27,9 +27,11 @@ Detrended fluctuation analysis (DFA) was first developed by Peng to study memory
 
  The algorithm has later evolved to multifractal detrended fluctuation analysis (MFDFA) [@kantelhardt_2002] to take into account the variability of time series and the possible multiple scaling properties of the fluctuation function. Other algorithms have been further developed, such as the time dependent Hurst exponent [@ihlen_2012] that examines changes of persistency within time intervals, and the detrended cross-correlation analysis (DCCA) [@podobnik_2008] that studies cross-correlations in terms of persistency between non-linear time series. Recently, a cross-correlation index $\rho$ has been introduced in order to make the interpretation of DCCA clearer [@zebende_2011].
 
+``fathon`` can be useful to all those researchers and data analysts that utilise the methods listed so far, especially in the fields of geophysics, economy, or biophysics. Its purpose is to gather all the algorithms together, in order to have a single package including different methodologies. They are easy to use in their basic or advanced versions, and the user can easily switch between them.
+Undoubtedly, codes for each method have already been developed, one above all the Ihlen Matlab package for multifractal detrended fluctuation analysis [@ihlen_2012]. It implements the four algorithms of ``fathon`` even though it does not cover all the methods and functionalities.
+The ``fathon`` package is intended to be more complete, to offer more functions and more flexibility in parameters choice.
 
-
-``fathon`` is a Python package for DFA (Detrended Fluctuation Analysis) and related algorithms. It aims at providing a simple and interactive interface to perform multiple analyses on multiple time series. Its purpose is to gather all the algorithms together, in order to have a single package including different methodologies. They are optimised, easy to use in their basic or advanced versions, and the user can easily switch between them. The Python interface is class-based and easy to use, while the underlying code is written in Cython and C allowing a fast computation of the algorithms. ``fathon`` implements common operations for these kind of algorithms, such as the fluctuation function and its fit in different ranges, the multifractal spectrum, and the detrended cross-correlation index and its confidence intervals.
+``fathon`` is a Python package for DFA (Detrended Fluctuation Analysis) and related algorithms. It aims at providing a simple and interactive interface to perform multiple analyses on multiple time series. The Python interface is class-based and user-friendly, while the underlying code is written in Cython and C allowing a fast computation of the algorithms. ``fathon`` implements common operations for these kind of algorithms, such as the fluctuation function and its fit in different ranges, the multifractal spectrum, and the detrended cross-correlation index and its confidence intervals.
 
 # References
 
