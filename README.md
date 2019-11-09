@@ -26,7 +26,7 @@ Under macOS, the default C compiler does not support OpenMP. To exploit parallel
 
 1. Open Terminal and go to the folder where you have downloaded *fathon*
 2. Enter the *fathon* folder
-3. Run <code>python  setup.py build_ext -- =/path/to/GSL/includes -- =/path/to/GSL/libs --inplace</code>, where <code>/path/to/GSL/includes</code> and <code>/path/to/GSL/libs</code> are the paths where you have installed the GSL includes and libraries respectively
+3. Run <code>python  setup.py build_ext --include-dirs=/path/to/GSL/includes --rpath=/path/to/GSL/libs --inplace</code>, where <code>/path/to/GSL/includes</code> and <code>/path/to/GSL/libs</code> are the paths where you have installed the GSL includes and libraries respectively
 4. In the *fathon* folder there are now four files corresponding to the compiled Cyhon code
 5. Move the folder *fathon* to the standard location of Python packages (e.g. <code>/your/path/pythonversion/site-packages</code>) or to where you want to use the package
 6. You can now use *fathon* by typing <code>import fathon</code> from Python
