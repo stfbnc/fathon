@@ -1,5 +1,6 @@
 from setuptools.command.install import install
 from distutils.core import setup, Extension
+from setuptools import find_packages
 import subprocess
 import os
 from Cython.Build import cythonize
@@ -61,7 +62,7 @@ if __name__ == '__main__':
               url="https://github.com/stfbnc/fathon.git",
               license="GPLv3.0",
               description="pyhton package for detrended fluctuation analysis (DFA) and related algorithms.",
-              packages=setuptools.find_packages(),
+              packages=find_packages(),
               install_requires=["numpy", "cython"],
               ext_modules=cythonize(extensions, build_dir="build")
               )
