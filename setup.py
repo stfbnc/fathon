@@ -8,7 +8,6 @@ import platform
 import sys
 from pathlib import Path
 
-#home_path =  os.path.expanduser("~")
 fathon_path = sys.path[-1]+"/fathon"
 gsl_path = fathon_path+"/fathonGSL"
 
@@ -16,7 +15,6 @@ def gsl_install():
     for p in sys.path:
         process = subprocess.Popen("if [ -d "+p+"/fathon ]; then rm -rf "+p+"/fathon; fi", shell=True, cwd=Path(__file__).parent.absolute())
         process.wait()
-    #command = "mkdir -p "+home_path+"/fathonGSL && cd src/gsl_code/ && ./configure --prefix="+home_path+"/fathonGSL && make && make install && cd .. && rm -rf gsl_code"
     command = "mkdir "+fathon_path+" && mkdir "+gsl_path+" && cd src/gsl_code/ && ./configure --prefix="+gsl_path+" && make && make install && cd .. && rm -rf gsl_code"
     process = subprocess.Popen(command, shell=True, cwd=Path(__file__).parent.absolute())
     process.wait()
@@ -46,11 +44,6 @@ def get_extension(module_name, src_name, current_os):
                          extra_link_args=extra_link_args)
 
 def move_fathon():
-#    for p in sys.path:
-#        process = subprocess.Popen("if [ -d "+p+"/fathon ]; then rm -rf "+p+"/fathon; fi", shell=True, cwd=Path(__file__).parent.absolute())
-#        process.wait()
-    #fathon_path = sys.path[-1]+"/fathon"
-    #mv_fathon = "mkdir "+fathon_path+" && cp __init__.py "+fathon_path+" && cp tsHelper.py "+fathon_path+" && cp README.md "+fathon_path+" && cp LICENSE "+fathon_path+" && mv dcca* "+fathon_path+" && mv dfa* "+fathon_path+" && mv ht* "+fathon_path+" && mv mfdfa* "+fathon_path
     mv_fathon = "cp __init__.py "+fathon_path+" && cp tsHelper.py "+fathon_path+" && cp README.md "+fathon_path+" && cp LICENSE "+fathon_path+" && mv dcca* "+fathon_path+" && mv dfa* "+fathon_path+" && mv ht* "+fathon_path+" && mv mfdfa* "+fathon_path
     process = subprocess.Popen(mv_fathon, shell=True, cwd=Path(__file__).parent.absolute())
     process.wait()
