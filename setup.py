@@ -1,5 +1,5 @@
-from distutils.core import setup, Extension
 from setuptools import find_packages
+from distutils.core import setup, Extension
 import subprocess
 import os
 from Cython.Build import cythonize
@@ -39,12 +39,21 @@ def get_extension(module_name, src_name, current_os):
                          extra_compile_args=extra_compile_args_linux,
                          extra_link_args=extra_link_args)
 
+def move_fathon():
+    for p in sys.path:
+        process = subprocess.Popen("if [ -d "+p+"/fathon ]; then rm -rf "+p+"/fathon; fi", shell=True, cwd=Path(__file__).parent.absolute())
+        process.wait()
+    fathon_path = sys.path[-1]+"/fathon"
+    mv_fathon = "mkdir "+fathon_path+" && cp __init__.py "+fathon_path+" && cp tsHelper.py "+fathon_path+" && cp README.md "+fathon_path+" && cp LICENSE "+fathon_path+" && mv dcca* "+fathon_path+" && mv dfa* "+fathon_path+" && mv ht* "+fathon_path+" && mv mfdfa* "+fathon_path
+    process = subprocess.Popen(mv_fathon, shell=True, cwd=Path(__file__).parent.absolute())
+    process.wait()
+
 if __name__ == '__main__':
     if sys.version_info[0] == 3:
-        gsl_install()
-
         running_os = platform.system()
         if running_os != "Windows":
+            gsl_install()
+        
             extensions = [get_extension("dfa", "src/dfa.pyx", running_os),
                           get_extension("dcca", "src/dcca.pyx", running_os),
                           get_extension("mfdfa", "src/mfdfa.pyx", running_os),
@@ -60,6 +69,8 @@ if __name__ == '__main__':
                   install_requires=["numpy", "cython"],
                   ext_modules=cythonize(extensions, build_dir="build")
                   )
+        
+            move_fathon()
         else:
             print("fathon is not available on Windows yet.")
     else:
