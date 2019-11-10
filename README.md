@@ -29,9 +29,10 @@ Under macOS, the default C compiler (via Xcode) does not support OpenMP and *fat
 1. Open the Terminal, go to the directory where you want to download the *fathon* package, and run <code>git clone https://github.com/stfbnc/fathon.git</code>
 2. <code>cd fathon</code>
 3. Run <code>python  setup.py build_ext --inplace</code>. This will take a few minutes. It will
-   - install the [GSL (*GNU Scientific Library*)](https://www.gnu.org/software/gsl/) in a folder named <code>fathonGSL</code> in your home directory
-   - compile the Cython scripts directly in the <code>fathon</code> folder
-   - move all the necessary files in the folder <code>fathon</code> created in the last path of your current Python's <code>sys.path</code>
+   - create a package named <code>fathon</code> in the last path of your current Python's <code>sys.path</code>
+   - install the [GSL (*GNU Scientific Library*)](https://www.gnu.org/software/gsl/) in a folder named <code>fathonGSL</code> inside the package <code>fathon</code>
+   - compile the Cython scripts
+   - move all the necessary files to the package <code>fathon</code>
 4. You can now use *fathon* by typing <code>import fathon</code> from Python
 
 ## Examples
