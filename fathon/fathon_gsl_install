@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cd $HOME
+tar -xzf gsl-latest.tar.gz
+rm gsl-latest.tar.gz
+cd gsl-*
+sudo ./configure --prefix=/usr/local
+sudo make
+sudo make install
+cd ..
+sudo rm -rf gsl-*

@@ -1,0 +1,54 @@
+language: python
+# ===== Linux ======
+dist: xenial
+python:
+  - 3.5
+  - 3.6
+  - 3.7
+  - 3.8
+matrix:
+  include:      
+    # ======= macOS ========
+    - name: "Python 3.6.5 on macOS 10.13"
+      os: osx
+      osx_image: xcode9.4
+      language: shell
+      before_install:
+        - python3 --version
+        - pip3 install -U pip
+        - pip3 install -U pytest
+        - pip3 install codecov
+      script: python3 -m pytest
+      after_success: python 3 -m codecov
+    - name: "Python 3.7.3 on macOS 10.14"
+      os: osx
+      osx_image: xcode10.2
+      language: shell
+      before_install:
+        - python3 --version
+        - pip3 install -U pip
+        - pip3 install -U pytest
+        - pip3 install codecov
+      script: python3 -m pytest
+      after_success: python 3 -m codecov
+    - name: "Python 3.8 on macOS 10.14"
+      os: osx
+      osx_image: xcode10.2
+      language: shell
+      before_install:
+        - python3 --version
+        - pip3 install -U pip
+        - pip3 install -U pytest
+        - pip3 install codecov
+      script: python3 -m pytest
+      after_success: python 3 -m codecov
+before_install:
+  - python --version
+  - pip install -U pip
+  - pip install -U pytest
+  - pip install codecov
+install:
+  - pip install ".[test]"
+script: pytest
+after_success:
+  - codecov
