@@ -18,6 +18,7 @@ matrix:
         - pip3 install -U pip
         - pip3 install -U pytest
         - pip3 install codecov
+        - pip3 install -r requirements.txt
       script: python3 -m pytest
       after_success: python 3 -m codecov
     - name: "Python 3.7.3 on macOS 10.14"
@@ -29,6 +30,7 @@ matrix:
         - pip3 install -U pip
         - pip3 install -U pytest
         - pip3 install codecov
+        - pip3 install -r requirements.txt
       script: python3 -m pytest
       after_success: python 3 -m codecov
     - name: "Python 3.8 on macOS 10.14"
@@ -40,6 +42,7 @@ matrix:
         - pip3 install -U pip
         - pip3 install -U pytest
         - pip3 install codecov
+        - pip3 install -r requirements.txt
       script: python3 -m pytest
       after_success: python 3 -m codecov
 before_install:
@@ -47,6 +50,7 @@ before_install:
   - pip install -U pip
   - pip install -U pytest
   - pip install codecov
+  - pip3 install -r requirements.txt
 install:
   - pip install ".[test]"
 script: pytest
