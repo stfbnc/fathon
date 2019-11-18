@@ -19,7 +19,11 @@ matrix:
         - pip3 install -U pytest
         - pip3 install codecov
         - pip3 install -r requirements.txt
-      script: pytest
+        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
+        - ./fathon/fathon_gsl_install
+      script:
+        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" python3 setup.py build_ext --inplace
+        - pytest
       after_success: python 3 -m codecov
     - name: "Python 3.7.3 on macOS 10.14"
       os: osx
@@ -31,7 +35,11 @@ matrix:
         - pip3 install -U pytest
         - pip3 install codecov
         - pip3 install -r requirements.txt
-      script: pytest
+        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
+        - ./fathon/fathon_gsl_install
+      script:
+        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" python3 setup.py build_ext --inplace
+        - pytest
       after_success: python 3 -m codecov
     - name: "Python 3.8 on macOS 10.14"
       os: osx
@@ -43,7 +51,11 @@ matrix:
         - pip3 install -U pytest
         - pip3 install codecov
         - pip3 install -r requirements.txt
-      script: pytest
+        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
+        - ./fathon/fathon_gsl_install
+      script:
+        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" python3 setup.py build_ext --inplace
+        - pytest
       after_success: python 3 -m codecov
 before_install:
   - python --version
@@ -51,8 +63,10 @@ before_install:
   - pip install -U pytest
   - pip install codecov
   - pip3 install -r requirements.txt
+  - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
+  - ./fathon/fathon_gsl_install
 script:
-  - python3 setup.py build_ext --inplace
+  - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" python3 setup.py build_ext --inplace
   - pytest
 after_success:
   - codecov
