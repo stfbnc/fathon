@@ -23,7 +23,7 @@ matrix:
         - ./fathon/fathon_gsl_install
       script:
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" python3 setup.py build_ext --inplace
-        - pytest
+        - python3 -m pytest
       after_success: python 3 -m codecov
     - name: "Python 3.7.3 on macOS 10.14"
       os: osx
@@ -39,7 +39,7 @@ matrix:
         - ./fathon/fathon_gsl_install
       script:
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" python3 setup.py build_ext --inplace
-        - pytest
+        - python3 -m pytest
       after_success: python 3 -m codecov
     - name: "Python 3.8 on macOS 10.14"
       os: osx
@@ -55,7 +55,7 @@ matrix:
         - ./fathon/fathon_gsl_install
       script:
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" python3 setup.py build_ext --inplace
-        - pytest
+        - python3 -m pytest
       after_success: python 3 -m codecov
 before_install:
   - python --version
@@ -67,6 +67,6 @@ before_install:
   - ./fathon/fathon_gsl_install
 script:
   - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" python3 setup.py build_ext --inplace
-  - pytest
+  - python3 -m pytest
 after_success:
   - codecov
