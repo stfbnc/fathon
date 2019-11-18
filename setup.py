@@ -7,7 +7,6 @@ import numpy
 import platform
 import sys
 import wget
-#import urllib.request
 
 main_path = os.path.dirname(os.path.abspath(__file__))
 home_path = os.path.expanduser("~")
@@ -21,7 +20,6 @@ def gsl_install():
 gsl_inc = os.environ.get("GSLINC", None)
 gsl_lib = os.environ.get("GSLLIB", None)
 if gsl_inc is None and gsl_lib is None:
-    #urllib.request.urlretrieve("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
     wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
     gsl_install()
     gsl_inc = "/usr/local/include"
