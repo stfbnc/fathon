@@ -37,7 +37,7 @@ To make *fathon* work, you need:
 
 To install *fathon*, you can choose one of the following (**all paths must be absolute**):
 
-- If you do not have GSL installed, first install it by yourself in your preferred location (say <code>/my/gsl/location/</code>), then run <code>GSLINC="/my/gsl/location/include/" GSLLIB="/my/gsl/location/lib/" pip install fathon</code> to install *fathon*;
+- If you do not have GSL installed, first install it by yourself (from source code or via package manager) in your preferred location (say <code>/my/gsl/location/</code>), then run <code>GSLINC="/my/gsl/location/include/" GSLLIB="/my/gsl/location/lib/" pip install fathon</code> to install *fathon*;
 - If you do not have GSL installed, run <code>pip install fathon</code>. It will download and install GSL under the <code>/usr/local/</code> directory and then it will install *fathon*. These procedure could take a few minutes;
 - If you already have GSL installed, run <code>GSLINC="/path/to/include/" GSLLIB="/path/to/lib/" pip install fathon</code> to install *fathon*. In case you do not know exactly where GSL is installed, you can run <code>find / -name gsl</code> to find the location of <code>/path/to/include/</code> and <code>/path/to/lib/</code>.
 

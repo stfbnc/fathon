@@ -51,6 +51,8 @@ before_install:
   - pip install -U pytest
   - pip install codecov
   - pip3 install -r requirements.txt
-script: pytest
+script:
+  - python3 setup.py build_ext --inplace
+  - pytest
 after_success:
   - codecov
