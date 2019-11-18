@@ -62,7 +62,7 @@ Algorithms are implemented on two time series of gaussian white noise, but you c
 
 ## Contributing
 
-To report bugs or improvements, or for any other question, please see CONTRIBUTING.md. 
+To report bugs or improvements, or for any other question, please see [CONTRIBUTING.md](https://github.com/stfbnc/fathon/blob/master/CONTRIBUTING.md). 
 
 ## Version
 

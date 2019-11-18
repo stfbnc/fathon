@@ -1,2 +1,3 @@
+wget
 numpy
 cython
