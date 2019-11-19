@@ -16,20 +16,18 @@ matrix:
       before_install:
         - python3 --version
         - pip3 install -U pip
-        - pip3 install -U pytest
+        - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
         - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
         - ./fathon/fathon_gsl_install
-        - pwd
-        - ls -lrt
       install:
         - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
         - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
-        - pytest
-      after_success: python 3 -m codecov
+        - pytest --cov=./
+      after_success: codecov
     - name: "Python 3.7.3 on macOS 10.14"
       os: osx
       osx_image: xcode10.2
@@ -37,20 +35,18 @@ matrix:
       before_install:
         - python3 --version
         - pip3 install -U pip
-        - pip3 install -U pytest
+        - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
         - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
         - ./fathon/fathon_gsl_install
-        - pwd
-        - ls -lrt
       install:
         - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
         - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
-        - pytest
-      after_success: python 3 -m codecov
+        - pytest --cov=./
+      after_success: codecov
     - name: "Python 3.8 on macOS 10.14"
       os: osx
       osx_image: xcode10.2
@@ -58,7 +54,7 @@ matrix:
       before_install:
         - python3 --version
         - pip3 install -U pip
-        - pip3 install -U pytest
+        - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
         - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
@@ -68,23 +64,21 @@ matrix:
         - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
-        - pytest
-      after_success: python 3 -m codecov
+        - pytest --cov=./
+      after_success: codecov
 before_install:
   - python --version
   - pip install -U pip
-  - pip install -U pytest
+  - pip install -U pytest pytest-cov
   - pip install codecov
   - pip3 install -r requirements.txt
   - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
   - ./fathon/fathon_gsl_install
-  - pwd
-  - ls -lrt
 install:
   - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
   - export LD_LIBRARY_PATH
   - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
 script:
-  - pytest
+  - pytest --cov=./
 after_success:
   - codecov
