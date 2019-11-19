@@ -24,6 +24,8 @@ matrix:
         - pwd
         - ls -lrt
       install:
+        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+        - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
         - pytest
@@ -43,6 +45,8 @@ matrix:
         - pwd
         - ls -lrt
       install:
+        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+        - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
         - pytest
@@ -59,9 +63,9 @@ matrix:
         - pip3 install -r requirements.txt
         - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
         - ./fathon/fathon_gsl_install
-        - pwd
-        - ls -lrt
       install:
+        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+        - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
         - pytest
@@ -77,6 +81,8 @@ before_install:
   - pwd
   - ls -lrt
 install:
+  - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+  - export LD_LIBRARY_PATH
   - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
 script:
   - pytest
