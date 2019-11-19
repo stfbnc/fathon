@@ -70,7 +70,7 @@ if __name__ == "__main__":
                   license="GPLv3.0",
                   description="pyhton package for detrended fluctuation analysis (DFA) and related algorithms.",
                   packages=find_packages(),
-                  install_requires=["wget", "numpy", "cython"],
+                  install_requires=["wget", "numpy>=1.15", "cython"],
                   ext_modules=cythonize(extensions),
                   package_data={"fathon": ["LICENSE"]},
                   include_package_data=True)
