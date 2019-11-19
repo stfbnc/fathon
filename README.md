@@ -1,6 +1,12 @@
 # fathon
 
-[![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon)
+[![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon) [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-orange.svg)](https://opensource.org/licenses/) [![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon) [![CodeCov](https://codecov.io/gh/stfbnc/fathon/branch/master/graph/badge.svg)](https://codecov.io/gh/stfbnc/fathon) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]() [![Python 3.5+](https://img.shields.io/badge/python-3.5+-blue.svg)](https://www.python.org/) [![Generic badge](https://img.shields.io/badge/status-active-pink.svg)](https://shields.io/)
+
+[//]: # "[![Read the Docs](https://readthedocs.org/projects/fathon/badge/?version=latest)](https://fathon.readthedocs.io/en/latest/?badge=latest)"
+[//]: # "[![Github All Releases](https://img.shields.io/github/downloads/stfbnc/fathon/total.svg?style=flat)]()"
+[//]: # "([![GitHub Release](https://img.shields.io/github/release/fathon/PlayMusic.svg?style=flat)]())"
+
+
 
 *fathon* is a python package for DFA (*Detrended Fluctuation Analysis*) and related algorithms.
 

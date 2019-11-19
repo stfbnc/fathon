@@ -26,7 +26,7 @@ matrix:
         - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
-        - pytest --cov=fathon tests
+        - pytest tests --cov=fathon
       after_success: codecov
     - name: "Python 3.7.3 on macOS 10.14"
       os: osx
@@ -45,7 +45,7 @@ matrix:
         - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
-        - pytest --cov=fathon tests
+        - pytest tests --cov=fathon
       after_success: codecov
     - name: "Python 3.8 on macOS 10.14"
       os: osx
@@ -64,7 +64,7 @@ matrix:
         - export LD_LIBRARY_PATH
         - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
       script:
-        - pytest --cov=fathon tests
+        - pytest tests --cov=fathon
       after_success: codecov
 before_install:
   - python --version
@@ -79,6 +79,6 @@ install:
   - export LD_LIBRARY_PATH
   - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
 script:
-  - pytest --cov=fathon tests
+  - pytest tests --cov=fathon
 after_success:
   - codecov
