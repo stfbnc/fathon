@@ -1,0 +1,17 @@
+HT
+==
+
+.. currentmodule:: fathon
+
+.. autoclass:: HT
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~HT.computeHt
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: computeHt

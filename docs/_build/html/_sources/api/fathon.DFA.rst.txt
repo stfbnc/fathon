@@ -1,0 +1,21 @@
+DFA
+===
+
+.. currentmodule:: fathon
+
+.. autoclass:: DFA
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~DFA.computeFlucVec
+      ~DFA.fitFlucVec
+      ~DFA.multiFitFlucVec
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: computeFlucVec
+   .. automethod:: fitFlucVec
+   .. automethod:: multiFitFlucVec

@@ -1,0 +1,25 @@
+DCCA
+====
+
+.. currentmodule:: fathon
+
+.. autoclass:: DCCA
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~DCCA.computeFlucVec
+      ~DCCA.computeRho
+      ~DCCA.fitFlucVec
+      ~DCCA.multiFitFlucVec
+      ~DCCA.rhoThresholds
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: computeFlucVec
+   .. automethod:: computeRho
+   .. automethod:: fitFlucVec
+   .. automethod:: multiFitFlucVec
+   .. automethod:: rhoThresholds

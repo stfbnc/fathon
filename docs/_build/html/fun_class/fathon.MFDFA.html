@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>MFDFA &#8212; fathon  documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DCCA" href="fathon.DCCA.html" />
+    <link rel="prev" title="DFA" href="fathon.DFA.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="fathon.DCCA.html" title="DCCA"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fathon.DFA.html" title="DFA"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mfdfa">
+<h1>MFDFA<a class="headerlink" href="#mfdfa" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="fathon.MFDFA">
+<em class="property">class </em><code class="sig-prename descclassname">fathon.</code><code class="sig-name descname">MFDFA</code><span class="sig-paren">(</span><em class="sig-param">tsVec</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MultiFractal Detrended Fluctuation Analysis class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array of window’s sizes used for the computation.</p>
+</dd>
+<dt><strong>tsVec</strong><span class="classifier">iterable</span></dt><dd><p>Time series used for the analysis.</p>
+</dd>
+<dt><strong>F</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the fluctuations in every window.</p>
+</dd>
+<dt><strong>list_H</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the slope of the fit at every q-order.</p>
+</dd>
+<dt><strong>q_list</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the q-orders.</p>
+</dd>
+<dt><strong>nStep</strong><span class="classifier">int</span></dt><dd><p>Value of the step between two consecutive window’s sizes in <cite>n</cite>.</p>
+</dd>
+<dt><strong>isComputed</strong><span class="classifier">bool</span></dt><dd><p>Boolean value to know if <cite>F</cite> has been computed in order to prevent the computation of other functions that need <cite>F</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="fathon.MFDFA.computeFlucVec">
+<code class="sig-name descname">computeFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nMin</em>, <em class="sig-param">q_list</em>, <em class="sig-param">nMax=-999</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">nStep=1</em>, <em class="sig-param">revSeg=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computation of the fluctuations in every window for every q-order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nMin</strong><span class="classifier">int</span></dt><dd><p>Size of the smaller window used to compute <cite>F</cite>.</p>
+</dd>
+<dt><strong>q_list</strong><span class="classifier">float or iterable or numpy ndarray</span></dt><dd><p>List of q-orders used to compute <cite>F</cite>.</p>
+</dd>
+<dt><strong>nMax</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the bigger window used to compute <cite>F</cite> (default : len(<cite>tsVec</cite>)/4)).</p>
+</dd>
+<dt><strong>polOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted in every window (default : 1).</p>
+</dd>
+<dt><strong>nStep</strong><span class="classifier">int, optional</span></dt><dd><p>Step between two consecutive window’s sizes (default : 1).</p>
+</dd>
+<dt><strong>revSeg</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the computation of <cite>F</cite> is repeated starting from the end of the time series (default : False).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>numpy ndarray</dt><dd><p>Array <cite>n</cite> of window’s sizes.</p>
+</dd>
+<dt>numpy ndarray</dt><dd><p>qxn array <cite>F</cite> containing the values of the fluctuations in every window for every q-order.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fathon.MFDFA.computeMassExponents">
+<code class="sig-name descname">computeMassExponents</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeMassExponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computation of the mass exponents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>numpy ndarray</dt><dd><p>Mass exponents.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fathon.MFDFA.computeMultifractalSpectrum">
+<code class="sig-name descname">computeMultifractalSpectrum</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeMultifractalSpectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computation of the multifractal spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>numpy ndarray</dt><dd><p>Singularity strengths.</p>
+</dd>
+<dt>numpy ndarray</dt><dd><p>Multifractal spectrum.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fathon.MFDFA.fitFlucVec">
+<code class="sig-name descname">fitFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_start=-999</em>, <em class="sig-param">n_end=-999</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.fitFlucVec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit of the fluctuations values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_start</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the smaller window used to fit <cite>F</cite> at every q-order (default : first value of <cite>n</cite>).</p>
+</dd>
+<dt><strong>n_end</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the bigger window used to fit <cite>F</cite> at every q-order (default : last value of <cite>n</cite>).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>numpy ndarray</dt><dd><p>Slope of the fit for every q-order.</p>
+</dd>
+<dt>numpy ndarray</dt><dd><p>Intercept of the fit for every q-order.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fathon.DFA.html"
+                        title="previous chapter">DFA</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fathon.DCCA.html"
+                        title="next chapter">DCCA</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/fun_class/fathon.MFDFA.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="fathon.DCCA.html" title="DCCA"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fathon.DFA.html" title="DFA"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Stefano Bianchi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>
