@@ -21,4 +21,8 @@ from .mfdfa import MFDFA
 from .dcca import DCCA
 from .ht import HT
 
+"""A Python package for detrended fluctuation analysis (DFA)
+    and related algorithms.
+"""
+
 __version__ = '0.1.2'

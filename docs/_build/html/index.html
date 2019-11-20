@@ -1,193 +1,116 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>fathon (v0.1.2) &#8212; fathon  documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head>
-  <body>
-  
+    <link rel="next" title="subtractMean" href="fun_class/fathon.subtractMean.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="fun_class/fathon.subtractMean.html" title="subtractMean"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">fathon  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <div class="section" id="fathon-v0-1-2">
 <h1>fathon (v0.1.2)<a class="headerlink" href="#fathon-v0-1-2" title="Permalink to this headline">¶</a></h1>
-<p>Python package for detrended fluctuation analysis (DFA) and related algorithms</p>
+<p>Python package for detrended fluctuation analysis (DFA) and related algorithms.</p>
+<p>Current version is available for Linux and macOS only.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Python 3.5+</p></li>
+<li><p>wget</p></li>
+<li><p>numpy (&gt;=1.15)</p></li>
+<li><p>cython</p></li>
+<li><p>C compiler:</p>
+<ul>
+<li><p>On Linux, a C compiler with OpenMP support is required (gcc recommended);</p></li>
+<li><p>On macOS, the default C compiler does not support OpenMP and <em>fathon</em> does not exploit parallelisation. Some instructions on possible ways to exploit parallelisation on macOS are given in the README of the source code repository (<a class="reference external" href="https://github.com/stfbnc/fathon.git">https://github.com/stfbnc/fathon.git</a>).</p></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>GSL (<a class="reference external" href="https://www.gnu.org/software/gsl/">https://www.gnu.org/software/gsl/</a>) is not mandatory but nice to have before <em>fathon</em> installation (see <strong>Installation</strong> section for further details).</p></li>
+</ul>
+</div></blockquote>
+</div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li>a</li>
-<li>b</li>
-<li>c</li>
-</ol>
-</div>
+<p><em>fathon</em> can be installed via <code class="code docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<p><em>fathon</em> needs GSL and the paths to GSL includes and libraries to work.</p>
+<p>To install <em>fathon</em>, you can choose one of the following (<strong>all paths must be absolute</strong>):</p>
+<ul class="simple">
+<li><p>If you do not have GSL installed, first install it by yourself (from source code or via package manager) in your preferred location (say <code class="code docutils literal notranslate"><span class="pre">/my/gsl/location/</span></code>), then run <code class="code docutils literal notranslate"><span class="pre">GSLINC=&quot;/my/gsl/location/include/&quot;</span> <span class="pre">GSLLIB=&quot;/my/gsl/location/lib/&quot;</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code> to install <em>fathon</em>;</p></li>
+<li><p>If you do not have GSL installed, run <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code>. It will download and install GSL under the <code class="code docutils literal notranslate"><span class="pre">/usr/local/</span></code> directory and then it will install <em>fathon</em>. These procedure could take a few minutes;</p></li>
+<li><p>If you already have GSL installed, run <code class="code docutils literal notranslate"><span class="pre">GSLINC=&quot;/path/to/include/&quot;</span> <span class="pre">GSLLIB=&quot;/path/to/lib/&quot;</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code> to install <em>fathon</em>. In case you do not know exactly where GSL is installed, you can run <code class="code docutils literal notranslate"><span class="pre">find</span> <span class="pre">/</span> <span class="pre">-name</span> <span class="pre">gsl</span></code> to find the location of <code class="code docutils literal notranslate"><span class="pre">/path/to/include/</span></code> and <code class="code docutils literal notranslate"><span class="pre">/path/to/lib/</span></code>.</p></li>
+</ul>
+<p><strong>Warning!!!</strong> GSL stores the <code class="code docutils literal notranslate"><span class="pre">.h</span></code> files to be included under the <code class="code docutils literal notranslate"><span class="pre">.../include/gsl/</span></code> directory, but the <code class="code docutils literal notranslate"><span class="pre">GSLINC</span></code> path must not go beyond <code class="code docutils literal notranslate"><span class="pre">.../include/</span></code></p>
+<p><strong>Warning!!!</strong> If you are using a virtual environment you need to add the GSL libraries to your <code class="code docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code>:</p>
+<ul class="simple">
+<li><p>Activate the virtual environment;</p></li>
+<li><p>Run <code class="code docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH=&quot;/your/GSLLIB/path/:$LD_LIBRARY_PATH&quot;</span></code>. If you let pip install GSL (the second of the installation options previously listed) <code class="code docutils literal notranslate"><span class="pre">/your/GSLLIB/path/</span></code> is <code class="code docutils literal notranslate"><span class="pre">/usr/local/lib/</span></code>.</p></li>
+<li><p>Run <code class="code docutils literal notranslate"><span class="pre">export</span> <span class="pre">LD_LIBRARY_PATH</span></code>;</p></li>
+<li><p>Install <em>fathon</em>.</p></li>
+</ul>
 </div>
 <div class="section" id="documentation-for-the-code">
-<h1>Documentation for the Code<a class="headerlink" href="#documentation-for-the-code" title="Permalink to this headline">¶</a></h1>
+<h2>Documentation for the Code<a class="headerlink" href="#documentation-for-the-code" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
-</div>
-<div class="section" id="module-fathon">
-<span id="fathon"></span><h2>fathon<a class="headerlink" href="#module-fathon" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="tshelper">
-<h2>tsHelper<a class="headerlink" href="#tshelper" title="Permalink to this headline">¶</a></h2>
-<p>description</p>
-<span class="target" id="module-fathon.tsHelper"></span><dl class="function">
-<dt id="fathon.tsHelper.subtractMean">
-<code class="descclassname">fathon.tsHelper.</code><code class="descname">subtractMean</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.tsHelper.subtractMean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subtracts mean of a vector.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>vec</strong> : iterable</p>
-<blockquote>
-<div><p>Python iterable whose mean will be subtracted.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">numpy ndarray</p>
-<blockquote class="last">
-<div><p><cite>vec</cite> with its mean subtracted.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="fathon.tsHelper.toAggregated">
-<code class="descclassname">fathon.tsHelper.</code><code class="descname">toAggregated</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.tsHelper.toAggregated" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subtracts mean of a vector and computes the cumulative sum.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>vec</strong> : iterable</p>
-<blockquote>
-<div><p>The vector to be integrated.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">numpy ndarray</p>
-<blockquote class="last">
-<div><p>Cumulative sum of <cite>vec</cite> after subtraction of its mean.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</div>
-<div class="section" id="dfa">
-<h2>dfa<a class="headerlink" href="#dfa" title="Permalink to this headline">¶</a></h2>
-<dl class="attribute">
-<dt id="fathon.dfa">
-<code class="descclassname">fathon.</code><code class="descname">dfa</code><a class="headerlink" href="#fathon.dfa" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#fathon.dfa" title="fathon.dfa"><code class="xref py py-class docutils literal"><span class="pre">fathon.dfa</span></code></a></p>
-</dd></dl>
-
-</div>
-<div class="section" id="mfdfa">
-<h2>mfdfa<a class="headerlink" href="#mfdfa" title="Permalink to this headline">¶</a></h2>
-<dl class="attribute">
-<dt id="fathon.mfdfa">
-<code class="descclassname">fathon.</code><code class="descname">mfdfa</code><a class="headerlink" href="#fathon.mfdfa" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#fathon.mfdfa" title="fathon.mfdfa"><code class="xref py py-class docutils literal"><span class="pre">fathon.mfdfa</span></code></a></p>
-</dd></dl>
-
-</div>
-<div class="section" id="dcca">
-<h2>dcca<a class="headerlink" href="#dcca" title="Permalink to this headline">¶</a></h2>
-<dl class="attribute">
-<dt id="fathon.dcca">
-<code class="descclassname">fathon.</code><code class="descname">dcca</code><a class="headerlink" href="#fathon.dcca" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#fathon.dcca" title="fathon.dcca"><code class="xref py py-class docutils literal"><span class="pre">fathon.dcca</span></code></a></p>
-</dd></dl>
-
-</div>
-<div class="section" id="ht">
-<h2>ht<a class="headerlink" href="#ht" title="Permalink to this headline">¶</a></h2>
-<dl class="attribute">
-<dt id="fathon.ht">
-<code class="descclassname">fathon.</code><code class="descname">ht</code><a class="headerlink" href="#fathon.ht" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#fathon.ht" title="fathon.ht"><code class="xref py py-class docutils literal"><span class="pre">fathon.ht</span></code></a></p>
-</dd></dl>
-
-</div>
-<div class="section" id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="fun_class/fathon.subtractMean.html">subtractMean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_class/fathon.toAggregated.html">toAggregated</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_class/fathon.DFA.html">DFA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_class/fathon.MFDFA.html">MFDFA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_class/fathon.DCCA.html">DCCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_class/fathon.HT.html">HT</a></li>
 </ul>
+</div>
 </div>
 </div>
 
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
+  <h3><a href="#">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">fathon (v0.1.2)</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#documentation-for-the-code">Documentation for the Code</a><ul>
-<li><a class="reference internal" href="#module-fathon">fathon</a></li>
-<li><a class="reference internal" href="#tshelper">tsHelper</a></li>
-<li><a class="reference internal" href="#dfa">dfa</a></li>
-<li><a class="reference internal" href="#mfdfa">mfdfa</a></li>
-<li><a class="reference internal" href="#dcca">dcca</a></li>
-<li><a class="reference internal" href="#ht">ht</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#documentation-for-the-code">Documentation for the Code</a></li>
 </ul>
 </li>
 </ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="#">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fun_class/fathon.subtractMean.html"
+                        title="next chapter">subtractMean</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -196,33 +119,34 @@
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2019, Stefano Bianchi.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/index.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="fun_class/fathon.subtractMean.html" title="subtractMean"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">fathon  documentation</a> &#187;</li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Stefano Bianchi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
   </body>
 </html>
