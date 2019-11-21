@@ -49,7 +49,7 @@ To install *fathon*, you can choose one of the following (**all paths must be ab
 Documentation for the Code
 ==========================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    fun_class/fathon.subtractMean
    fun_class/fathon.toAggregated

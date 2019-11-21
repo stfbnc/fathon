@@ -1,21 +1,32 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>fathon (v0.1.2) &#8212; fathon  documentation</title>
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="subtractMean" href="fun_class/fathon.subtractMean.html" /> 
-  </head><body>
+  </head>
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -41,40 +52,39 @@
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Python 3.5+</p></li>
-<li><p>wget</p></li>
-<li><p>numpy (&gt;=1.15)</p></li>
-<li><p>cython</p></li>
-<li><p>C compiler:</p>
-<ul>
-<li><p>On Linux, a C compiler with OpenMP support is required (gcc recommended);</p></li>
-<li><p>On macOS, the default C compiler does not support OpenMP and <em>fathon</em> does not exploit parallelisation. Some instructions on possible ways to exploit parallelisation on macOS are given in the README of the source code repository (<a class="reference external" href="https://github.com/stfbnc/fathon.git">https://github.com/stfbnc/fathon.git</a>).</p></li>
+<li>Python 3.5+</li>
+<li>wget</li>
+<li>numpy (&gt;=1.15)</li>
+<li>cython</li>
+<li>C compiler:<ul>
+<li>On Linux, a C compiler with OpenMP support is required (gcc recommended);</li>
+<li>On macOS, the default C compiler does not support OpenMP and <em>fathon</em> does not exploit parallelisation. Some instructions on possible ways to exploit parallelisation on macOS are given in the README of the source code repository (<a class="reference external" href="https://github.com/stfbnc/fathon.git">https://github.com/stfbnc/fathon.git</a>).</li>
 </ul>
 </li>
 </ul>
 <blockquote>
 <div><ul class="simple">
-<li><p>GSL (<a class="reference external" href="https://www.gnu.org/software/gsl/">https://www.gnu.org/software/gsl/</a>) is not mandatory but nice to have before <em>fathon</em> installation (see <strong>Installation</strong> section for further details).</p></li>
+<li>GSL (<a class="reference external" href="https://www.gnu.org/software/gsl/">https://www.gnu.org/software/gsl/</a>) is not mandatory but nice to have before <em>fathon</em> installation (see <strong>Installation</strong> section for further details).</li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p><em>fathon</em> can be installed via <code class="code docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<p><em>fathon</em> can be installed via <code class="code docutils literal"><span class="pre">pip</span></code>.</p>
 <p><em>fathon</em> needs GSL and the paths to GSL includes and libraries to work.</p>
 <p>To install <em>fathon</em>, you can choose one of the following (<strong>all paths must be absolute</strong>):</p>
 <ul class="simple">
-<li><p>If you do not have GSL installed, first install it by yourself (from source code or via package manager) in your preferred location (say <code class="code docutils literal notranslate"><span class="pre">/my/gsl/location/</span></code>), then run <code class="code docutils literal notranslate"><span class="pre">GSLINC=&quot;/my/gsl/location/include/&quot;</span> <span class="pre">GSLLIB=&quot;/my/gsl/location/lib/&quot;</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code> to install <em>fathon</em>;</p></li>
-<li><p>If you do not have GSL installed, run <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code>. It will download and install GSL under the <code class="code docutils literal notranslate"><span class="pre">/usr/local/</span></code> directory and then it will install <em>fathon</em>. These procedure could take a few minutes;</p></li>
-<li><p>If you already have GSL installed, run <code class="code docutils literal notranslate"><span class="pre">GSLINC=&quot;/path/to/include/&quot;</span> <span class="pre">GSLLIB=&quot;/path/to/lib/&quot;</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code> to install <em>fathon</em>. In case you do not know exactly where GSL is installed, you can run <code class="code docutils literal notranslate"><span class="pre">find</span> <span class="pre">/</span> <span class="pre">-name</span> <span class="pre">gsl</span></code> to find the location of <code class="code docutils literal notranslate"><span class="pre">/path/to/include/</span></code> and <code class="code docutils literal notranslate"><span class="pre">/path/to/lib/</span></code>.</p></li>
+<li>If you do not have GSL installed, first install it by yourself (from source code or via package manager) in your preferred location (say <code class="code docutils literal"><span class="pre">/my/gsl/location/</span></code>), then run <code class="code docutils literal"><span class="pre">GSLINC=&quot;/my/gsl/location/include/&quot;</span> <span class="pre">GSLLIB=&quot;/my/gsl/location/lib/&quot;</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code> to install <em>fathon</em>;</li>
+<li>If you do not have GSL installed, run <code class="code docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code>. It will download and install GSL under the <code class="code docutils literal"><span class="pre">/usr/local/</span></code> directory and then it will install <em>fathon</em>. These procedure could take a few minutes;</li>
+<li>If you already have GSL installed, run <code class="code docutils literal"><span class="pre">GSLINC=&quot;/path/to/include/&quot;</span> <span class="pre">GSLLIB=&quot;/path/to/lib/&quot;</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fathon</span></code> to install <em>fathon</em>. In case you do not know exactly where GSL is installed, you can run <code class="code docutils literal"><span class="pre">find</span> <span class="pre">/</span> <span class="pre">-name</span> <span class="pre">gsl</span></code> to find the location of <code class="code docutils literal"><span class="pre">/path/to/include/</span></code> and <code class="code docutils literal"><span class="pre">/path/to/lib/</span></code>.</li>
 </ul>
-<p><strong>Warning!!!</strong> GSL stores the <code class="code docutils literal notranslate"><span class="pre">.h</span></code> files to be included under the <code class="code docutils literal notranslate"><span class="pre">.../include/gsl/</span></code> directory, but the <code class="code docutils literal notranslate"><span class="pre">GSLINC</span></code> path must not go beyond <code class="code docutils literal notranslate"><span class="pre">.../include/</span></code></p>
-<p><strong>Warning!!!</strong> If you are using a virtual environment you need to add the GSL libraries to your <code class="code docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code>:</p>
+<p><strong>Warning!!!</strong> GSL stores the <code class="code docutils literal"><span class="pre">.h</span></code> files to be included under the <code class="code docutils literal"><span class="pre">.../include/gsl/</span></code> directory, but the <code class="code docutils literal"><span class="pre">GSLINC</span></code> path must not go beyond <code class="code docutils literal"><span class="pre">.../include/</span></code></p>
+<p><strong>Warning!!!</strong> If you are using a virtual environment you need to add the GSL libraries to your <code class="code docutils literal"><span class="pre">LD_LIBRARY_PATH</span></code>:</p>
 <ul class="simple">
-<li><p>Activate the virtual environment;</p></li>
-<li><p>Run <code class="code docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH=&quot;/your/GSLLIB/path/:$LD_LIBRARY_PATH&quot;</span></code>. If you let pip install GSL (the second of the installation options previously listed) <code class="code docutils literal notranslate"><span class="pre">/your/GSLLIB/path/</span></code> is <code class="code docutils literal notranslate"><span class="pre">/usr/local/lib/</span></code>.</p></li>
-<li><p>Run <code class="code docutils literal notranslate"><span class="pre">export</span> <span class="pre">LD_LIBRARY_PATH</span></code>;</p></li>
-<li><p>Install <em>fathon</em>.</p></li>
+<li>Activate the virtual environment;</li>
+<li>Run <code class="code docutils literal"><span class="pre">LD_LIBRARY_PATH=&quot;/your/GSLLIB/path/:$LD_LIBRARY_PATH&quot;</span></code>. If you let pip install GSL (the second of the installation options previously listed) <code class="code docutils literal"><span class="pre">/your/GSLLIB/path/</span></code> is <code class="code docutils literal"><span class="pre">/usr/local/lib/</span></code>.</li>
+<li>Run <code class="code docutils literal"><span class="pre">export</span> <span class="pre">LD_LIBRARY_PATH</span></code>;</li>
+<li>Install <em>fathon</em>.</li>
 </ul>
 </div>
 <div class="section" id="documentation-for-the-code">
@@ -98,7 +108,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table of Contents</a></h3>
+  <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">fathon (v0.1.2)</a><ul>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
@@ -119,13 +129,13 @@
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
+  <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
     </form>
-    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -146,7 +156,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, Stefano Bianchi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
     </div>
   </body>
 </html>

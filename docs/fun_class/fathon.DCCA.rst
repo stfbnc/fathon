@@ -11,3 +11,38 @@ DCCA
    .. automethod:: fitFlucVec
    .. automethod:: multiFitFlucVec
    .. automethod:: rhoThresholds
+
+Usage examples
+^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+   import numpy as np
+   import fathon
+
+   #time series
+   a = np.random.randn(10000)
+   b = np.random.randn(10000)
+
+   #zero-mean cumulative sum
+   a = fathon.toAggregated(a)
+   b = fathon.toAggregated(b)
+
+   #initialize non-empty dcca object
+   pydcca = fathon.DCCA(a, b)
+   #compute fluctuation function and Hurst exponent
+   n, F = pydcca.computeFlucVec(20, nMax=1000, nStep=50, polOrd=1)
+   H, H_intercept = pydcca.fitFlucVec()
+
+   #compute Hurst exponent in different ranges
+   limits_list = np.array([[20,120], [220,870]], dtype=int)
+   list_H, list_H_intercept = pydcca.multiFitFlucVec(limits_list)
+
+   #compute rho index
+   n, rho = pydcca.computeRho(20, nMax=1000, nStep=50, polOrd=1)
+
+   #initialize empty dcca object
+   pythresh = fathon.DCCA()
+   #compute confidence levels
+   n, cInt1, cInt2 = pythresh.rhoThresholds(300, 4, 100, 100, 0.95, polOrd=1, nStep=1)
+
