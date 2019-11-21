@@ -68,3 +68,14 @@ In case you are going to modify *fathon*, please use the same docstring format a
 
 ## Documentation
 
+Documentation is written in [reStructuredText](http://docutils.sourceforge.net/rst.html), built with <code>sphinx</code> and placed in the <code>docs</code> folder. If you have contributed, please update also the documentation.
+
+- Add or modify the function/class in the corresponding <code>.rst</code> file in the folder <code>fun_class</code>, and follow the same naming convention if a new file is needed;
+- In case of a new file, add it at the end of <code>index.rst</code>;
+- Since <code>sphinx</code> does not handle Cython code and needs to import the package, you have to go to the folder <code>docstrings_only/fathon</code>, and:
+  - Only if you have modified the original docstrings, copy them in the corresponding file in the right place;
+  - If you have modified the package adding a new file, copy it here with extension <code>.py</code> and delete all the code except for functions or methods signature, docstrings, and returns. <code>cdef</code> and <code>cpdef</code> must be changed to <code>def</code>.
+- Install <code>sphinx</code> and <code>numpydoc</code>;
+- Run <code>make html</code> inside the <code>docs</code> folder, and check the result file <code>_build/html/index.html</code>.
+
+For any problem with the documentation, open an issue with tag <code>documentation</code>.
