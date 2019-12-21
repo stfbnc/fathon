@@ -22,7 +22,7 @@ Requirements
   - On Linux, a C compiler with OpenMP support is required (gcc recommended);
   - On macOS, the default C compiler does not support OpenMP and *fathon* does not exploit parallelisation. Some instructions on possible ways to exploit parallelisation on macOS are given in the README of the source code repository (https://github.com/stfbnc/fathon.git).
 
- - GSL (https://www.gnu.org/software/gsl/) is not mandatory but nice to have before *fathon* installation (see **Installation** section for further details).
+- GSL (https://www.gnu.org/software/gsl/) is not mandatory but nice to have before *fathon* installation (see **Installation** section for further details).
 
 Installation
 ============

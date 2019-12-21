@@ -7,6 +7,7 @@ import numpy
 import platform
 import sys
 import wget
+import re
 
 main_path = os.path.dirname(os.path.abspath(__file__))
 home_path = os.path.expanduser("~")
@@ -61,6 +62,18 @@ if __name__ == "__main__":
                           get_extension("fathon.dcca", os.path.join("fathon", "dcca.pyx"), running_os),
                           get_extension("fathon.mfdfa", os.path.join("fathon", "mfdfa.pyx"), running_os),
                           get_extension("fathon.ht", os.path.join("fathon", "ht.pyx"), running_os)]
+                          
+            README = ""
+            chk = 0
+            readme_file = open("docs/index.rst", "r")
+            for line in readme_file:
+                if line[:6] == "fathon":
+                    chk = 1
+                if line[:13] == "Documentation":
+                    chk = 0
+                if chk == 1:
+                    README += re.sub(":code:", "", line)
+            readme_file.close()
 
             setup(name="fathon",
                   version="0.1.2",
@@ -69,8 +82,24 @@ if __name__ == "__main__":
                   url="https://github.com/stfbnc/fathon.git",
                   license="GPLv3.0",
                   description="pyhton package for detrended fluctuation analysis (DFA) and related algorithms.",
+                  long_description_content_type="text/markdown",
+                  long_description=README,
                   packages=find_packages(),
+                  classifiers=["License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+                               "Operating System :: MacOS",
+                               "Operating System :: Unix",
+                               "Programming Language :: Cython",
+                               "Programming Language :: C",
+                               "Programming Language :: Python :: 3.5",
+                               "Programming Language :: Python :: 3.6",
+                               "Programming Language :: Python :: 3.7",
+                               "Programming Language :: Python :: 3.8",
+                               "Topic :: Scientific/Engineering"],
+                  python_requires=">=3.5",
                   install_requires=["wget", "numpy>=1.15", "cython"],
+                  project_urls={"Documentation": "https://fathon.readthedocs.io/",
+                                "Bug Reports": "https://github.com/stfbnc/fathon/issues",
+                                "Source": "https://github.com/stfbnc/fathon/"},
                   ext_modules=cythonize(extensions),
                   package_data={"fathon": ["LICENSE"]},
                   include_package_data=True)
