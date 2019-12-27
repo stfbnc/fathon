@@ -1,5 +1,4 @@
 import numpy as np
-import scipy.io
 import fathon
 import math
 
@@ -13,15 +12,14 @@ import math
 
 #####
 # Time series to test functionality
-# (from Ihlen's MATLAB package "Multifractal detrended fluctuation analyses")
+# (extracted from Ihlen's MATLAB package "Multifractal detrended fluctuation analyses")
 #####
-mat = scipy.io.loadmat('./tests/mat/fractaldata.mat')
 # white noise
-wn = mat['whitenoise'][:, 0]
+wn = np.loadtxt('./tests/mat/whitenoise.txt')
 # monofractal time series
-mn = mat['monofractal'][:, 0]
+mn = np.loadtxt('./tests/mat/monofractal.txt')
 # multifractal time series
-mf = mat['multifractal'][:, 0]
+mf = np.loadtxt('./tests/mat/multifractal.txt')
 #####
 
 # defining parameters and scales as in Ihlen's paper

@@ -20,10 +20,10 @@ To make *fathon* work, you need:
    
 2. **_Python packages:_**
   - wget
-   
+  
    - numpy (version >= 1.15)
    - cython
-   
+  
 3. **_OpenMP:_**
    - Linux
      - a C compiler with OpenMP support is required (gcc recommended)
@@ -34,7 +34,7 @@ To make *fathon* work, you need:
 
 4. **_External libraries:_**
 
-   - The [GSL (*GNU Scientific Library*)](https://www.gnu.org/software/gsl/) is required for *fathon* to work. It is not mandatory to install it by yourself since it will be downloaded and installed in your <code>/usr/local/</code> directory during *fathon* installation if you do not have it (see **Installing** section for more informations).
+   - The [GSL (*GNU Scientific Library*)](https://www.gnu.org/software/gsl/) is required for *fathon* to work. It is used to perform polynomial fits during the fluctuation function evaluation in the external C functions. It is not mandatory to install GSL by yourself since it will be downloaded and installed in your <code>/usr/local/</code> directory during *fathon* installation if you do not have it (see **Installing** section for more informations).
 
 ### Installing
 
