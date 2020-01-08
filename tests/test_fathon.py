@@ -5,7 +5,7 @@ import math
 # FUNCTIONALITY TESTS
 # -------------------
 # - Results of the Ihlen's "Introduction to Multifractal Detrended Fluctuation
-#   Analysis in Matlab" are reproduced
+#   Analysis in Matlab" paper are reproduced
 #   (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3366552/)
 # - MATLAB code to reproduce the paper results can be found at:
 #   https://it.mathworks.com/matlabcentral/fileexchange/38262-multifractal-detrended-fluctuation-analyses
@@ -137,7 +137,7 @@ def test_mat_mfdfa_mn():
 # REGRESSION TESTS
 # ----------------
 # - the element of the array tested in tests 2-5 has no
-#   particular meaning, it has just chosen randomly.
+#   particular meaning, it was just chosen randomly.
 # - the numbers to which results are tested against have
 #   been produced by fathon and have many significant figures
 #   due to the fact that the precision of the testing machine
