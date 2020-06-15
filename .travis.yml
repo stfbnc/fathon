@@ -1,4 +1,9 @@
 language: python
+
+branches:
+  only:
+  - fathon-dev
+
 # ===== Linux ======
 dist: xenial
 python:
