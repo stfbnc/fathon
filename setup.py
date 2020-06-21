@@ -6,7 +6,7 @@ from Cython.Build import cythonize
 import numpy
 import platform
 import sys
-import wget
+#import wget
 import re
 
 main_path = os.path.dirname(os.path.abspath(__file__))
@@ -18,17 +18,19 @@ def gsl_install():
 	if process.returncode != 0:
 		sys.exit("Failed to install GSL.")
 
-gsl_inc = os.environ.get("GSLINC", None)
-gsl_lib = os.environ.get("GSLLIB", None)
-if gsl_inc is None and gsl_lib is None:
-    wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
-    gsl_install()
-    gsl_inc = "/usr/local/include"
-    gsl_lib = "/usr/local/lib"
-elif gsl_inc is not None and gsl_lib is not None:
-	pass
-else:
-	sys.exit("Both GSLINC and GSLLIB must or must not be given.")
+#gsl_inc = os.environ.get("GSLINC", None)
+#gsl_lib = os.environ.get("GSLLIB", None)
+#if gsl_inc is None and gsl_lib is None:
+#    wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
+gsl_install()
+gsl_inc = "./fathon/gsl_lib"
+gsl_lib = "./fathon/gsl_lib"
+#    gsl_inc = "/usr/local/include"
+#    gsl_lib = "/usr/local/lib"
+#elif gsl_inc is not None and gsl_lib is not None:
+#	pass
+#else:
+#	sys.exit("Both GSLINC and GSLLIB must or must not be given.")
 
 def get_extension(module_name, src_name, current_os):
     sources = [src_name, os.path.join("fathon", "cLoops.c")]

@@ -3,4 +3,5 @@ recursive-include fathon fathon_gsl_install
 recursive-include fathon *.pyx
 recursive-include fathon *.c
 recursive-include fathon *.h
+recursive-include fathon/gsl_lib *
 recursive-include docs *
