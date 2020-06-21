@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd $HOME
+#cd $HOME
 #tar -xzf gsl-latest.tar.gz
 #rm gsl-latest.tar.gz
 cd gsl
