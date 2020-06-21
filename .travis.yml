@@ -24,12 +24,13 @@ matrix:
         - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
-        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
+#        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
         - ./fathon/fathon_gsl_install
       install:
-        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-        - export LD_LIBRARY_PATH
-        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
+#        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+#        - export LD_LIBRARY_PATH
+#        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
+        - pip3 install .
       script:
         - pytest tests --cov=fathon
       after_success: codecov
@@ -43,12 +44,13 @@ matrix:
         - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
-        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
+#        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
         - ./fathon/fathon_gsl_install
       install:
-        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-        - export LD_LIBRARY_PATH
-        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
+#        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+#        - export LD_LIBRARY_PATH
+#        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
+        - pip3 install .
       script:
         - pytest tests --cov=fathon
       after_success: codecov
@@ -62,12 +64,13 @@ matrix:
         - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
-        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
+#        - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
         - ./fathon/fathon_gsl_install
       install:
-        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-        - export LD_LIBRARY_PATH
-        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
+#        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+#        - export LD_LIBRARY_PATH
+#        - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
+        - pip3 install .
       script:
         - pytest tests --cov=fathon
       after_success: codecov
@@ -77,12 +80,13 @@ before_install:
   - pip install -U pytest pytest-cov
   - pip install codecov
   - pip3 install -r requirements.txt
-  - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
+#  - wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz -O $HOME/gsl-latest.tar.gz
   - ./fathon/fathon_gsl_install
 install:
-  - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-  - export LD_LIBRARY_PATH
-  - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
+#  - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+#  - export LD_LIBRARY_PATH
+#  - GSLINC="/usr/local/include/" GSLLIB="/usr/local/lib/" pip3 install .
+  - pip3 install .
 script:
   - pytest tests --cov=fathon
 after_success:
