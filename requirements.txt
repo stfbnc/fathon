@@ -1,4 +1,3 @@
-wget
 numpy>=1.15
 cython
 numpydoc

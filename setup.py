@@ -23,8 +23,8 @@ def gsl_install():
 #if gsl_inc is None and gsl_lib is None:
 #    wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
 gsl_install()
-gsl_inc = "./fathon/gsl_lib"
-gsl_lib = "./fathon/gsl_lib"
+gsl_inc = "./fathon/gsl_lib/include"
+gsl_lib = "./fathon/gsl_lib/lib"
 #    gsl_inc = "/usr/local/include"
 #    gsl_lib = "/usr/local/lib"
 #elif gsl_inc is not None and gsl_lib is not None:
