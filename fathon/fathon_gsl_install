@@ -3,7 +3,7 @@
 #cd $HOME
 #tar -xzf gsl-latest.tar.gz
 #rm gsl-latest.tar.gz
-cd gsl
+cd ./fathon/gsl
 ./configure --prefix=$PWD/../gsl_lib
 make
 make install
