@@ -1,6 +1,6 @@
 from setuptools import find_packages
 from distutils.core import setup, Extension
-import subprocess
+#import subprocess
 import os
 from Cython.Build import cythonize
 import numpy
@@ -11,17 +11,17 @@ import re
 main_path = os.path.dirname(os.path.abspath(__file__))
 home_path = os.path.expanduser("~")
 
-def gsl_install():
-	process = subprocess.Popen(os.path.join(".", "fathon", "fathon_gsl_install"), cwd=main_path)
-	process.wait()
-	if process.returncode != 0:
-		sys.exit("Failed to install GSL.")
+#def gsl_install():
+#	process = subprocess.Popen(os.path.join(".", "fathon", "fathon_gsl_install"), cwd=main_path)
+#	process.wait()
+#	if process.returncode != 0:
+#		sys.exit("Failed to install GSL.")
 
 #gsl_inc = os.environ.get("GSLINC", None)
 #gsl_lib = os.environ.get("GSLLIB", None)
 #if gsl_inc is None and gsl_lib is None:
 #    wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
-gsl_install()
+#gsl_install()
 gsl_inc = "./fathon/gsl_lib/include"
 gsl_lib = "./fathon/gsl_lib/lib"
 #    gsl_inc = "/usr/local/include"
