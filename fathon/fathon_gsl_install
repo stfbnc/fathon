@@ -1,11 +1,19 @@
 #!/bin/sh
 
-#cd $HOME
-#tar -xzf gsl-latest.tar.gz
-#rm gsl-latest.tar.gz
+## installation directory
+mkdir ./fathon/gsl_tmp
+
+## install GSL
 cd ./fathon/gsl
-./configure --prefix=$PWD/../gsl_lib
+./configure --prefix=$PWD/../gsl_tmp
 make
 make install
+
+## remove GSL source code
 cd ..
 sudo rm -rf gsl
+
+## copy header files and libs
+mv gsl_tmp/include gsl_lib
+mkdir gsl_lib/lib
+mv gsl_tmp/lib/*.a gsl_lib/lib

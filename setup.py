@@ -6,7 +6,6 @@ from Cython.Build import cythonize
 import numpy
 import platform
 import sys
-#import wget
 import re
 
 main_path = os.path.dirname(os.path.abspath(__file__))
@@ -98,7 +97,7 @@ if __name__ == "__main__":
                                "Programming Language :: Python :: 3.8",
                                "Topic :: Scientific/Engineering"],
                   python_requires=">=3.5",
-                  install_requires=["wget", "numpy>=1.15", "cython"],
+                  install_requires=["numpy>=1.15", "cython"],
                   project_urls={"Documentation": "https://fathon.readthedocs.io/",
                                 "Bug Reports": "https://github.com/stfbnc/fathon/issues",
                                 "Source": "https://github.com/stfbnc/fathon/"},
