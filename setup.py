@@ -22,8 +22,8 @@ home_path = os.path.expanduser("~")
 #if gsl_inc is None and gsl_lib is None:
 #    wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
 #gsl_install()
-gsl_inc = "./fathon/3rd_party/gsl/include"
-gsl_lib = "./fathon/3rd_party/gsl/lib/"
+gsl_inc = "./3rd_party/gsl/include"
+gsl_lib = "./3rd_party/gsl/lib/"
 #    gsl_inc = "/usr/local/include"
 #    gsl_lib = "/usr/local/lib"
 #elif gsl_inc is not None and gsl_lib is not None:
