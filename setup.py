@@ -23,7 +23,7 @@ home_path = os.path.expanduser("~")
 #    wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
 #gsl_install()
 gsl_inc = "./fathon/gsl_lib/include"
-gsl_lib = "./fathon/gsl_lib/lib"
+gsl_lib = "./fathon/3rd_party/gsl/lib/"
 #    gsl_inc = "/usr/local/include"
 #    gsl_lib = "/usr/local/lib"
 #elif gsl_inc is not None and gsl_lib is not None:
@@ -34,26 +34,27 @@ gsl_lib = "./fathon/gsl_lib/lib"
 def get_extension(module_name, src_name, current_os):
     sources = [src_name, os.path.join("fathon", "cLoops.c")]
     include_dirs = [numpy.get_include(), gsl_inc]
-    library_dirs = [gsl_lib]
-    libraries = ["gsl", "gslcblas", "m"]
+    #library_dirs = [gsl_lib]
+    libraries = ["m"] #["gsl", "gslcblas", "m"]
     extra_compile_args_macos = ["-O2"]
     extra_compile_args_linux = ["-O2", "-fopenmp"]
     extra_link_args = ["-fopenmp"]
+    extra_objects = [gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"]
     if current_os == "Darwin":
         return Extension(module_name,
                          sources=sources,
                          include_dirs=include_dirs,
-                         library_dirs=library_dirs,
                          libraries=libraries,
-                         extra_compile_args=extra_compile_args_macos)
+                         extra_compile_args=extra_compile_args_macos,
+                         extra_objects=extra_objects)
     elif current_os == "Linux":
         return Extension(module_name,
                          sources=sources,
                          include_dirs=include_dirs,
-                         library_dirs=library_dirs,
                          libraries=libraries,
                          extra_compile_args=extra_compile_args_linux,
-                         extra_link_args=extra_link_args)
+                         extra_link_args=extra_link_args,
+                         extra_objects=extra_objects)
 
 if __name__ == "__main__":
     if sys.version_info[0] == 3:
