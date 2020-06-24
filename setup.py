@@ -47,7 +47,7 @@ def get_extension(module_name, src_name, current_os):
                          sources=sources,
                          include_dirs=include_dirs,
                          library_dirs=[gsl_lib],
-                         runtime_library_dirs=["'$ORIGIN'/"+gsl_lib],
+                         runtime_library_dirs=["'$ORIGIN'/3rd_party/gsl/lib/"],
                          libraries=["gsl", "gslcblas", "m"],
                          extra_compile_args=["-O2", "-fopenmp"],
                          extra_link_args=["-fopenmp"])
