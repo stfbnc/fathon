@@ -46,9 +46,11 @@ def get_extension(module_name, src_name, current_os):
         return Extension(module_name,
                          sources=sources,
                          include_dirs=include_dirs,
+                         library_dirs=[gsl_lib],
+                         runtime_library_dirs=[gsl_lib],
                          libraries=["gsl", "gslcblas", "m"],
                          extra_compile_args=["-O2", "-fopenmp"],
-                         extra_link_args=["-Wl,-rpath=$ORIGIN/"+gsl_lib, "-fopenmp"])
+                         extra_link_args=["-fopenmp"])
 
 if __name__ == "__main__":
     if sys.version_info[0] == 3:
