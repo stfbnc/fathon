@@ -26,10 +26,6 @@ gsl_inc = "./fathon/3rd_party/gsl/include"
 gsl_lib = "./fathon/3rd_party/gsl/lib/"
 #    gsl_inc = "/usr/local/include"
 #    gsl_lib = "/usr/local/lib"
-#elif gsl_inc is not None and gsl_lib is not None:
-#	pass
-#else:
-#	sys.exit("Both GSLINC and GSLLIB must or must not be given.")
 
 
 def get_extension(module_name, src_name, current_os):
