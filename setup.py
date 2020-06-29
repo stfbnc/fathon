@@ -31,6 +31,7 @@ gsl_lib = "./fathon/3rd_party/gsl/lib/"
 #else:
 #	sys.exit("Both GSLINC and GSLLIB must or must not be given.")
 
+
 def get_extension(module_name, src_name, current_os):
     sources = [src_name, os.path.join("fathon", "cLoops.c")]
     include_dirs = [numpy.get_include(), gsl_inc]
