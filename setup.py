@@ -33,13 +33,17 @@ def get_extension(module_name, src_name, current_os):
     include_dirs = [numpy.get_include(), gsl_inc]
 
     if current_os == "Darwin":
+        cmd1 = "install_name_tool -id \"@loader_path/" + gsl_lib + "libgslcblas.dylib\" " + gsl_lib + "libgslcblas.dylib"
+        cmd2 = "install_name_tool -id \"@loader_path/" + gsl_lib + "libgsl.dylib\" " + gsl_lib + "libgsl.dylib"
+        os.system(cmd1)
+        os.system(cmd2)
         return Extension(module_name,
                          sources=sources,
                          include_dirs=include_dirs,
                          library_dirs=[gsl_lib],
-                         runtime_library_dirs=["@loader_path/3rd_party/gsl/lib/"],
                          libraries=["gsl", "gslcblas", "m"],
                          extra_compile_args=["-O2"])
+                         #runtime_library_dirs=["@rpath/3rd_party/gsl/lib/"],
                          #extra_objects=[gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"])
     elif current_os == "Linux":
         return Extension(module_name,
