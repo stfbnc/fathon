@@ -39,9 +39,11 @@ def get_extension(module_name, src_name, current_os):
         return Extension(module_name,
                          sources=sources,
                          include_dirs=include_dirs,
-                         libraries=["m"],
-                         extra_compile_args=["-O2"],
-                         extra_objects=[gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"])
+                         library_dirs=[gsl_lib],
+                         runtime_library_dirs=["@loader_path/3rd_party/gsl/lib/"],
+                         libraries=["gsl", "gslcblas", "m"],
+                         extra_compile_args=["-O2"])
+                         #extra_objects=[gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"])
     elif current_os == "Linux":
         return Extension(module_name,
                          sources=sources,
