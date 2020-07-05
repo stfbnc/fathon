@@ -2,7 +2,7 @@ from setuptools import find_packages
 from distutils.core import setup, Extension
 #import subprocess
 import os
-#from Cython.Build import cythonize
+from Cython.Build import cythonize
 import numpy
 import platform
 import sys
