@@ -5,7 +5,9 @@ branches:
 env:
   global:
     - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
-    - CIBW_TEST_COMMAND="pytest tests"
+    - CIBW_TEST_REQUIRES=pytest
+    - CIBW_TEST_COMMAND="pytest {project}/tests"
+    - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt"
 
 matrix:
   include:
@@ -58,8 +60,8 @@ install:
 #    fi
   - pip3 install --upgrade cibuildwheel
 #  - pip3 install --upgrade pip
-  - pip3 install --upgrade pytest
-  - pip3 install -r requirements.txt
+#  - pip3 install --upgrade pytest
+#  - pip3 install -r requirements.txt
 #  - pip3 install .
 
 script:
