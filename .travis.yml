@@ -15,6 +15,24 @@ matrix:
       python: "3.5"
       services:
         - docker
+    - name: "Python 3.6 on Linux"
+      language: python
+      dist: xenial
+      python: "3.6"
+      services:
+        - docker
+    - name: "Python 3.7 on Linux"
+      language: python
+      dist: xenial
+      python: "3.7"
+      services:
+        - docker
+    - name: "Python 3.8 on Linux"
+      language: python
+      dist: xenial
+      python: "3.8"
+      services:
+        - docker
     # ======= macOS ========
     - name: "Python 3.6.5 on macOS 10.13"
       os: osx
