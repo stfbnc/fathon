@@ -4,6 +4,10 @@ branches:
   only:
   - fathon-dev
 
+env:
+  global:
+    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
+
 # ===== Linux ======
 dist: xenial
 python:
@@ -80,7 +84,6 @@ install:
 script:
   - pytest tests --cov=fathon
   - cibuildwheel --output-dir wheelhouse
-  - python3 setup.py sdist
   - twine upload --repository-url https://test.pypi.org/legacy/ wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
 after_success:
   - codecov
