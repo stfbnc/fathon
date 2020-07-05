@@ -7,7 +7,7 @@ env:
     - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
 #    - CIBW_TEST_REQUIRES=pytest
 #    - CIBW_TEST_COMMAND="pytest {project}/tests"
-    - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt"
+    - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt && pip3 install twine"
 
 matrix:
   include:
@@ -18,37 +18,37 @@ matrix:
       python: "3.5"
       services:
         - docker
-    - name: "Python 3.6 on Linux"
-      language: python
-      dist: xenial
-      python: "3.6"
-      services:
-        - docker
-    - name: "Python 3.7 on Linux"
-      language: python
-      dist: xenial
-      python: "3.7"
-      services:
-        - docker
-    - name: "Python 3.8 on Linux"
-      language: python
-      dist: xenial
-      python: "3.8"
-      services:
-        - docker
+#    - name: "Python 3.6 on Linux"
+#      language: python
+#      dist: xenial
+#      python: "3.6"
+#      services:
+#        - docker
+#    - name: "Python 3.7 on Linux"
+#      language: python
+#      dist: xenial
+#      python: "3.7"
+#      services:
+#        - docker
+#    - name: "Python 3.8 on Linux"
+#      language: python
+#      dist: xenial
+#      python: "3.8"
+#      services:
+#        - docker
     # ======= macOS ========
     - name: "Python 3.6.5 on macOS 10.13"
       os: osx
       osx_image: xcode9.4
       language: shell
-    - name: "Python 3.7.3 on macOS 10.14"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
-    - name: "Python 3.8 on macOS 10.14"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+#    - name: "Python 3.7.3 on macOS 10.14"
+#      os: osx
+#      osx_image: xcode10.2
+#      language: shell
+#    - name: "Python 3.8 on macOS 10.14"
+#      os: osx
+#      osx_image: xcode10.2
+#      language: shell
 
 before_install:
   - python3 --version
@@ -68,6 +68,6 @@ script:
 #  - pytest tests
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
-  - python3 -c import fathon
-  - pip3 install twine
+  - python3 -c 'import fathon'
+#  - pip3 install twine
   - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
