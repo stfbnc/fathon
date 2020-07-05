@@ -5,8 +5,8 @@ branches:
 env:
   global:
     - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
-    - CIBW_TEST_REQUIRES=pytest
-    - CIBW_TEST_COMMAND="pytest {project}/tests"
+#    - CIBW_TEST_REQUIRES=pytest
+#    - CIBW_TEST_COMMAND="pytest {project}/tests"
     - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt"
 
 matrix:
@@ -68,5 +68,6 @@ script:
 #  - pytest tests
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
+  - python3 -c import fathon
   - pip3 install twine
   - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
