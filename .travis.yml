@@ -57,8 +57,8 @@ install:
 #      brew upgrade python;
 #    fi
   - pip3 install --upgrade cibuildwheel
-  - pip3 install -U pip
-  - pip3 install -U pytest
+#  - pip3 install --upgrade pip
+  - pip3 install --upgrade pytest
   - pip3 install -r requirements.txt
 #  - pip3 install .
 
