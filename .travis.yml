@@ -2,9 +2,10 @@ branches:
   only:
   - fathon-dev
 
-#env:
-#  global:
-#    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
+env:
+  global:
+    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
+    - CIBW_TEST_COMMAND="pytest tests"
 
 matrix:
   include:
@@ -51,14 +52,19 @@ before_install:
   - python3 --version
 
 install:
+  - if [ "${TRAVIS_OS_NAME:-}" == "osx" ]; then
+      brew update;
+      brew upgrade python;
+    fi
   - pip3 install -U pip
   - pip3 install -U pytest
   - pip3 install -r requirements.txt
-  - pip3 install .
-#  - pip3 install twine
-#  - pip3 install cibuildwheel
+#  - pip3 install .
+  - pip3 install --upgrade cibuildwheel
 
 script:
-  - pytest tests
-#  - cibuildwheel --output-dir wheelhouse
-#  - twine upload --repository-url https://test.pypi.org/legacy/ wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
+#  - pytest tests
+  - cibuildwheel --output-dir wheelhouse
+  - ls wheelhouse
+  - pip3 install twine
+  - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
