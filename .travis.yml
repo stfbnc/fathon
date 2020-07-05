@@ -32,12 +32,12 @@ matrix:
 #      python: "3.7"
 #      services:
 #        - docker
-    - name: "Python 3.8 on Linux"
-      language: python
-      dist: xenial
-      python: "3.8"
-      services:
-        - docker
+#    - name: "Python 3.8 on Linux"
+#      language: python
+#      dist: xenial
+#      python: "3.8"
+#      services:
+#        - docker
     # ======= macOS ========
 #    - name: "Python 3.6.5 on macOS 10.13"
 #      os: osx
@@ -70,5 +70,5 @@ script:
 #  - pytest tests
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
-  - pip3 install twine
+  - pip install twine
   - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
