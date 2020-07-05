@@ -52,15 +52,15 @@ before_install:
   - python3 --version
 
 install:
-  - if [ "${TRAVIS_OS_NAME:-}" == "osx" ]; then
-      brew update;
-      brew upgrade python;
-    fi
+#  - if [ "${TRAVIS_OS_NAME:-}" == "osx" ]; then
+#      brew update;
+#      brew upgrade python;
+#    fi
+  - pip3 install --upgrade cibuildwheel
   - pip3 install -U pip
   - pip3 install -U pytest
   - pip3 install -r requirements.txt
 #  - pip3 install .
-  - pip3 install --upgrade cibuildwheel
 
 script:
 #  - pytest tests
