@@ -1,5 +1,3 @@
-language: python
-
 branches:
   only:
   - fathon-dev
@@ -8,82 +6,41 @@ branches:
 #  global:
 #    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
 
-# ===== Linux ======
-dist: xenial
-python:
-  - 3.5
-  - 3.6
-  - 3.7
-  - 3.8
 matrix:
-  include:      
+  include:
+    # ===== Linux ======
+    - name: "Python 3.5 on Linux"
+      language: python
+      dist: xenial
+      python: "3.5"
+      services:
+        - docker
     # ======= macOS ========
     - name: "Python 3.6.5 on macOS 10.13"
       os: osx
       osx_image: xcode9.4
       language: shell
-      before_install:
-        - python3 --version
-        - pip3 install -U pip
-        - pip3 install -U pytest pytest-cov
-        - pip3 install codecov
-        - pip3 install -r requirements.txt
-#        - chmod 777 fathon_gsl_install
-#        - ./fathon_gsl_install
-      install:
-        - pip3 install .
-      script:
-        - pytest tests --cov=fathon
-      after_success: codecov
     - name: "Python 3.7.3 on macOS 10.14"
       os: osx
       osx_image: xcode10.2
       language: shell
-      before_install:
-        - python3 --version
-        - pip3 install -U pip
-        - pip3 install -U pytest pytest-cov
-        - pip3 install codecov
-        - pip3 install -r requirements.txt
-#        - chmod 777 fathon_gsl_install
-#        - ./fathon_gsl_install
-      install:
-        - pip3 install .
-      script:
-        - pytest tests --cov=fathon
-      after_success: codecov
     - name: "Python 3.8 on macOS 10.14"
       os: osx
       osx_image: xcode10.2
       language: shell
-      before_install:
-        - python3 --version
-        - pip3 install -U pip
-        - pip3 install -U pytest pytest-cov
-        - pip3 install codecov
-        - pip3 install -r requirements.txt
-#        - chmod 777 fathon_gsl_install
-#        - ./fathon_gsl_install
-      install:
-        - pip3 install .
-      script:
-        - pytest tests --cov=fathon
-      after_success: codecov
+
 before_install:
   - python3 --version
-  - pip3 install -U pip
-  - pip3 install -U pytest pytest-cov
-  - pip3 install codecov
-  - pip3 install -r requirements.txt
-#  - chmod 777 fathon_gsl_install
-#  - ./fathon_gsl_install
+
 install:
+  - pip3 install -U pip
+  - pip3 install -U pytest
+  - pip3 install -r requirements.txt
   - pip3 install .
 #  - pip3 install twine
 #  - pip3 install cibuildwheel
+
 script:
-  - pytest tests --cov=fathon
+  - pytest tests
 #  - cibuildwheel --output-dir wheelhouse
 #  - twine upload --repository-url https://test.pypi.org/legacy/ wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
-after_success:
-  - codecov
