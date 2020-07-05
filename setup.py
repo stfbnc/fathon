@@ -76,6 +76,11 @@ if __name__ == "__main__":
                     README += re.sub(":code:", "", line)
             readme_file.close()
 
+            iGSL_1 = "chmod 777 fathon_gsl_install"
+            os.system(iGSL_1)
+            iGSL_2 = "./fathon_gsl_install"
+            os.system(iGSL_2)
+
             setup(name="fathon",
                   version="0.1.2.post3",
                   author="Stefano Bianchi",

@@ -4,9 +4,9 @@ branches:
   only:
   - fathon-dev
 
-env:
-  global:
-    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
+#env:
+#  global:
+#    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
 
 # ===== Linux ======
 dist: xenial
@@ -28,8 +28,8 @@ matrix:
         - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
-        - chmod 777 fathon_gsl_install
-        - ./fathon_gsl_install
+#        - chmod 777 fathon_gsl_install
+#        - ./fathon_gsl_install
       install:
         - pip3 install .
       script:
@@ -45,8 +45,8 @@ matrix:
         - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
-        - chmod 777 fathon_gsl_install
-        - ./fathon_gsl_install
+#        - chmod 777 fathon_gsl_install
+#        - ./fathon_gsl_install
       install:
         - pip3 install .
       script:
@@ -62,8 +62,8 @@ matrix:
         - pip3 install -U pytest pytest-cov
         - pip3 install codecov
         - pip3 install -r requirements.txt
-        - chmod 777 fathon_gsl_install
-        - ./fathon_gsl_install
+#        - chmod 777 fathon_gsl_install
+#        - ./fathon_gsl_install
       install:
         - pip3 install .
       script:
@@ -75,15 +75,15 @@ before_install:
   - pip3 install -U pytest pytest-cov
   - pip3 install codecov
   - pip3 install -r requirements.txt
-  - chmod 777 fathon_gsl_install
-  - ./fathon_gsl_install
+#  - chmod 777 fathon_gsl_install
+#  - ./fathon_gsl_install
 install:
   - pip3 install .
-  - pip3 install twine
-  - pip3 install cibuildwheel
+#  - pip3 install twine
+#  - pip3 install cibuildwheel
 script:
   - pytest tests --cov=fathon
-  - cibuildwheel --output-dir wheelhouse
-  - twine upload --repository-url https://test.pypi.org/legacy/ wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
+#  - cibuildwheel --output-dir wheelhouse
+#  - twine upload --repository-url https://test.pypi.org/legacy/ wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
 after_success:
   - codecov
