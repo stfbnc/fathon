@@ -4,20 +4,22 @@ branches:
 
 env:
   global:
-    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
+#    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
+    - CIBW_BUILD="cp38-*"
 #    - CIBW_TEST_REQUIRES=pytest
 #    - CIBW_TEST_COMMAND="pytest {project}/tests"
-    - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt && pip3 install twine"
+    - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt"
 
 matrix:
   include:
     # ===== Linux ======
-    - name: "Python 3.5 on Linux"
-      language: python
-      dist: xenial
-      python: "3.5"
-      services:
-        - docker
+#    - name: "Python 3.5 on Linux"
+#      language: python
+#      dist: xenial
+#      sudo: required
+#      python: "3.5"
+#      services:
+#        - docker
 #    - name: "Python 3.6 on Linux"
 #      language: python
 #      dist: xenial
@@ -30,24 +32,24 @@ matrix:
 #      python: "3.7"
 #      services:
 #        - docker
-#    - name: "Python 3.8 on Linux"
-#      language: python
-#      dist: xenial
-#      python: "3.8"
-#      services:
-#        - docker
+    - name: "Python 3.8 on Linux"
+      language: python
+      dist: xenial
+      python: "3.8"
+      services:
+        - docker
     # ======= macOS ========
-    - name: "Python 3.6.5 on macOS 10.13"
-      os: osx
-      osx_image: xcode9.4
-      language: shell
+#    - name: "Python 3.6.5 on macOS 10.13"
+#      os: osx
+#      osx_image: xcode9.4
+#      language: shell
 #    - name: "Python 3.7.3 on macOS 10.14"
 #      os: osx
 #      osx_image: xcode10.2
 #      language: shell
-#    - name: "Python 3.8 on macOS 10.14"
-#      os: osx
-#      osx_image: xcode10.2
+    - name: "Python 3.8 on macOS 10.14"
+      os: osx
+      osx_image: xcode10.2
 #      language: shell
 
 before_install:
@@ -68,6 +70,5 @@ script:
 #  - pytest tests
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
-  - python3 -c 'import fathon'
-#  - pip3 install twine
+  - pip3 install twine
   - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
