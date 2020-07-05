@@ -4,3 +4,4 @@ recursive-include fathon *.c
 recursive-include fathon *.h
 recursive-include fathon/3rd_party *
 recursive-include docs *
+recursive-include tests *
