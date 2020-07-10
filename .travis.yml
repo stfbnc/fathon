@@ -59,6 +59,7 @@ install:
   - pip3 install --upgrade cibuildwheel
 
 script:
+  - ls {project}
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
   - pip install twine
