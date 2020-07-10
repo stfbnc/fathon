@@ -8,7 +8,7 @@ env:
     - CIBW_BUILD="cp37-*"
     - CIBW_TEST_REQUIRES=pytest
     - CIBW_TEST_COMMAND="pytest {project}/tests"
-    - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt"
+    - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt && ls {project}"
 
 matrix:
   include:
@@ -59,7 +59,6 @@ install:
   - pip3 install --upgrade cibuildwheel
 
 script:
-  - ls {project}
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
   - pip install twine
