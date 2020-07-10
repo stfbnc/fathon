@@ -6,8 +6,8 @@ env:
   global:
 #    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
     - CIBW_BUILD="cp37-*"
-    - CIBW_TEST_REQUIRES=pytest
-    - CIBW_TEST_COMMAND="pytest {project}/tests_dir/tests"
+#    - CIBW_TEST_REQUIRES=pytest
+#    - CIBW_TEST_COMMAND="pytest {project}/tests_dir/tests"
     - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt && mkdir {project}/tests_dir && mv {project}/tests {project}/tests_dir"
 
 matrix:
