@@ -24,13 +24,14 @@ home_path = os.path.expanduser("~")
 #gsl_install()
 gsl_inc = "./fathon/3rd_party/gsl/include"
 gsl_lib = "./fathon/3rd_party/gsl/lib/"
+omp_inc = "./fathon/3rd_party/omp/include"
+omp_lib = "./fathon/3rd_party/omp/lib/"
 #    gsl_inc = "/usr/local/include"
 #    gsl_lib = "/usr/local/lib"
 
 
 def get_extension(module_name, src_name, current_os):
     sources = [src_name, os.path.join("fathon", "cLoops.c")]
-    include_dirs = [numpy.get_include(), gsl_inc]
 
     if current_os == "Darwin":
         cmd1 = "install_name_tool -id \"@loader_path/3rd_party/gsl/lib/libgslcblas.dylib\" " + gsl_lib + "libgslcblas.dylib"
@@ -39,16 +40,17 @@ def get_extension(module_name, src_name, current_os):
         os.system(cmd2)
         return Extension(module_name,
                          sources=sources,
-                         include_dirs=include_dirs,
-                         library_dirs=[gsl_lib],
+                         include_dirs=[numpy.get_include(), gsl_inc, omp_inc],
+                         library_dirs=[gsl_lib, omp_lib],
                          libraries=["gsl", "gslcblas", "m"],
-                         extra_compile_args=["-O2"])
+                         extra_compile_args=["-O2"],
+                         extra_link_args=["-lomp"])
                          #runtime_library_dirs=["@rpath/3rd_party/gsl/lib/"],
                          #extra_objects=[gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"])
     elif current_os == "Linux":
         return Extension(module_name,
                          sources=sources,
-                         include_dirs=include_dirs,
+                         include_dirs=[numpy.get_include(), gsl_inc],
                          library_dirs=[gsl_lib],
                          runtime_library_dirs=["$ORIGIN/3rd_party/gsl/lib/"],
                          libraries=["gsl", "gslcblas", "m"],
@@ -80,6 +82,12 @@ if __name__ == "__main__":
             os.system(iGSL_1)
             iGSL_2 = "./fathon_gsl_install"
             os.system(iGSL_2)
+
+            if running_os == "Darwin":
+                cmd1 = "export CFLAGS=\"-Xpreprocessor -fopenmp $CFLAGS\""
+                cmd2 = "export CXXFLAGS=\"-Xpreprocessor -fopenmp $CXXFLAGS\""
+                os.system(cmd1)
+                os.system(cmd2)
 
             setup(name="fathon",
                   version="0.1.2.post4",
