@@ -82,7 +82,7 @@ if __name__ == "__main__":
             os.system(iGSL_2)
 
             setup(name="fathon",
-                  version="0.1.2.post3",
+                  version="0.1.2.post4",
                   author="Stefano Bianchi",
                   author_email="fathon.package@gmail.com",
                   url="https://github.com/stfbnc/fathon.git",

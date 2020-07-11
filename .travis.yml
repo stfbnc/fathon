@@ -1,65 +1,37 @@
+language: python
+
 branches:
   only:
   - fathon-dev
 
-env:
-  global:
-#    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
-    - CIBW_BUILD="cp37-*"
-#    - CIBW_TEST_REQUIRES=pytest
-#    - CIBW_TEST_COMMAND="pytest {project}/tests_dir/tests"
-    - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt && mkdir {project}/tests_dir && mv {project}/tests {project}/tests_dir"
-
+# ===== Linux ======
+dist: xenial
+python:
+  - 3.7
 matrix:
-  include:
-    # ===== Linux ======
-#    - name: "Python 3.5 on Linux"
-#      language: python
-#      dist: xenial
-#      sudo: required
-#      python: "3.5"
-#      services:
-#        - docker
-#    - name: "Python 3.6 on Linux"
-#      language: python
-#      dist: xenial
-#      sudo: required
-#      python: "3.6"
-#      services:
-#        - docker
-    - name: "Python 3.7 on Linux"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
-#    - name: "Python 3.8 on Linux"
-#      language: python
-#      dist: xenial
-#      sudo: required
-#      python: "3.8"
-#      services:
-#        - docker
+  include:      
     # ======= macOS ========
-#    - name: "Python 3.6.5 on macOS 10.13"
-#      os: osx
-#      osx_image: xcode9.4
     - name: "Python 3.7.3 on macOS 10.14"
       os: osx
       osx_image: xcode10.2
-#    - name: "Python 3.8 on macOS 10.14"
-#      os: osx
-#      osx_image: xcode10.2
-
+      language: shell
+      before_install:
+        - python3 --version
+        - pip3 install -U pip
+        - pip3 install -U pytest pytest-cov
+        - pip3 install codecov
+        - pip3 install -r requirements.txt
+      install:
+        - pip3 install .
+      script:
+        - pytest tests
 before_install:
   - python3 --version
-
+  - pip3 install -U pip
+  - pip3 install -U pytest pytest-cov
+  - pip3 install codecov
+  - pip3 install -r requirements.txt
 install:
-  - pip3 install --upgrade cibuildwheel
-
+  - pip3 install .
 script:
-  - cibuildwheel --output-dir wheelhouse
-  - ls wheelhouse
-  - pip install twine
-  - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
+  - pytest tests
