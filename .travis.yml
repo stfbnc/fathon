@@ -4,12 +4,23 @@ branches:
   only:
   - fathon-dev
 
-# ===== Linux ======
-dist: xenial
-python:
-  - 3.7
 matrix:
-  include:      
+  include:
+    - name: "Python 3.7 on Linux"
+      language: python
+      dist: xenial
+      sudo: required
+      python: "3.7"
+      before_install:
+        - python3 --version
+        - pip3 install -U pip
+        - pip3 install -U pytest pytest-cov
+        - pip3 install codecov
+        - pip3 install -r requirements.txt
+      install:
+        - pip3 install .
+      script:
+        - pytest tests
     # ======= macOS ========
     - name: "Python 3.7.3 on macOS 10.14"
       os: osx
@@ -25,13 +36,4 @@ matrix:
         - pip3 install .
       script:
         - pytest tests
-before_install:
-  - python3 --version
-  - pip3 install -U pip
-  - pip3 install -U pytest pytest-cov
-  - pip3 install codecov
-  - pip3 install -r requirements.txt
-install:
-  - pip3 install .
-script:
-  - pytest tests
+

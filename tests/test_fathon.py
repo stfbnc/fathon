@@ -10,7 +10,7 @@ import math
 # - MATLAB code to reproduce the paper results can be found at:
 #   https://it.mathworks.com/matlabcentral/fileexchange/38262-multifractal-detrended-fluctuation-analyses
 
-TESTS_PATH = './'
+TESTS_PATH = './tests'
 
 #####
 # Time series to test functionality
