@@ -14,11 +14,10 @@ matrix:
       before_install:
         - python3 --version
         - pip3 install -U pip
-        - pip3 install -U pytest pytest-cov
-        - pip3 install codecov
+        - pip3 install -U pytest
         - pip3 install -r requirements.txt
       install:
-        - pip3 install .
+        - pip3 -v install .
       script:
         - pytest tests
     # ======= macOS ========
@@ -29,11 +28,12 @@ matrix:
       before_install:
         - python3 --version
         - pip3 install -U pip
-        - pip3 install -U pytest pytest-cov
-        - pip3 install codecov
+        - pip3 install -U pytest
         - pip3 install -r requirements.txt
+        - echo $CFLAGS
       install:
-        - pip3 install .
+        - CFLAGS="-Xpreprocessor -fopenmp" pip3 -v install .
+        - echo $CFLAGS
       script:
         - pytest tests
 

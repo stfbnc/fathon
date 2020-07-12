@@ -48,7 +48,7 @@ def get_extension(module_name, src_name, current_os):
                          include_dirs=[numpy.get_include(), gsl_inc, omp_inc],
                          library_dirs=[gsl_lib, omp_lib],
                          libraries=["gsl", "gslcblas", "m"],
-                         extra_compile_args=["-O2", "-Xpreprocessor -fopenmp"],
+                         extra_compile_args=["-O2"],
                          extra_link_args=["-lomp"])
                          #runtime_library_dirs=["@rpath/3rd_party/gsl/lib/"],
                          #extra_objects=[gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"])
@@ -109,7 +109,7 @@ if __name__ == "__main__":
                                "Programming Language :: Python :: 3.8",
                                "Topic :: Scientific/Engineering"],
                   python_requires=">=3.5",
-                  install_requires=["numpy>=1.15", "cython"],
+                  install_requires=["numpy>=1.15", "Cython"],
                   project_urls={"Documentation": "https://fathon.readthedocs.io/",
                                 "Bug Reports": "https://github.com/stfbnc/fathon/issues",
                                 "Source": "https://github.com/stfbnc/fathon/"},
