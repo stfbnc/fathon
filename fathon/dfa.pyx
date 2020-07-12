@@ -19,7 +19,7 @@
 import numpy as np
 cimport numpy as np
 cimport cython
-from cython.parallel import prange
+#from cython.parallel import prange
 import ctypes
 
 cdef extern from "cLoops.h" nogil:
@@ -28,7 +28,7 @@ cdef extern from "cLoops.h" nogil:
 
 cdef class DFA():
     """Detrended Fluctuation Analysis class.
-    
+
     Parameters
     ----------
     n : numpy ndarray
@@ -53,7 +53,7 @@ cdef class DFA():
         self.tsVec = np.array(tsVec, dtype=float)
         self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
         self.isComputed = False
-		
+
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
@@ -61,22 +61,25 @@ cdef class DFA():
                         np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg):
         cdef int nLen, tsLen
         cdef Py_ssize_t i
-        
+
         nLen = len(vecn)
         tsLen = len(vects)
-        if revSeg:
-            for i in prange(nLen, nogil=True):
-                vecf[i] = flucDFAForwBackwCompute(&vects[0], vecn[i], tsLen, polOrd)
-        else:
-            for i in prange(nLen, nogil=True):
-                vecf[i] = flucDFAForwCompute(&vects[0], vecn[i], tsLen, polOrd)
-		
+        with nogil:
+            if revSeg:
+                #for i in prange(nLen, nogil=True):
+                for i in range(nLen):
+                    vecf[i] = flucDFAForwBackwCompute(&vects[0], vecn[i], tsLen, polOrd)
+            else:
+                #for i in prange(nLen, nogil=True):
+                for i in range(nLen):
+                    vecf[i] = flucDFAForwCompute(&vects[0], vecn[i], tsLen, polOrd)
+
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cpdef computeFlucVec(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1, bint revSeg=False):
         """Computation of the fluctuations in every window.
-        
+
         Parameters
         ----------
         nMin : int
@@ -98,7 +101,7 @@ cdef class DFA():
             Array `F` containing the values of the fluctuations in every window.
         """
         cdef int tsLen = len(self.tsVec)
-        
+
         if polOrd < 1:
             raise SystemExit('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
@@ -113,7 +116,7 @@ cdef class DFA():
             raise SystemExit('Error: Variable nMax must be less than the input vector length.')
         if nMin < (polOrd+2):
             raise SystemExit('Error: Variable nMin must be at least equal to {}.'.format(polOrd+2))
-        
+
         self.nStep = nStep
         self.n = np.arange(nMin, nMax+1, nStep, dtype=ctypes.c_int)
         self.F = np.zeros((len(self.n), ), dtype=ctypes.c_double)
@@ -125,7 +128,7 @@ cdef class DFA():
     @cython.nonecheck(False)
     cpdef fitFlucVec(self, int n_start=-999, int n_end=-999):
         """Fit of the fluctuations values.
-        
+
         Parameters
         ----------
         n_start : int, optional
@@ -142,7 +145,7 @@ cdef class DFA():
         """
         cdef int start, end
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit
-        
+
         if self.isComputed:
             if n_start == -999:
                 n_start = self.n[0]
@@ -154,7 +157,7 @@ cdef class DFA():
                 raise SystemExit('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
             if (n_start not in self.n) or (n_end not in self.n):
                 raise SystemExit('Error: Fit limits must be included in the n vector.')
-            
+
             start = int((n_start - self.n[0]) / self.nStep)
             end = int((n_end - self.n[0]) / self.nStep)
             log_fit = np.polyfit(np.log(self.n[start:end+1]) , np.log(self.F[start:end+1]), 1)
@@ -169,7 +172,7 @@ cdef class DFA():
     @cython.nonecheck(False)
     cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limits_list):
         """Fit of the fluctuations values in different intervals at the same time.
-        
+
         Parameters
         ----------
         limits_list : numpy ndarray
@@ -185,7 +188,7 @@ cdef class DFA():
         cdef Py_ssize_t i
         cdef int limLen = len(limits_list)
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] list_H, list_H_intercept
-        
+
         if self.isComputed:
             list_H = np.zeros((limLen, ), dtype=float)
             list_H_intercept = np.zeros((limLen, ), dtype=float)

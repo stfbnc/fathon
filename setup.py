@@ -27,9 +27,6 @@ if platform.system() == "Darwin":
     os.environ["CC"] = "gcc-9"
     os.environ["CXX"] = "g++-9"
 
-print("******** {} ********".format(os.system("which gcc")))
-print("******** {} ********".format(os.system("which CC")))
-
 iGSL_1 = "chmod 777 fathon_gsl_install"
 os.system(iGSL_1)
 iGSL_2 = "./fathon_gsl_install"
@@ -99,7 +96,7 @@ if __name__ == "__main__":
             readme_file.close()
 
             setup(name="fathon",
-                  version="0.1.2.post4",
+                  version="0.1.2.post5",
                   author="Stefano Bianchi",
                   author_email="fathon.package@gmail.com",
                   url="https://github.com/stfbnc/fathon.git",
