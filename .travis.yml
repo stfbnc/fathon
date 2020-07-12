@@ -30,12 +30,15 @@ matrix:
         - pip3 install -U pip
         - pip3 install -U pytest
         - pip3 install -r requirements.txt
-        - gcc --version
-        - echo $HOMEBREW_CC
-        - brew --env
-        - echo $HOMEBREW_CC
-        - ls /usr/local/bin
       install:
+        - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$CC" = "gcc" ]; then
+            export CC=gcc-9
+            export CXX=g++-9
+            export CPP=cpp-9
+            export LD=gcc-9
+            export HOMEBREW_CC=gcc-9
+            export HOMEBREW_CXX=g++-9
+          fi
         - pip3 -v install .
       script:
         - pytest tests

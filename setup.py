@@ -32,8 +32,8 @@ os.system(iGSL_2)
 
 gsl_inc = "./fathon/3rd_party/gsl/include"
 gsl_lib = "./fathon/3rd_party/gsl/lib/"
-omp_inc = "./fathon/3rd_party/omp/include"
-omp_lib = "./fathon/3rd_party/omp/lib/"
+#omp_inc = "./fathon/3rd_party/omp/include"
+#omp_lib = "./fathon/3rd_party/omp/lib/"
 #    gsl_inc = "/usr/local/include"
 #    gsl_lib = "/usr/local/lib"
 
