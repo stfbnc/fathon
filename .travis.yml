@@ -24,6 +24,7 @@ matrix:
     - name: "Python 3.7.3 on macOS 10.14"
       os: osx
       osx_image: xcode10.2
+      language: shell
       before_install:
         - python3 --version
         - pip3 install -U pip
