@@ -32,12 +32,12 @@ matrix:
         - pip3 install -r requirements.txt
       install:
         - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$CC" = "gcc" ]; then
-            export CC=gcc-9
-            export CXX=g++-9
-            export CPP=cpp-9
-            export LD=gcc-9
-            export HOMEBREW_CC=gcc-9
-            export HOMEBREW_CXX=g++-9
+            export CC=gcc-9;
+            export CXX=g++-9;
+            export CPP=cpp-9;
+            export LD=gcc-9;
+            export HOMEBREW_CC=gcc-9;
+            export HOMEBREW_CXX=g++-9;
           fi
         - pip3 -v install .
       script:
