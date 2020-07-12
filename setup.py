@@ -56,7 +56,7 @@ def get_extension(module_name, src_name, current_os):
                          include_dirs=[numpy.get_include(), gsl_inc, omp_inc],
                          library_dirs=[gsl_lib, omp_lib],
                          libraries=["gsl", "gslcblas", "m"],
-                         extra_compile_args=["-O2"],
+                         extra_compile_args=["-O2", "-fopenmp"],
                          extra_link_args=["-lomp"])
                          #runtime_library_dirs=["@rpath/3rd_party/gsl/lib/"],
                          #extra_objects=[gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"])

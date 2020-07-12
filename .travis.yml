@@ -30,10 +30,9 @@ matrix:
         - pip3 install -U pip
         - pip3 install -U pytest
         - pip3 install -r requirements.txt
-        - echo $CFLAGS
+        - gcc --version
       install:
-        - CFLAGS="-Xpreprocessor -fopenmp" pip3 -v install .
-        - echo $CFLAGS
+        - pip3 -v install .
       script:
         - pytest tests
 
