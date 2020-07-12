@@ -1,5 +1,5 @@
 #    dfa.pyx - dfa algorithm of fathon package
-#    Copyright (C) 2019  Stefano Bianchi
+#    Copyright (C) 2019-2020  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 import numpy as np
 cimport numpy as np
 cimport cython
-#from cython.parallel import prange
 import ctypes
 
 cdef extern from "cLoops.h" nogil:
@@ -66,11 +65,9 @@ cdef class DFA():
         tsLen = len(vects)
         with nogil:
             if revSeg:
-                #for i in prange(nLen, nogil=True):
                 for i in range(nLen):
                     vecf[i] = flucDFAForwBackwCompute(&vects[0], vecn[i], tsLen, polOrd)
             else:
-                #for i in prange(nLen, nogil=True):
                 for i in range(nLen):
                     vecf[i] = flucDFAForwCompute(&vects[0], vecn[i], tsLen, polOrd)
 

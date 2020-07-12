@@ -1,5 +1,5 @@
 #    mfdfa.pyx - mfdfa algorithm of fathon package
-#    Copyright (C) 2019  Stefano Bianchi
+#    Copyright (C) 2019-2020  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 import numpy as np
 cimport numpy as np
 cimport cython
-from cython.parallel import prange
 import ctypes
 
 cdef extern from "cLoops.h" nogil:
@@ -28,7 +27,7 @@ cdef extern from "cLoops.h" nogil:
 
 cdef class MFDFA:
     """MultiFractal Detrended Fluctuation Analysis class.
-    
+
     Parameters
     ----------
     n : numpy ndarray
@@ -57,7 +56,7 @@ cdef class MFDFA:
         self.tsVec = np.array(tsVec, dtype=float)
         self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
         self.isComputed = False
-		
+
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
@@ -66,26 +65,27 @@ cdef class MFDFA:
         cdef int nLen
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
-        
+
         self.q_list = q_list
         self.nStep = nStep
         vecn = np.arange(nMin, nMax+1, nStep, dtype=ctypes.c_int)
         nLen = len(vecn)
         mtxf = np.zeros((len(q_list)*nLen, ), dtype=ctypes.c_double)
         vects = np.array(self.tsVec, dtype=ctypes.c_double)
-        if revSeg:
-            for i in range(len(q_list)):
-                for j in prange(nLen, nogil=True):
-                    mtxf[i*nLen+j] = flucMFDFAForwBackwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
-        else:
-            for i in range(len(q_list)):
-                for j in prange(nLen, nogil=True):
-                    mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
+        with nogil:
+            if revSeg:
+                for i in range(len(q_list)):
+                    for j in range(nLen):
+                        mtxf[i*nLen+j] = flucMFDFAForwBackwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
+            else:
+                for i in range(len(q_list)):
+                    for j in range(nLen):
+                        mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
         return vecn, np.reshape(mtxf, (len(self.q_list), nLen))
-	
+
     def computeFlucVec(self, nMin, q_list, nMax=-999, polOrd=1, nStep=1, revSeg=False):
         """Computation of the fluctuations in every window for every q-order.
-        
+
         Parameters
         ----------
         nMin : int
@@ -109,7 +109,7 @@ cdef class MFDFA:
             qxn array `F` containing the values of the fluctuations in every window for every q-order.
         """
         tsLen = len(self.tsVec)
-        
+
         if polOrd < 1:
             raise SystemExit('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
@@ -124,7 +124,7 @@ cdef class MFDFA:
             raise SystemExit('Error: Variable nMax must be less than the input vector length.')
         if nMin < (polOrd+2):
             raise SystemExit('Error: Variable nMin must be at least equal to {}.'.format(polOrd+2))
-        
+
         if isinstance(q_list, float):
             q_list = np.array([q_list], dtype=ctypes.c_double)
         elif isinstance(q_list, list) or isinstance(q_list, np.ndarray):
@@ -139,7 +139,7 @@ cdef class MFDFA:
     @cython.nonecheck(False)
     cpdef fitFlucVec(self, int n_start=-999, int n_end=-999):
         """Fit of the fluctuations values.
-        
+
         Parameters
         ----------
         n_start : int, optional
@@ -157,7 +157,7 @@ cdef class MFDFA:
         cdef int start, end, qLen
         cdef Py_ssize_t i
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit, list_H_intercept
-        
+
         if self.isComputed:
             if n_start == -999:
                 n_start = self.n[0]
@@ -169,7 +169,7 @@ cdef class MFDFA:
                 raise SystemExit('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
             if (n_start not in self.n) or (n_end not in self.n):
                 raise SystemExit('Error: Fit limits must be included in the n vector.')
-            
+
             qLen = len(self.q_list)
             start = int((n_start - self.n[0]) / self.nStep)
             end = int((n_end - self.n[0]) / self.nStep)
@@ -184,26 +184,26 @@ cdef class MFDFA:
             return self.list_H, list_H_intercept
         else:
             raise SystemExit('Error: Fluctuations vector has not been computed yet.')
-		
+
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cpdef computeMassExponents(self):
         """Computation of the mass exponents.
-        
+
         Returns
         -------
         numpy ndarray
             Mass exponents.
         """
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] tau
-        
+
         if self.isComputed:
             tau = self.list_H * self.q_list - 1
             return tau
         else:
             raise SystemExit('Error: Fluctuations vector has not been computed yet.')
-		
+
     @cython.boundscheck(False)
     @cython.nonecheck(False)
     cpdef computeMultifractalSpectrum(self):
@@ -217,7 +217,7 @@ cdef class MFDFA:
             Multifractal spectrum.
         """
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] tau, alpha, mfSpect
-        
+
         if self.isComputed:
             if len(self.q_list) > 1:
                 tau = self.computeMassExponents()

@@ -1,5 +1,5 @@
 #    dcca.pyx - dcca algorithm of fathon package
-#    Copyright (C) 2019  Stefano Bianchi
+#    Copyright (C) 2019-2020  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 import numpy as np
 cimport numpy as np
 cimport cython
-from cython.parallel import prange
 import ctypes
 import warnings
 
@@ -29,7 +28,7 @@ cdef extern from "cLoops.h" nogil:
 
 cdef class DCCA:
     """Detrended Cross-Correlation Analysis class.
-    
+
     Parameters
     ----------
     n : numpy ndarray
@@ -63,7 +62,7 @@ cdef class DCCA:
                 self.tsVec1 = self.tsVec1[0:np.min([len(self.tsVec1), len(self.tsVec2)])]
                 self.tsVec2 = self.tsVec2[0:np.min([len(self.tsVec1), len(self.tsVec2)])]
         self.isComputed = False
-		
+
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
@@ -71,22 +70,23 @@ cdef class DCCA:
                                 np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint absVals):
         cdef int nLen, tsLen
         cdef Py_ssize_t i
-        
+
         nLen = len(vecn)
         tsLen = len(vects1)
-        if absVals:
-            for i in prange(nLen, nogil=True):
-                vecf[i] = flucDCCAAbsCompute(&vects1[0], &vects2[0], vecn[i], tsLen, polOrd)
-        else:
-            for i in prange(nLen, nogil=True):
-                vecf[i] = flucDCCANoAbsCompute(&vects1[0], &vects2[0], vecn[i], tsLen, polOrd)
-			
+        with nogil:
+            if absVals:
+                for i in range(nLen):
+                    vecf[i] = flucDCCAAbsCompute(&vects1[0], &vects2[0], vecn[i], tsLen, polOrd)
+            else:
+                for i in range(nLen):
+                    vecf[i] = flucDCCANoAbsCompute(&vects1[0], &vects2[0], vecn[i], tsLen, polOrd)
+
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cpdef computeFlucVec(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1, bint absVals=True):
         """Computation of the fluctuations in every window.
-        
+
         Parameters
         ----------
         nMin : int
@@ -108,7 +108,7 @@ cdef class DCCA:
             Array `F` containing the values of the fluctuations in every window.
         """
         cdef int tsLen = len(self.tsVec1)
-        
+
         if polOrd < 1:
             raise SystemExit('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
@@ -130,7 +130,7 @@ cdef class DCCA:
         self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2, dtype=ctypes.c_double), self.n, self.F, polOrd, absVals)
         self.isComputed = True
         return self.n, self.F
-		
+
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
@@ -139,19 +139,20 @@ cdef class DCCA:
         cdef Py_ssize_t i
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] F_same
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
-        
+
         vecn = np.arange(nMin, nMax+1, self.nStep, dtype=ctypes.c_int)
         nLen = len(vecn)
         F_same = np.zeros((nLen, ), dtype=ctypes.c_double)
-        for i in prange(nLen, nogil=True):
-            F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], vecn[i], tsLen, polOrd)
+        with nogil:
+            for i in range(nLen):
+                F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], vecn[i], tsLen, polOrd)
         return F_same
 
     @cython.boundscheck(False)
     @cython.nonecheck(False)
     cpdef fitFlucVec(self, int n_start=-999, int n_end=-999):
         """Fit of the fluctuations values.
-        
+
         Parameters
         ----------
         n_start : int, optional
@@ -168,7 +169,7 @@ cdef class DCCA:
         """
         cdef int start, end
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit
-        
+
         if self.isComputed:
             if n_start == -999:
                 n_start = self.n[0]
@@ -180,7 +181,7 @@ cdef class DCCA:
                 raise SystemExit('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
             if (n_start not in self.n) or (n_end not in self.n):
                 raise SystemExit('Error: Fit limits must be included in the n vector.')
-            
+
             start = int((n_start - self.n[0]) / self.nStep)
             end = int((n_end - self.n[0]) / self.nStep)
             log_fit = np.polyfit(np.log(self.n[start:end+1]) , np.log(self.F[start:end+1]), 1)
@@ -195,7 +196,7 @@ cdef class DCCA:
     @cython.nonecheck(False)
     cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limits_list):
         """Fit of the fluctuations values in different intervals at the same time.
-        
+
         Parameters
         ----------
         limits_list : numpy ndarray
@@ -211,7 +212,7 @@ cdef class DCCA:
         cdef Py_ssize_t i
         cdef int limLen = len(limits_list)
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] list_H_intercept, list_H
-        
+
         if self.isComputed:
             list_H = np.zeros((limLen, ), dtype=float)
             list_H_intercept = np.zeros((limLen, ), dtype=float)
@@ -222,13 +223,13 @@ cdef class DCCA:
             return list_H, list_H_intercept
         else:
             raise SystemExit('Error: Fluctuations vector has not been computed yet.')
-		
+
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cpdef computeRho(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1):
         """Computation of the cross-correlation index in every window.
-        
+
         Parameters
         ----------
         nMin : int
@@ -251,7 +252,7 @@ cdef class DCCA:
         cdef int nLen, tsLen = len(self.tsVec1)
         cdef np.ndarray[int, ndim=1, mode='c'] nn
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] Fxy, Fxx, Fyy, rho
-        
+
         if polOrd < 1:
             raise SystemExit('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
@@ -266,7 +267,7 @@ cdef class DCCA:
             raise SystemExit('Error: Variable nMax must be less than the input vector length.')
         if nMin < (polOrd+2):
             raise SystemExit('Error: Variable nMin must be at least equal to {}.'.format(polOrd+2))
-        
+
         self.nStep = nStep
         nn, Fxy = self.computeFlucVec(nMin, nMax=nMax, polOrd=polOrd, nStep=self.nStep, absVals=False)
         print('DCCA between series 1 and 2 computed.')
@@ -274,11 +275,12 @@ cdef class DCCA:
         print('DCCA between series 1 and 1 computed.')
         Fyy = self.computeFlucVecSameTs(self.tsVec2, nMin, nMax=nMax, polOrd=polOrd)
         print('DCCA between series 2 and 2 computed.')
-        
+
         nLen = len(nn)
         rho = np.zeros((nLen, ), dtype=float)
-        for i in prange(nLen, nogil=True):
-            rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
+        with nogil:
+            for i in range(nLen):
+                rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
         return nn, rho
 
     @cython.boundscheck(False)
@@ -286,7 +288,7 @@ cdef class DCCA:
     @cython.nonecheck(False)
     cpdef rhoThresholds(self, int L, int nMin, int nMax, int nSim, double confLvl, int polOrd=1, int nStep=1):
         """Computation of the cross-correlation index's confidence levels in every window.
-        
+
         Parameters
         ----------
         L : int
@@ -317,7 +319,7 @@ cdef class DCCA:
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] ran1, ran2, vecfx, vecfy, vecfxy, up_lim, down_lim
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
         cdef int nLen
-        
+
         if polOrd < 1:
             raise SystemExit('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
@@ -332,7 +334,7 @@ cdef class DCCA:
             raise SystemExit('Error: Number of simulations must be greater than 0.')
         if confLvl < 0 or confLvl > 1:
             raise SystemExit('Error: Confidence level must be incliuded in the interval [0,1].')
-        
+
         vecn = np.arange(nMin, nMax+1, nStep, dtype=ctypes.c_int)
         nLen = len(vecn)
         up_lim = np.zeros((nLen, ), dtype=ctypes.c_double)
