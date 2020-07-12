@@ -72,13 +72,14 @@ cdef class MFDFA:
         nLen = len(vecn)
         mtxf = np.zeros((len(q_list)*nLen, ), dtype=ctypes.c_double)
         vects = np.array(self.tsVec, dtype=ctypes.c_double)
+        q_list_len = len(q_list)
         with nogil:
             if revSeg:
-                for i in range(len(q_list)):
+                for i in range(q_list_len):
                     for j in range(nLen):
                         mtxf[i*nLen+j] = flucMFDFAForwBackwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
             else:
-                for i in range(len(q_list)):
+                for i in range(q_list_len):
                     for j in range(nLen):
                         mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
         return vecn, np.reshape(mtxf, (len(self.q_list), nLen))
