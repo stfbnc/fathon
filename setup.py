@@ -22,6 +22,14 @@ home_path = os.path.expanduser("~")
 #if gsl_inc is None and gsl_lib is None:
 #    wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
 #gsl_install()
+
+
+iGSL_1 = "chmod 777 fathon_gsl_install"
+os.system(iGSL_1)
+iGSL_2 = "./fathon_gsl_install"
+os.system(iGSL_2)
+
+
 gsl_inc = "./fathon/3rd_party/gsl/include"
 gsl_lib = "./fathon/3rd_party/gsl/lib/"
 omp_inc = "./fathon/3rd_party/omp/include"
@@ -82,11 +90,6 @@ if __name__ == "__main__":
                 if chk == 1:
                     README += re.sub(":code:", "", line)
             readme_file.close()
-
-            iGSL_1 = "chmod 777 fathon_gsl_install"
-            os.system(iGSL_1)
-            iGSL_2 = "./fathon_gsl_install"
-            os.system(iGSL_2)
 
             setup(name="fathon",
                   version="0.1.2.post4",
