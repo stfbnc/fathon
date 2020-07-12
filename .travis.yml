@@ -32,8 +32,9 @@ matrix:
         - pip3 install -r requirements.txt
         - gcc --version
         - echo $HOMEBREW_CC
-        - brew install gcc
+        - brew --env
         - echo $HOMEBREW_CC
+        - ls /usr/local/bin
       install:
         - pip3 -v install .
       script:
