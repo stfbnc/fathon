@@ -23,6 +23,12 @@ home_path = os.path.expanduser("~")
 #    wget.download("ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz", os.path.join(home_path, "gsl-latest.tar.gz"))
 #gsl_install()
 
+if platform.system() == "Darwin":
+    os.environ["CC"] = "gcc-9"
+    os.environ["CXX"] = "g++-9"
+
+print("******** {} ********".format(os.system("which gcc")))
+print("******** {} ********".format(os.system("which CC")))
 
 iGSL_1 = "chmod 777 fathon_gsl_install"
 os.system(iGSL_1)

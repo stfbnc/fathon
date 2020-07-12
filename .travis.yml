@@ -39,6 +39,7 @@ matrix:
             export HOMEBREW_CC=gcc-9;
             export HOMEBREW_CXX=g++-9;
           fi
+        - which gcc
         - pip3 -v install .
       script:
         - pytest tests
