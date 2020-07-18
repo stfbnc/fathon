@@ -97,6 +97,10 @@ if __name__ == "__main__":
                   ext_modules=cythonize(extensions),
                   package_data={"fathon": ["LICENSE"]},
                   include_package_data=True)
+
+            if running_os == "Linux":
+                print("################# CIAOOOOOOOO ################")
+
         else:
             sys.exit("fathon is not available on Windows yet.")
     else:
