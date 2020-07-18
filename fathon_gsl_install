@@ -5,7 +5,7 @@ mkdir ./fathon/gsl_tmp
 
 ## install GSL
 cd ./fathon/gsl
-./configure --prefix=$PWD/../gsl_tmp
+./configure CFLAGS=-fPIC --prefix=$PWD/../gsl_tmp
 make
 make install
 
