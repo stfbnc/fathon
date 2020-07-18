@@ -197,7 +197,7 @@ cdef class DFA():
             for i in range(limLen):
                 if verbose:
                     print('----------')
-                list_H[i], list_H_intercept[i] = self.fitFlucVec(n_start=limits_list[i][0], n_end=limits_list[i][1], logBase, verbose)
+                list_H[i], list_H_intercept[i] = self.fitFlucVec(n_start=limits_list[i][0], n_end=limits_list[i][1], logBase=logBase, verbose=verbose)
                 
             if verbose:
                 print('----------')
