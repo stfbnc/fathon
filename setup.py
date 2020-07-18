@@ -43,7 +43,8 @@ def get_extension(module_name, src_name, current_os):
                          include_dirs=[numpy.get_include(), gsl_inc],
                          library_dirs=[gsl_lib],
                          libraries=["gsl", "gslcblas", "m"],
-                         extra_compile_args=["-O2", "-fopenmp", "-Wl,-rpath='$ORIGIN/3rd_party/gsl/lib/'"],
+                         extra_compile_args=["-O2", "-fopenmp", "-Wl,-rpath='$ORIGIN/3rd_party/gsl/lib/'",
+                                             "-Wl,-rpath-link,./3rd_party/gsl/lib/"],
                          extra_link_args=["-fopenmp"])
 
 if __name__ == "__main__":
