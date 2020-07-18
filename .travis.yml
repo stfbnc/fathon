@@ -22,11 +22,11 @@ matrix:
       python: "3.7"
       services:
         - docker
-    # ======= macOS ========
-    - name: "Python 3.7 on macOS 10.14"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+#    # ======= macOS ========
+#    - name: "Python 3.7 on macOS 10.14"
+#      os: osx
+#      osx_image: xcode10.2
+#      language: shell
 
 before_install:
   - python3 --version

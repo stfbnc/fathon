@@ -43,13 +43,14 @@ def get_extension(module_name, src_name, current_os):
 
     elif current_os == "Linux":
         #"-Wl,-rpath='$ORIGIN/3rd_party/gsl/lib/'", "-Wl,-rpath-link,./3rd_party/gsl/lib/"
-        #runtime_library_dirs=["$ORIGIN/3rd_party/gsl/lib/"],
-        #libraries=["gsl", "gslcblas", "m"],
-        #library_dirs=[gsl_lib],
+        #runtime_library_dirs=["$ORIGIN/../fathon.libs/"],
+        #extra_objects=[gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"],
         return Extension(module_name,
                          sources=sources,
                          include_dirs=[numpy.get_include(), gsl_inc],
-                         extra_objects=[gsl_lib+"libgsl.a", gsl_lib+"libgslcblas.a"],
+                         runtime_library_dirs=["$ORIGIN/3rd_party/gsl/lib/"],
+                         libraries=["gsl", "gslcblas", "m"],
+                         library_dirs=[gsl_lib],
                          extra_compile_args=["-O2", "-fopenmp"],
                          extra_link_args=["-fopenmp"])
 
