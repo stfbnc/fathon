@@ -16,5 +16,5 @@ rm -rf gsl
 ## copy header files and libs
 mv gsl_tmp/include 3rd_party/gsl
 mkdir 3rd_party/gsl/lib
-mv gsl_tmp/lib/* 3rd_party/gsl/lib
+mv gsl_tmp/lib/*.a 3rd_party/gsl/lib
 rm -rf gsl_tmp
