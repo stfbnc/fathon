@@ -47,7 +47,7 @@ def toAggregated(vec):
 	"""
 	return np.array(np.nancumsum(vec - np.nanmean(vec)), dtype=float)
 
-def windowsVec(start, end, step, ):
+def windowsVec(start, end, step):
     """Linear range of window's sizes
     
     Parameters
@@ -56,5 +56,6 @@ def windowsVec(start, end, step, ):
         Smallest size
     end : int
         Biggest size
+    """
         
 # o scale separate da step o numero di scale predefinito
