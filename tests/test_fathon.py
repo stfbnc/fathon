@@ -150,13 +150,13 @@ def test_mat_mfdfa_mn():
 # Time series for regression tests
 #####
 # co2 residuals after yearly cycle
-ts1 = np.loadtxt(os.path.join(TESTS_PATH, +'ts1.txt'))
+ts1 = np.loadtxt(os.path.join(TESTS_PATH, 'ts1.txt'))
 ts1 = fathon.toAggregated(ts1)
 # other co2 residuals after yearly cycle
-ts2 = np.loadtxt(os.path.join(TESTS_PATH, +'ts2.txt'))
+ts2 = np.loadtxt(os.path.join(TESTS_PATH, 'ts2.txt'))
 ts2 = fathon.toAggregated(ts2)
 # multifractal data
-ts3 = np.loadtxt(os.path.join(TESTS_PATH, +'ts3.txt'))
+ts3 = np.loadtxt(os.path.join(TESTS_PATH, 'ts3.txt'))
 ts3 = fathon.toAggregated(ts3)
 #####
 
