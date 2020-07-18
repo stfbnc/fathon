@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
+import ctypes
 
 def subtractMean(vec):
 	"""Subtracts mean of a vector.
@@ -29,7 +30,7 @@ def subtractMean(vec):
 	numpy ndarray
 		`vec` with its mean subtracted.
 	"""
-	return np.array(vec-np.nanmean(vec), dtype=float)
+	return np.array(vec - np.nanmean(vec), dtype=float)
 	
 def toAggregated(vec):
 	"""Subtracts mean of a vector and computes the cumulative sum.
@@ -44,4 +45,16 @@ def toAggregated(vec):
 	numpy ndarray
 		Cumulative sum of `vec` after subtraction of its mean.
 	"""
-	return np.array(np.nancumsum(vec-np.nanmean(vec)), dtype=float)
+	return np.array(np.nancumsum(vec - np.nanmean(vec)), dtype=float)
+
+def windowsVec(start, end, step, ):
+    """Linear range of window's sizes
+    
+    Parameters
+    ----------
+    start : int
+        Smallest size
+    end : int
+        Biggest size
+        
+# o scale separate da step o numero di scale predefinito

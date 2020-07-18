@@ -1,22 +1,18 @@
 #    mfdfa.pyx - mfdfa algorithm of fathon package
-#    Copyright (C) 2019  Stefano Bianchi
-#
+#    Copyright (C) 2019-2020  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
-#
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
-#
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 class MFDFA:
     """MultiFractal Detrended Fluctuation Analysis class.
-    
+
     Parameters
     ----------
     n : numpy ndarray
@@ -36,11 +32,11 @@ class MFDFA:
     """
 
     def __init__(self, tsVec):
-        pass
+    	pass
 
     def computeFlucVec(self, nMin, q_list, nMax=-999, polOrd=1, nStep=1, revSeg=False):
         """Computation of the fluctuations in every window for every q-order.
-        
+
         Parameters
         ----------
         nMin : int
@@ -67,7 +63,7 @@ class MFDFA:
 
     def fitFlucVec(self, n_start=-999, n_end=-999):
         """Fit of the fluctuations values.
-        
+
         Parameters
         ----------
         n_start : int, optional
@@ -86,7 +82,7 @@ class MFDFA:
 
     def computeMassExponents(self):
         """Computation of the mass exponents.
-        
+
         Returns
         -------
         numpy ndarray
@@ -105,3 +101,4 @@ class MFDFA:
             Multifractal spectrum.
         """
         return 0
+

@@ -27,3 +27,4 @@ from .ht import HT
 
 __version__ = '0.1.2'
 __author__ = 'Stefano Bianchi'
+__git_repo__ = 'https://github.com/stfbnc/fathon'

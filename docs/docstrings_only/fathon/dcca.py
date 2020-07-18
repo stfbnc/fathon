@@ -1,22 +1,18 @@
 #    dcca.pyx - dcca algorithm of fathon package
-#    Copyright (C) 2019  Stefano Bianchi
-#
+#    Copyright (C) 2019-2020  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
-#
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
-#
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 class DCCA:
     """Detrended Cross-Correlation Analysis class.
-    
+
     Parameters
     ----------
     n : numpy ndarray
@@ -34,11 +30,11 @@ class DCCA:
     """
 
     def __init__(self, tsVec1=[], tsVec2=[]):
-        pass
+    	pass
 
     def computeFlucVec(self, nMin, nMax=-999, polOrd=1, nStep=1, absVals=True):
         """Computation of the fluctuations in every window.
-        
+
         Parameters
         ----------
         nMin : int
@@ -63,7 +59,7 @@ class DCCA:
 
     def fitFlucVec(self, n_start=-999, n_end=-999):
         """Fit of the fluctuations values.
-        
+
         Parameters
         ----------
         n_start : int, optional
@@ -82,7 +78,7 @@ class DCCA:
 
     def multiFitFlucVec(self, limits_list):
         """Fit of the fluctuations values in different intervals at the same time.
-        
+
         Parameters
         ----------
         limits_list : numpy ndarray
@@ -99,7 +95,7 @@ class DCCA:
 
     def computeRho(self, nMin, nMax=-999, polOrd=1, nStep=1):
         """Computation of the cross-correlation index in every window.
-        
+
         Parameters
         ----------
         nMin : int
@@ -122,7 +118,7 @@ class DCCA:
 
     def rhoThresholds(self, L, nMin, nMax, nSim, confLvl, polOrd=1, nStep=1):
         """Computation of the cross-correlation index's confidence levels in every window.
-        
+
         Parameters
         ----------
         L : int
@@ -150,3 +146,4 @@ class DCCA:
             Array containing the second confidence interval.
         """
         return 0
+
