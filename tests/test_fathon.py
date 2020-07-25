@@ -146,7 +146,7 @@ def test_mat_mfdfa_mf():
 
 # REGRESSION TESTS
 # ----------------
-# - the element of the array tested in tests 2-5 has no
+# - the element of the array tested in tests 2-5,7 has no
 #   particular meaning, it was just chosen randomly.
 # - the numbers to which results are tested against have
 #   been produced by fathon and have many significant figures
@@ -171,7 +171,7 @@ ts3 = fu.toAggregated(ts3)
 # Regression test 1
 # It tests if the Hurst exponent of `ts1` is correct
 #####
-def test_dfa():
+def test_dfa_lin_step():
     pydfa = fathon.DFA(ts1)
     winSizes = fu.linRangeByStep(10, 200)
     #n1, F1 = pydfa.computeFlucVec(10, nMax=200, revSeg=True)
@@ -179,6 +179,59 @@ def test_dfa():
     H1, H_int1 = pydfa.fitFlucVec()
 
     assert math.isclose(H1, 0.7982194289592676)
+
+#####
+# Regression test 1.1
+# It tests if the Hurst exponent of `ts1` is correct
+#####
+def test_dfa_lin_count():
+    pydfa = fathon.DFA(ts1)
+    winSizes = fu.linRangeByCount(10, 200)
+    n1, F1 = pydfa.computeFlucVec(winSizes, revSeg=True)
+    H1, H_int1 = pydfa.fitFlucVec()
+
+    assert math.isclose(H1, 0.7982194289592676)
+
+#####
+# Regression test 1.2
+# It tests if the Hurst exponent of `ts1` is correct
+#####
+def test_dfa_pow_step():
+    pydfa = fathon.DFA(ts1)
+    winSizes = fu.powRangeByStep(2, 7, step=2)
+    n1, F1 = pydfa.computeFlucVec(winSizes, revSeg=True)
+    H1, H_int1 = pydfa.fitFlucVec()
+    
+    assert math.isclose(H1, 0.7316763359204684)
+
+#####
+# Regression test 1.3
+# It tests if the Hurst exponent of `ts1` is correct
+#####
+def test_dfa_pow_count():
+    pydfa = fathon.DFA(ts1)
+    winSizes = fu.powRangeByCount(1, 5, count=4, base=3)
+    n1, F1 = pydfa.computeFlucVec(winSizes, revSeg=True)
+    H1, H_int1 = pydfa.fitFlucVec()
+    
+    assert math.isclose(H1, 0.8465301940909294)
+
+#####
+# Regression test 1.3
+# It tests if the Hurst exponent of `ts1` is correct
+# using different log bases
+#####
+def test_dfa_pow_count():
+    pydfa = fathon.DFA(ts1)
+    winSizes = fu.powRangeByCount(1, 5, count=4, base=3)
+    n1, F1 = pydfa.computeFlucVec(winSizes, revSeg=True)
+    H1, H_int1 = pydfa.fitFlucVec()
+    H2, H_int2 = pydfa.fitFlucVec(logBase=2)
+    H3, H_int3 = pydfa.fitFlucVec(logBase=10)
+    H4, H_int4 = pydfa.fitFlucVec(logBase=1.4)
+    
+    assert (math.isclose(H1, H2) and math.isclose(H1, H3) and math.isclose(H1, H4)
+            and math.isclose(H2, H3) and math.isclose(H2, H4) and math.isclose(H3, H4))
 
 #####
 # Regression test 2
@@ -236,3 +289,28 @@ def test_rho_thresholds():
     n4, int1, int2 = pydcca.rhoThresholds(len(ts1), winSizes, 10, 0.95)
 
     assert math.isclose(int1[53], 0.03131478865331007) and math.isclose(int2[53], -0.05672796198121624)
+
+#####
+# Regression test 6
+# It tests if the Hurst exponent between `ts1`
+# and `ts2` is correct
+#####
+def test_dcca():
+    pydcca = fathon.DCCA(ts1, ts2)
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n, F = pydcca.computeFlucVec(winSizes, polOrd=2)
+    H, H_int = pydcca.fitFlucVec()
+    
+    assert math.isclose(H, 0.9604004237165071)
+
+#####
+# Regression test 7
+# It tests if the Hurst exponent between `ts1`
+# and `ts2` is correct
+#####
+def test_dcca():
+    pyht = fathon.HT(ts2)
+    scales = [10, 100]
+    ht = pyht.computeHt(scales, mfdfaPolOrd=3)
+    
+    #assert math.isclose(H, 0.9604004237165071)

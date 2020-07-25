@@ -22,6 +22,7 @@ cimport cython
 from cython.parallel import prange
 import ctypes
 from . import mfdfa
+from . import fathonUtils as fu
 	
 cdef extern from "cLoops.h" nogil:
     double HTCompute(double *y, int scale, int N, int pol_ord, int v)
@@ -67,7 +68,7 @@ cdef class HT:
             if verbose:
                 print('scale = {}'.format(scale))
                 
-            _, _ = pymfdfa.computeFlucVec(10, 0.0, nMax=int(tsLen/4), nStep=mfdfa_step, revSeg=True, polOrd=mfdfaPolOrd)
+            _, _ = pymfdfa.computeFlucVec(fu.linRangeByStep(10, int(tsLen/4), step=mfdfa_step), 0.0, revSeg=True, polOrd=mfdfaPolOrd)
             H0, H0_intercept = pymfdfa.fitFlucVec()
             if verbose:
                 print('-----')
