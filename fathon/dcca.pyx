@@ -363,8 +363,8 @@ cdef class DCCA:
         #    raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
         if winSizes[len(winSizes)-1] <= winSizes[0]:
             raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
-        if winSizes[len(winSizes)-1] > tsLen:
-            raise ValueError('Error: `winSizes[-1]` must be smaller than the input vector length.')
+        if winSizes[len(winSizes)-1] > L:
+            raise ValueError('Error: `winSizes[-1]` must be smaller than `L`.')
         if winSizes[0] < (polOrd + 2):
             raise ValueError('Error: `winSizes[0]` must be at least equal to {}.'.format(polOrd + 2))
         if nSim < 1:
