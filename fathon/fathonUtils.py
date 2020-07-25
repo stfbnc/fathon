@@ -1,4 +1,4 @@
-#    tsHelper.py - helper for fathon package
+#    fathonUtils.py - utils functions for fathon package
 #    Copyright (C) 2019-2020  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify

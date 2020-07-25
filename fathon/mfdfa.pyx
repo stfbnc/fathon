@@ -60,15 +60,15 @@ cdef class MFDFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeFlucVec(self, int tsLen, int nMin, np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int nMax, int polOrd, int nStep, bint revSeg):
+    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
         cdef Py_ssize_t i, j
         cdef int nLen
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
 
         self.qList = q_list
-        self.nStep = nStep
-        vecn = np.arange(nMin, nMax + 1, nStep, dtype=ctypes.c_int)
+        #self.nStep = nStep
+        vecn = np.array(winSizes, dtype=ctypes.c_int) #np.arange(nMin, nMax + 1, nStep, dtype=ctypes.c_int)
         nLen = len(vecn)
         mtxf = np.zeros((len(q_list) * nLen, ), dtype=ctypes.c_double)
         vects = np.array(self.tsVec, dtype=ctypes.c_double)
@@ -84,21 +84,18 @@ cdef class MFDFA:
                         mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
         return vecn, np.reshape(mtxf, (len(self.qList), nLen))
 
-    def computeFlucVec(self, nMin, qList, nMax=-999, polOrd=1, nStep=1, revSeg=False):
+    #def computeFlucVec(self, nMin, qList, nMax=-999, polOrd=1, nStep=1, revSeg=False):
+    def computeFlucVec(self, winSizes, qList, polOrd=1, revSeg=False):
         """Computation of the fluctuations in every window for every q-order.
 
         Parameters
         ----------
-        nMin : int
-            Size of the smaller window used to compute `F`.
+        winSizes : numpy ndarray
+            Array of window's sizes.
         qList : float or iterable or numpy ndarray
             List of q-orders used to compute `F`.
-        nMax : int, optional
-            Size of the bigger window used to compute `F` (default : len(`tsVec`)/4)).
         polOrd : int, optional
             Order of the polynomial to be fitted in every window (default : 1).
-        nStep : int, optional
-            Step between two consecutive window's sizes (default : 1).
         revSeg : bool, optional
             If True, the computation of `F` is repeated starting from the end of the time series (default : False).
 
@@ -113,18 +110,24 @@ cdef class MFDFA:
 
         if polOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
-        if nStep < 1:
-            raise ValueError('Error: Step for scales must be greater than 0.')
-        if nMax == -999:
-            nMax = int(tsLen / 4)
-        if nMax < 3 or nMin < 3:
-            raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
-        if nMax <= nMin:
-            raise ValueError('Error: Variable nMax must be greater than variable nMin.')
-        if nMax > tsLen:
-            raise ValueError('Error: Variable nMax must be less than the input vector length.')
-        if nMin < (polOrd + 2):
-            raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
+        #if nStep < 1:
+        #    raise ValueError('Error: Step for scales must be greater than 0.')
+        #if nMax == -999:
+        #    nMax = int(tsLen / 4)
+        #if nMax < 3 or nMin < 3:
+        #    raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
+        #if nMax <= nMin:
+        #    raise ValueError('Error: Variable nMax must be greater than variable nMin.')
+        #if nMax > tsLen:
+        #    raise ValueError('Error: Variable nMax must be less than the input vector length.')
+        #if nMin < (polOrd + 2):
+        #    raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
+        if winSizes[len(winSizes)-1] <= winSizes[0]:
+            raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
+        if winSizes[len(winSizes)-1] > tsLen:
+            raise ValueError('Error: `winSizes[-1]` must be smaller than the input vector length.')
+        if winSizes[0] < (polOrd + 2):
+            raise ValueError('Error: `winSizes[0]` must be at least equal to {}.'.format(polOrd + 2))
 
         if isinstance(qList, float):
             qList = np.array([qList], dtype=ctypes.c_double)
@@ -133,7 +136,8 @@ cdef class MFDFA:
         else:
             raise ValueError('Error: qList type is {}. Expected float, list, or numpy array.'.format(type(qList)))
             
-        self.n, self.F = self.cy_computeFlucVec(tsLen, nMin, qList, nMax, polOrd, nStep, revSeg)
+        #self.n, self.F = self.cy_computeFlucVec(tsLen, nMin, qList, nMax, polOrd, nStep, revSeg)
+        self.n, self.F = self.cy_computeFlucVec(tsLen, winSizes, qList, polOrd, revSeg)
         self.isComputed = True
         
         return self.n, self.F
@@ -178,8 +182,10 @@ cdef class MFDFA:
                 raise ValueError('Error: Fit limits must be included in the n vector.')
 
             qLen = len(self.qList)
-            start = int((nStart - self.n[0]) / self.nStep)
-            end = int((nEnd - self.n[0]) / self.nStep)
+            #start = int((nStart - self.n[0]) / self.nStep)
+            #end = int((nEnd - self.n[0]) / self.nStep)
+            start = np.where(self.n==nStart)[0][0]
+            end = np.where(self.n==nEnd)[0][0]
             self.listH = np.zeros((qLen, ), dtype=ctypes.c_double)
             list_H_intercept = np.zeros((qLen, ), dtype=ctypes.c_double)
             if verbose:

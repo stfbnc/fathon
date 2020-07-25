@@ -1,6 +1,6 @@
 import numpy as np
 import fathon
-from fathon import tsHelper as fu
+from fathon import fathonUtils as fu
 import math
 import os
 
@@ -92,7 +92,8 @@ def test_mat_dfa_mf():
 #####
 def test_mat_mfdfa_wn():
     w_mfdfa = fathon.MFDFA(fu.toAggregated(wn))
-    n_w, F_w = w_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    #n_w, F_w = w_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    n_w, F_w = w_mfdfa.computeFlucVec(scales, qList=q_list, revSeg=False, polOrd=1)
     idxs = get_idxs(n_w, scales)
     n_w = n_w[idxs]
     F_w_vec = np.zeros((len(q_list), len(idxs)))
@@ -110,7 +111,8 @@ def test_mat_mfdfa_wn():
 #####
 def test_mat_mfdfa_mn():
     mn_mfdfa = fathon.MFDFA(fu.toAggregated(mn))
-    n_mn, F_mn = mn_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    #n_mn, F_mn = mn_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    n_mn, F_mn = mn_mfdfa.computeFlucVec(scales, qList=q_list, revSeg=False, polOrd=1)
     idxs = get_idxs(n_mn, scales)
     n_mn = n_mn[idxs]
     F_mn_vec = np.zeros((len(q_list), len(idxs)))
@@ -128,7 +130,8 @@ def test_mat_mfdfa_mn():
 #####
 def test_mat_mfdfa_mf():
     mf_mfdfa = fathon.MFDFA(fu.toAggregated(mf))
-    n_mf, F_mf = mf_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    #n_mf, F_mf = mf_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    n_mf, F_mf = mf_mfdfa.computeFlucVec(scales, qList=q_list, revSeg=False, polOrd=1)
     idxs = get_idxs(n_mf, scales)
     n_mf = n_mf[idxs]
     F_mf_vec = np.zeros((len(q_list), len(idxs)))
@@ -185,7 +188,9 @@ def test_dfa():
 def test_mfdfa():
     pymfdfa = fathon.MFDFA(ts3)
     qs = np.arange(-3, 3, 1)
-    n2, F2 = pymfdfa.computeFlucVec(10, qs, nMax=200, revSeg=True)
+    winSizes = fu.linRangeByStep(10, 200)
+    #n2, F2 = pymfdfa.computeFlucVec(10, qs, nMax=200, revSeg=True)
+    n2, F2 = pymfdfa.computeFlucVec(winSizes, qs, revSeg=True)
     H2, H_int2 = pymfdfa.fitFlucVec()
 
     assert math.isclose(H2[2], 1.1956312585360254)
@@ -198,7 +203,9 @@ def test_mfdfa():
 def test_multifractal_spectrum():
     pymfdfa = fathon.MFDFA(ts3)
     qs = np.arange(-3, 3, 1)
-    n2, F2 = pymfdfa.computeFlucVec(10, qs, nMax=200, revSeg=True)
+    winSizes = fu.linRangeByStep(10, 200)
+    #n2, F2 = pymfdfa.computeFlucVec(10, qs, nMax=200, revSeg=True)
+    n2, F2 = pymfdfa.computeFlucVec(winSizes, qs, revSeg=True)
     H2, H_int2 = pymfdfa.fitFlucVec()
     a2, m2 = pymfdfa.computeMultifractalSpectrum()
 
@@ -211,7 +218,8 @@ def test_multifractal_spectrum():
 #####
 def test_dcca():
     pydcca = fathon.DCCA(ts1, ts2)
-    n3, rho = pydcca.computeRho(10, nMax=200, nStep=2)
+    winSizes = fu.linRangeByStep(10, 200)
+    n3, rho = pydcca.computeRho(winSizes, nStep=2)
 
     assert math.isclose(rho[53], 0.48503322468665233)
 
@@ -224,6 +232,7 @@ def test_dcca():
 def test_rho_thresholds():
     np.random.seed(42)
     pydcca = fathon.DCCA()
-    n4, int1, int2 = pydcca.rhoThresholds(len(ts1), 10, 200, 10, 0.95, nStep=2)
+    winSizes = fu.linRangeByStep(10, 200)
+    n4, int1, int2 = pydcca.rhoThresholds(len(ts1), winSizes, 10, 0.95, nStep=2)
 
     assert math.isclose(int1[53], 0.03131478865331007) and math.isclose(int2[53], -0.05672796198121624)
