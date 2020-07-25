@@ -75,7 +75,7 @@ cdef class DFA:
     @cython.wraparound(False)
     @cython.nonecheck(False)
     #cpdef computeFlucVec(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1, bint revSeg=False):
-    cpdef computeFlucVec(self, np.ndarray[int, ndim=1, mode='c'] winSizes, int polOrd=1, bint revSeg=False):
+    cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint revSeg=False):
         """Computation of the fluctuations in every window.
 
         Parameters

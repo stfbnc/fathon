@@ -1,5 +1,6 @@
 import numpy as np
 import fathon
+from fathon import tsHelper as fu
 import math
 import os
 
@@ -45,7 +46,7 @@ def get_idxs(vec, scales):
 # H should be 0.45
 #####
 def test_mat_dfa_wn():
-    w_dfa = fathon.DFA(fathon.toAggregated(wn))
+    w_dfa = fathon.DFA(fu.toAggregated(wn))
     #n_w, F_w = w_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
     n_w, F_w = w_dfa.computeFlucVec(scales, revSeg=False, polOrd=1)
     idxs = get_idxs(n_w, scales)
@@ -60,7 +61,7 @@ def test_mat_dfa_wn():
 # H should be 0.72
 #####
 def test_mat_dfa_mn():
-    mn_dfa = fathon.DFA(fathon.toAggregated(mn))
+    mn_dfa = fathon.DFA(fu.toAggregated(mn))
     #n_mn, F_mn = mn_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
     n_mn, F_mn = mn_dfa.computeFlucVec(scales, revSeg=False, polOrd=1)
     idxs = get_idxs(n_mn, scales)
@@ -75,7 +76,7 @@ def test_mat_dfa_mn():
 # H should be 0.77
 #####
 def test_mat_dfa_mf():
-    mf_dfa = fathon.DFA(fathon.toAggregated(mf))
+    mf_dfa = fathon.DFA(fu.toAggregated(mf))
     #n_mf, F_mf = mf_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
     n_mf, F_mf = mf_dfa.computeFlucVec(scales, revSeg=False, polOrd=1)
     idxs = get_idxs(n_mf, scales)
@@ -90,8 +91,8 @@ def test_mat_dfa_mf():
 # Hq should be [0.4583, 0.4555, 0.4546, 0.4515, 0.4445, 0.4340]
 #####
 def test_mat_mfdfa_wn():
-    w_mfdfa = fathon.MFDFA(fathon.toAggregated(wn))
-    n_w, F_w = w_mfdfa.computeFlucVec(nMin=nMin, q_list=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    w_mfdfa = fathon.MFDFA(fu.toAggregated(wn))
+    n_w, F_w = w_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
     idxs = get_idxs(n_w, scales)
     n_w = n_w[idxs]
     F_w_vec = np.zeros((len(q_list), len(idxs)))
@@ -108,8 +109,8 @@ def test_mat_mfdfa_wn():
 # Hq should be [0.7542, 0.7392, 0.7301, 0.7240, 0.7149, 0.7023]
 #####
 def test_mat_mfdfa_mn():
-    mn_mfdfa = fathon.MFDFA(fathon.toAggregated(mn))
-    n_mn, F_mn = mn_mfdfa.computeFlucVec(nMin=nMin, q_list=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    mn_mfdfa = fathon.MFDFA(fu.toAggregated(mn))
+    n_mn, F_mn = mn_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
     idxs = get_idxs(n_mn, scales)
     n_mn = n_mn[idxs]
     F_mn_vec = np.zeros((len(q_list), len(idxs)))
@@ -126,8 +127,8 @@ def test_mat_mfdfa_mn():
 # Hq should be [1.4477, 1.3064, 1.0823, 0.8846, 0.6606, 0.5174]
 #####
 def test_mat_mfdfa_mf():
-    mf_mfdfa = fathon.MFDFA(fathon.toAggregated(mf))
-    n_mf, F_mf = mf_mfdfa.computeFlucVec(nMin=nMin, q_list=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    mf_mfdfa = fathon.MFDFA(fu.toAggregated(mf))
+    n_mf, F_mf = mf_mfdfa.computeFlucVec(nMin=nMin, qList=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
     idxs = get_idxs(n_mf, scales)
     n_mf = n_mf[idxs]
     F_mf_vec = np.zeros((len(q_list), len(idxs)))
@@ -154,13 +155,13 @@ def test_mat_mfdfa_mf():
 #####
 # co2 residuals after yearly cycle removal
 ts1 = np.loadtxt(os.path.join(TESTS_PATH, 'ts1.txt'))
-ts1 = fathon.toAggregated(ts1)
+ts1 = fu.toAggregated(ts1)
 # other co2 residuals after yearly cycle removal
 ts2 = np.loadtxt(os.path.join(TESTS_PATH, 'ts2.txt'))
-ts2 = fathon.toAggregated(ts2)
+ts2 = fu.toAggregated(ts2)
 # multifractal data
 ts3 = np.loadtxt(os.path.join(TESTS_PATH, 'ts3.txt'))
-ts3 = fathon.toAggregated(ts3)
+ts3 = fu.toAggregated(ts3)
 #####
 
 #####
@@ -169,7 +170,7 @@ ts3 = fathon.toAggregated(ts3)
 #####
 def test_dfa():
     pydfa = fathon.DFA(ts1)
-    winSizes = fathon.linRangeByStep(10, 200)
+    winSizes = fu.linRangeByStep(10, 200)
     #n1, F1 = pydfa.computeFlucVec(10, nMax=200, revSeg=True)
     n1, F1 = pydfa.computeFlucVec(winSizes, revSeg=True)
     H1, H_int1 = pydfa.fitFlucVec()

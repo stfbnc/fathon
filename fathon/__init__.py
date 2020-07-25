@@ -14,8 +14,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from .tsHelper import subtractMean
-from .tsHelper import toAggregated
+#from .tsHelper import subtractMean
+#from .tsHelper import toAggregated
+#from .tsHelper import linRangeByStep
+#from .tsHelper import linRangeByCount
+#from .tsHelper import powRangeByStep
+#from .tsHelper import powRangeByCount
 from .dfa import DFA
 from .mfdfa import MFDFA
 from .dcca import DCCA
