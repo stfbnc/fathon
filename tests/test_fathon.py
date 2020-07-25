@@ -221,7 +221,7 @@ def test_dfa_pow_count():
 # It tests if the Hurst exponent of `ts1` is correct
 # using different log bases
 #####
-def test_dfa_pow_count():
+def test_dfa_H_log():
     pydfa = fathon.DFA(ts1)
     winSizes = fu.powRangeByCount(1, 5, count=4, base=3)
     n1, F1 = pydfa.computeFlucVec(winSizes, revSeg=True)
@@ -269,7 +269,7 @@ def test_multifractal_spectrum():
 # It tests if the fiftythird element of the cross-correlation
 # coefficient between `ts1` and `ts2` is correct
 #####
-def test_dcca():
+def test_rho():
     pydcca = fathon.DCCA(ts1, ts2)
     winSizes = fu.linRangeByStep(10, 200, step=2)
     n3, rho = pydcca.computeRho(winSizes)
@@ -305,12 +305,12 @@ def test_dcca():
 
 #####
 # Regression test 7
-# It tests if the Hurst exponent between `ts1`
-# and `ts2` is correct
+# It tests if the fortysecond element at scale 10 and the twelfth at
+# scale 100 of the local Hurst exponent of `ts2` are correct
 #####
-def test_dcca():
+def test_ht():
     pyht = fathon.HT(ts2)
     scales = [10, 100]
     ht = pyht.computeHt(scales, mfdfaPolOrd=3)
     
-    #assert math.isclose(H, 0.9604004237165071)
+    assert math.isclose(ht[0, 42], 0.7309239957968274) and math.isclose(ht[1, 12], 0.6966701052592185)

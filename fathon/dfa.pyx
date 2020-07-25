@@ -45,7 +45,6 @@ cdef class DFA:
     cdef:
         np.ndarray n
         np.ndarray tsVec, F
-        #int nStep
         bint isComputed
 
     def __init__(self, tsVec):
@@ -74,7 +73,6 @@ cdef class DFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    #cpdef computeFlucVec(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1, bint revSeg=False):
     cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint revSeg=False):
         """Computation of the fluctuations in every window.
 
@@ -94,28 +92,10 @@ cdef class DFA:
         numpy ndarray
             Array `F` containing the values of the fluctuations in every window.
         """
-        #nMin : int
-        #    Size of the smaller window used to compute `F`.
-        #nMax : int, optional
-        #    Size of the bigger window used to compute `F` (default : len(`tsVec`)/4)).
-        #nStep : int, optional
-        #    Step between two consecutive window's sizes (default : 1).
         cdef int tsLen = len(self.tsVec)
 
         if polOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
-        #if nStep < 1:
-        #    raise ValueError('Error: Step for scales must be greater than 0.')
-        #if nMax == -999:
-        #    nMax = int(tsLen / 4)
-        #if nMax < 3 or nMin < 3:
-        #    raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
-        #if nMax <= nMin:
-        #    raise ValueError('Error: Variable nMax must be greater than variable nMin.')
-        #if nMax > tsLen:
-        #    raise ValueError('Error: Variable nMax must be less than the input vector length.')
-        #if nMin < (polOrd + 2):
-        #    raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
         if winSizes[len(winSizes)-1] <= winSizes[0]:
             raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
         if winSizes[len(winSizes)-1] > tsLen:
@@ -123,8 +103,7 @@ cdef class DFA:
         if winSizes[0] < (polOrd + 2):
             raise ValueError('Error: `winSizes[0]` must be at least equal to {}.'.format(polOrd + 2))
 
-        #self.nStep = nStep
-        self.n = np.array(winSizes, dtype=ctypes.c_int) #np.arange(nMin, nMax + 1, nStep, dtype=ctypes.c_int)
+        self.n = np.array(winSizes, dtype=ctypes.c_int)
         self.F = np.zeros((len(self.n), ), dtype=ctypes.c_double)
         self.cy_flucCompute(np.array(self.tsVec, dtype=ctypes.c_double), self.n, self.F, polOrd, revSeg)
         self.isComputed = True
@@ -169,8 +148,6 @@ cdef class DFA:
             if (nStart not in self.n) or (nEnd not in self.n):
                 raise ValueError('Error: Fit limits must be included in the window\'s sizes vector.')
 
-            #start = int((nStart - self.n[0]) / self.nStep)
-            #end = int((nEnd - self.n[0]) / self.nStep)
             start = np.where(self.n==nStart)[0][0]
             end = np.where(self.n==nEnd)[0][0]
             log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase), np.log(self.F[start:end+1]) / np.log(logBase), 1)
