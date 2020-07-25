@@ -219,7 +219,7 @@ def test_multifractal_spectrum():
 def test_dcca():
     pydcca = fathon.DCCA(ts1, ts2)
     winSizes = fu.linRangeByStep(10, 200)
-    n3, rho = pydcca.computeRho(winSizes, nStep=2)
+    n3, rho = pydcca.computeRho(winSizes)
 
     assert math.isclose(rho[53], 0.48503322468665233)
 
@@ -233,6 +233,6 @@ def test_rho_thresholds():
     np.random.seed(42)
     pydcca = fathon.DCCA()
     winSizes = fu.linRangeByStep(10, 200)
-    n4, int1, int2 = pydcca.rhoThresholds(len(ts1), winSizes, 10, 0.95, nStep=2)
+    n4, int1, int2 = pydcca.rhoThresholds(len(ts1), winSizes, 10, 0.95)
 
     assert math.isclose(int1[53], 0.03131478865331007) and math.isclose(int2[53], -0.05672796198121624)
