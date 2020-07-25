@@ -131,7 +131,7 @@ cdef class MFDFA:
         elif isinstance(qList, list) or isinstance(qList, np.ndarray):
             qList = np.array(qList, dtype=ctypes.c_double)
         else:
-            raise ValueError('Error: q_list type is {}. Expected float, list, or numpy array.'.format(type(q_list)))
+            raise ValueError('Error: qList type is {}. Expected float, list, or numpy array.'.format(type(qList)))
             
         self.n, self.F = self.cy_computeFlucVec(tsLen, nMin, qList, nMax, polOrd, nStep, revSeg)
         self.isComputed = True
