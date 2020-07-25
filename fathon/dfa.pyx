@@ -116,9 +116,9 @@ cdef class DFA:
         #    raise ValueError('Error: Variable nMax must be less than the input vector length.')
         #if nMin < (polOrd + 2):
         #    raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
-        if winSizes[-1] <= winSizes[0]:
+        if winSizes[len(winSizes)-1] <= winSizes[0]:
             raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
-        if winSizes[-1] > tsLen:
+        if winSizes[len(winSizes)-1] > tsLen:
             raise ValueError('Error: `winSizes[-1]` must be smaller than the input vector length.')
         if winSizes[0] < (polOrd + 2):
             raise ValueError('Error: `winSizes[0]` must be at least equal to {}.'.format(polOrd + 2))
