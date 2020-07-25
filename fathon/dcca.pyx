@@ -110,25 +110,26 @@ cdef class DCCA:
         cdef int tsLen = len(self.tsVec1)
 
         if polOrd < 1:
-            raise SystemExit('Error: Polynomial order must be greater than 0.')
+            raise ValueError('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
-            raise SystemExit('Error: Step for scales must be greater than 0.')
+            raise ValueError('Error: Step for scales must be greater than 0.')
         if nMax == -999:
-            nMax = int(tsLen/4)
+            nMax = int(tsLen / 4)
         if nMax < 3 or nMin < 3:
-            raise SystemExit('Error: Variable nMin and nMax must be at least equal to 3.')
+            raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
         if nMax <= nMin:
-            raise SystemExit('Error: Variable nMax must be greater than variable nMin.')
+            raise ValueError('Error: Variable nMax must be greater than variable nMin.')
         if nMax > tsLen:
-            raise SystemExit('Error: Variable nMax must be less than the input vector length.')
-        if nMin < (polOrd+2):
-            raise SystemExit('Error: Variable nMin must be at least equal to {}.'.format(polOrd+2))
+            raise ValueError('Error: Variable nMax must be less than the input vector length.')
+        if nMin < (polOrd + 2):
+            raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
 
         self.nStep = nStep
-        self.n = np.arange(nMin, nMax+1, nStep, dtype=ctypes.c_int)
+        self.n = np.arange(nMin, nMax + 1, nStep, dtype=ctypes.c_int)
         self.F = np.zeros((len(self.n), ), dtype=ctypes.c_double)
         self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2, dtype=ctypes.c_double), self.n, self.F, polOrd, absVals)
         self.isComputed = True
+        
         return self.n, self.F
 
     @cython.boundscheck(False)
@@ -140,25 +141,30 @@ cdef class DCCA:
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] F_same
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
 
-        vecn = np.arange(nMin, nMax+1, self.nStep, dtype=ctypes.c_int)
+        vecn = np.arange(nMin, nMax + 1, self.nStep, dtype=ctypes.c_int)
         nLen = len(vecn)
         F_same = np.zeros((nLen, ), dtype=ctypes.c_double)
         with nogil:
             for i in range(nLen):
                 F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], vecn[i], tsLen, polOrd)
+                
         return F_same
 
     @cython.boundscheck(False)
     @cython.nonecheck(False)
-    cpdef fitFlucVec(self, int n_start=-999, int n_end=-999):
+    cpdef fitFlucVec(self, int nStart=-999, int nEnd=-999, float logBase=np.e, bint verbose=False):
         """Fit of the fluctuations values.
 
         Parameters
         ----------
-        n_start : int, optional
+        nStart : int, optional
             Size of the smaller window used to fit `F` (default : first value of `n`).
-        n_end : int, optional
+        nEnd : int, optional
             Size of the bigger window used to fit `F` (default : last value of `n`).
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -171,36 +177,43 @@ cdef class DCCA:
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit
 
         if self.isComputed:
-            if n_start == -999:
-                n_start = self.n[0]
-            if n_end == -999:
-                n_end = self.n[-1]
-            if n_start > n_end:
-                raise SystemExit('Error: Variable n_end must be greater than variable n_start.')
-            if (n_start < self.n[0]) or (n_end > self.n[-1]):
-                raise SystemExit('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
-            if (n_start not in self.n) or (n_end not in self.n):
-                raise SystemExit('Error: Fit limits must be included in the n vector.')
+            if nStart == -999:
+                nStart = self.n[0]
+            if nEnd == -999:
+                nEnd = self.n[-1]
+            if nStart > nEnd:
+                raise ValueError('Error: Variable nEnd must be greater than variable nStart.')
+            if (nStart < self.n[0]) or (nEnd > self.n[-1]):
+                raise ValueError('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
+            if (nStart not in self.n) or (nEnd not in self.n):
+                raise ValueError('Error: Fit limits must be included in the n vector.')
 
-            start = int((n_start - self.n[0]) / self.nStep)
-            end = int((n_end - self.n[0]) / self.nStep)
-            log_fit = np.polyfit(np.log(self.n[start:end+1]) , np.log(self.F[start:end+1]), 1)
-            print('Fit limits: [{}, {}]'.format(n_start, n_end))
-            print('Fit result: H_intercept = {:.2f}, H = {:.2f}'.format(log_fit[1], log_fit[0]))
+            start = int((nStart - self.n[0]) / self.nStep)
+            end = int((nEnd - self.n[0]) / self.nStep)
+            log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase), np.log(self.F[start:end+1]) / np.log(logBase), 1)
+            
+            if verbose:
+                print('Fit limits: [{}, {}]'.format(nStart, nEnd))
+                print('Fit result: H intercept = {:.2f}, H = {:.2f}'.format(log_fit[1], log_fit[0]))
+                
             return log_fit[0], log_fit[1]
         else:
-            raise SystemExit('Error: Fluctuations vector has not been computed yet.')
+            print('Nothing to fit, fluctuations vector has not been computed yet.')
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limits_list):
+    cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limitsList, float logBase=np.e, bint verbose=False):
         """Fit of the fluctuations values in different intervals at the same time.
 
         Parameters
         ----------
-        limits_list : numpy ndarray
+        limitsList : numpy ndarray
             kx2 array with the sizes of k starting and ending windows used to fit `F`.
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -210,24 +223,29 @@ cdef class DCCA:
             Intercepts of the fits.
         """
         cdef Py_ssize_t i
-        cdef int limLen = len(limits_list)
+        cdef int limLen = len(limitsList)
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] list_H_intercept, list_H
 
         if self.isComputed:
             list_H = np.zeros((limLen, ), dtype=float)
             list_H_intercept = np.zeros((limLen, ), dtype=float)
+            
             for i in range(limLen):
+                if verbose:
+                    print('----------')
+                list_H[i], list_H_intercept[i] = self.fitFlucVec(nStart=limitsList[i][0], nEnd=limitsList[i][1], logBase=logBase, verbose=verbose)
+            
+            if verbose:
                 print('----------')
-                list_H[i], list_H_intercept[i] = self.fitFlucVec(n_start=limits_list[i][0], n_end=limits_list[i][1])
-            print('----------')
+                
             return list_H, list_H_intercept
         else:
-            raise SystemExit('Error: Fluctuations vector has not been computed yet.')
+            print('Nothing to fit, fluctuations vector has not been computed yet.')
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeRho(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1):
+    cpdef computeRho(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1, bint verbose=False):
         """Computation of the cross-correlation index in every window.
 
         Parameters
@@ -240,6 +258,8 @@ cdef class DCCA:
             Order of the polynomial to be fitted in every window (default : 1).
         nStep : int, optional
             Step between two consecutive window's sizes (default : 1).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -254,39 +274,42 @@ cdef class DCCA:
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] Fxy, Fxx, Fyy, rho
 
         if polOrd < 1:
-            raise SystemExit('Error: Polynomial order must be greater than 0.')
+            raise ValueError('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
-            raise SystemExit('Error: Step for scales must be greater than 0.')
+            raise ValueError('Error: Step for scales must be greater than 0.')
         if nMax == -999:
-            nMax = int(tsLen/4)
+            nMax = int(tsLen / 4)
         if nMax < 3 or nMin < 3:
-            raise SystemExit('Error: Variable nMin and nMax must be at least equal to 3.')
+            raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
         if nMax <= nMin:
-            raise SystemExit('Error: Variable nMax must be greater than variable nMin.')
+            raise ValueError('Error: Variable nMax must be greater than variable nMin.')
         if nMax > tsLen:
-            raise SystemExit('Error: Variable nMax must be less than the input vector length.')
-        if nMin < (polOrd+2):
-            raise SystemExit('Error: Variable nMin must be at least equal to {}.'.format(polOrd+2))
+            raise ValueError('Error: Variable nMax must be less than the input vector length.')
+        if nMin < (polOrd + 2):
+            raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
 
         self.nStep = nStep
         nn, Fxy = self.computeFlucVec(nMin, nMax=nMax, polOrd=polOrd, nStep=self.nStep, absVals=False)
-        print('DCCA between series 1 and 2 computed.')
+        if verbose:
+            print('DCCA between series 1 and 2 computed.')
         Fxx = self.computeFlucVecSameTs(self.tsVec1, nMin, nMax=nMax, polOrd=polOrd)
-        print('DCCA between series 1 and 1 computed.')
+        if verbose:
+            print('DCCA between series 1 and 1 computed.')
         Fyy = self.computeFlucVecSameTs(self.tsVec2, nMin, nMax=nMax, polOrd=polOrd)
-        print('DCCA between series 2 and 2 computed.')
+        if verbose:
+            print('DCCA between series 2 and 2 computed.')
 
         nLen = len(nn)
         rho = np.zeros((nLen, ), dtype=float)
-        with nogil:
-            for i in range(nLen):
-                rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
+        for i in range(nLen):
+            rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
+                
         return nn, rho
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef rhoThresholds(self, int L, int nMin, int nMax, int nSim, double confLvl, int polOrd=1, int nStep=1):
+    cpdef rhoThresholds(self, int L, int nMin, int nMax, int nSim, double confLvl, int polOrd=1, int nStep=1, bint verbose=False):
         """Computation of the cross-correlation index's confidence levels in every window.
 
         Parameters
@@ -305,6 +328,8 @@ cdef class DCCA:
             Order of the polynomial to be fitted in every window (default : 1).
         nStep : int, optional
             Step between two consecutive window's sizes (default : 1).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -321,39 +346,46 @@ cdef class DCCA:
         cdef int nLen
 
         if polOrd < 1:
-            raise SystemExit('Error: Polynomial order must be greater than 0.')
+            raise ValueError('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
-            raise SystemExit('Error: Step for scales must be greater than 0.')
+            raise ValueError('Error: Step for scales must be greater than 0.')
         if nMax < 3 or nMin < 3:
-            raise SystemExit('Error: Variable nMin and nMax must be at least equal to 3.')
+            raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
         if nMax <= nMin:
-            raise SystemExit('Error: Variable nMax must be greater than variable nMin.')
-        if nMin < (polOrd+2):
-            raise SystemExit('Error: Variable nMin must be at least equal to {}.'.format(polOrd+2))
+            raise ValueError('Error: Variable nMax must be greater than variable nMin.')
+        if nMin < (polOrd + 2):
+            raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
         if nSim < 1:
-            raise SystemExit('Error: Number of simulations must be greater than 0.')
+            raise ValueError('Error: Number of simulations must be greater than 0.')
         if confLvl < 0 or confLvl > 1:
-            raise SystemExit('Error: Confidence level must be incliuded in the interval [0,1].')
+            raise ValueError('Error: Confidence level must be included in the interval [0,1].')
 
-        vecn = np.arange(nMin, nMax+1, nStep, dtype=ctypes.c_int)
+        vecn = np.arange(nMin, nMax + 1, nStep, dtype=ctypes.c_int)
         nLen = len(vecn)
         up_lim = np.zeros((nLen, ), dtype=ctypes.c_double)
         down_lim = np.zeros((nLen, ), dtype=ctypes.c_double)
         rho_all = np.zeros((nSim, nLen), dtype=ctypes.c_double)
+        
         for i in range(nSim):
-            print('Simulation number {}'.format(i+1))
+            if verbose:
+                print('Simulation number {}'.format(i + 1))
+                
             ran1 = np.random.randn(L)
-            ran1 = np.cumsum(ran1-np.mean(ran1))
+            ran1 = np.cumsum(ran1 - np.mean(ran1))
             ran2 = np.random.randn(L)
-            ran2 = np.cumsum(ran2-np.mean(ran2))
+            ran2 = np.cumsum(ran2 - np.mean(ran2))
             vecfx = np.zeros((nLen, ), dtype=ctypes.c_double)
             vecfy = np.zeros((nLen, ), dtype=ctypes.c_double)
             vecfxy = np.zeros((nLen, ), dtype=ctypes.c_double)
+            
             self.cy_flucCompute(ran1, ran2, vecn, vecfxy, polOrd, False)
             self.cy_flucCompute(ran1, ran1, vecn, vecfx, polOrd, False)
             self.cy_flucCompute(ran2, ran2, vecn, vecfy, polOrd, False)
+            
             for j in range(nLen):
                 rho_all[i, j] = vecfxy[j] / (vecfx[j] * vecfy[j])
+                
         up_lim = np.quantile(rho_all, confLvl, axis=0)
-        down_lim = np.quantile(rho_all, 1-confLvl, axis=0)
+        down_lim = np.quantile(rho_all, 1 - confLvl, axis=0)
+        
         return vecn, up_lim, down_lim

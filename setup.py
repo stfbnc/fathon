@@ -77,7 +77,7 @@ if __name__ == "__main__":
             readme_file.close()
 
             setup(name="fathon",
-                  version="0.1.2.post7",
+                  version="0.1.2.post8",
                   author="Stefano Bianchi",
                   author_email="fathon.package@gmail.com",
                   url="https://github.com/stfbnc/fathon.git",
@@ -105,10 +105,7 @@ if __name__ == "__main__":
                   package_data={"fathon": ["LICENSE"]},
                   include_package_data=True)
 
-            if running_os == "Linux":
-                print("################# CIAOOOOOOOO ################")
-
         else:
-            sys.exit("fathon is not available on Windows yet.")
+            sys.exit("fathon is not available on Windows.")
     else:
         sys.exit("fathon requires python 3.")

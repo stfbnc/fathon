@@ -45,7 +45,7 @@ cdef class HT:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd, int mfdfaPolOrd):
+    cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd, int mfdfaPolOrd, bint verbose):
         cdef int htRowLen, tsLen, scale, mfdfa_step
         cdef Py_ssize_t i, j
         cdef double H0, H0_intercept
@@ -54,23 +54,31 @@ cdef class HT:
         tsLen = len(self.tsVec)
         htRowLen = tsLen - min(scales) + 1
         vects = np.array(self.tsVec, dtype=ctypes.c_double)
-        vecht = np.zeros((htRowLen*len(scales), ), dtype=ctypes.c_double)
-        mfdfa_step = int(tsLen/100) if tsLen > 100 else 1
-        print('-----')
+        vecht = np.zeros((htRowLen * len(scales), ), dtype=ctypes.c_double)
+        mfdfa_step = int(tsLen / 100) if tsLen > 100 else 1
+        
+        if verbose:
+            print('-----')
         for i, scale in enumerate(scales):
-            for j in prange(tsLen-scale+1, nogil=True):
+            for j in prange(tsLen - scale + 1, nogil=True):
                vecht[i*htRowLen+j] = HTCompute(&vects[0], scale, tsLen, polOrd, j)
+               
             pymfdfa = mfdfa.MFDFA(self.tsVec)
-            print('scale = {}'.format(scale))
+            if verbose:
+                print('scale = {}'.format(scale))
+                
             _, _ = pymfdfa.computeFlucVec(10, 0.0, nMax=int(tsLen/4), nStep=mfdfa_step, revSeg=True, polOrd=mfdfaPolOrd)
             H0, H0_intercept = pymfdfa.fitFlucVec()
-            print('-----')
+            if verbose:
+                print('-----')
+                
             for j in range(htRowLen):
                 if vecht[i*htRowLen+j] != 0.0:
-                    vecht[i*htRowLen+j] = (H0_intercept+H0*np.log(scale)-np.log(vecht[i*htRowLen+j])) / (np.log(tsLen-scale+1)-np.log(scale)) + H0
+                    vecht[i*htRowLen+j] = (H0_intercept + H0 * np.log(scale) - np.log(vecht[i*htRowLen+j])) / (np.log(tsLen - scale + 1) - np.log(scale)) + H0
+                    
         return np.reshape(vecht, (len(scales), htRowLen))
 		
-    def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1):
+    def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1, verbose=False):
         """Computation of the time-dependent local Hurst exponent at every scale.
         
         Parameters
@@ -81,6 +89,8 @@ cdef class HT:
             Order of the polynomial to be fitted in every window (default : 1).
         mfdfaPolOrd : int, optional
             Order of the polynomial to be fitted to MFDFA's fluctuations at q = 0 (default : 1).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -88,21 +98,23 @@ cdef class HT:
             Time-dependent local Hurst exponent.
         """
         if polOrd < 1:
-            raise SystemExit('Error: Polynomial order must be greater than 0.')
+            raise ValueError('Error: Polynomial order must be greater than 0.')
         if mfdfaPolOrd < 1:
-            raise SystemExit('Error: Polynomial order must be greater than 0.')
+            raise ValueError('Error: Polynomial order must be greater than 0.')
 
         if isinstance(scales, int):
             if scales < 3:
-                raise SystemExit('Error: Every scale at least equal to 3.')
+                raise ValueError('Error: Every scale at least equal to 3.')
             else:
                 scales = np.array([scales], dtype=ctypes.c_int)
         elif isinstance(scales, list) or isinstance(scales, np.ndarray):
             for scale in scales:
                 if scale < 3:
-                    raise SystemExit('Error: Every scale at least equal to 3.')
+                    raise ValueError('Error: Every scale at least equal to 3.')
             scales = np.array(scales, dtype=ctypes.c_int)
         else:
-            raise SystemExit('Error: scales type is {}. Expected int, list, or numpy array.'.format(type(scales)))
-        ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd)
+            raise ValueError('Error: scales type is {}. Expected int, list, or numpy array.'.format(type(scales)))
+            
+        ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd, verbose)
+        
         return ht

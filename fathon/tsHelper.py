@@ -15,7 +15,6 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
-import ctypes
 
 def subtractMean(vec):
 	"""Subtracts mean of a vector.
@@ -47,15 +46,69 @@ def toAggregated(vec):
 	"""
 	return np.array(np.nancumsum(vec - np.nanmean(vec)), dtype=float)
 
-def windowsVec(start, end, step):
-    """Linear range of window's sizes
+def linRangeByStep(start, end, step=1):
+    """Array of linearly separated elements.
     
     Parameters
     ----------
     start : int
-        Smallest size
+        Smallest element.
     end : int
-        Biggest size
+        Biggest element.
+    step : int
+        Step between two consecutive elements (default : 1).
     """
+    return np.arange(start, end + 1, step, dtype=int)
+
+def linRangeByCount(start, end, count=-1):
+    """Array of linearly separated elements.
+    
+    Parameters
+    ----------
+    start : int
+        Smallest element.
+    end : int
+        Biggest element.
+    count : int
+        Number of elements (default : `end` - `start` + 1).
+    """
+    if count == -1 or count > (end - start + 1):
+        count = end - start + 1
         
-# o scale separate da step o numero di scale predefinito
+    return np.linspace(start, end, count, endpoint=True, dtype=int)
+
+def powRangeByStep(start, end, step=1, base=2):
+    """Array of elements given by `base` raised to linearly separated exponents.
+    
+    Parameters
+    ----------
+    start : int
+        Smallest element.
+    end : int
+        Biggest element.
+    step : int
+        Step between two consecutive exponents (default : 1).
+    base : int
+        Base of the exponential (default : 2).
+    """
+    exponents = linRangeByStep(start, end, step=step)
+    
+    return np.power(base, exponents, dtype=int)
+
+def powRangeByCount(start, end, count=-1, base=2):
+    """Array of elements given by `base` raised to linearly separated exponents.
+    
+    Parameters
+    ----------
+    start : int
+        Smallest element.
+    end : int
+        Biggest element.
+    count : int
+        Number of elements (default : `end` - `start` + 1).
+    base : int
+        Base of the exponential (default : 2).
+    """
+    exponents = linRangeByCount(start, end, count=count)
+        
+    return np.power(base, exponents, dtype=int)

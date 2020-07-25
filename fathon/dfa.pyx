@@ -25,7 +25,7 @@ cdef extern from "cLoops.h" nogil:
     double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
     double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord)
 
-cdef class DFA():
+cdef class DFA:
     """Detrended Fluctuation Analysis class.
 
     Parameters
@@ -45,7 +45,7 @@ cdef class DFA():
     cdef:
         np.ndarray n
         np.ndarray tsVec, F
-        int nStep
+        #int nStep
         bint isComputed
 
     def __init__(self, tsVec):
@@ -74,19 +74,16 @@ cdef class DFA():
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeFlucVec(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1, bint revSeg=False):
+    #cpdef computeFlucVec(self, int nMin, int nMax=-999, int polOrd=1, int nStep=1, bint revSeg=False):
+    cpdef computeFlucVec(self, np.ndarray[int, ndim=1, mode='c'] winSizes, int polOrd=1, bint revSeg=False):
         """Computation of the fluctuations in every window.
 
         Parameters
         ----------
-        nMin : int
-            Size of the smaller window used to compute `F`.
-        nMax : int, optional
-            Size of the bigger window used to compute `F` (default : len(`tsVec`)/4)).
+        winSizes : numpy ndarray
+            Array of window's sizes.
         polOrd : int, optional
             Order of the polynomial to be fitted in every window (default : 1).
-        nStep : int, optional
-            Step between two consecutive window's sizes (default : 1).
         revSeg : bool, optional
             If True, the computation of `F` is repeated starting from the end of the time series (default : False).
 
@@ -97,25 +94,37 @@ cdef class DFA():
         numpy ndarray
             Array `F` containing the values of the fluctuations in every window.
         """
+        #nMin : int
+        #    Size of the smaller window used to compute `F`.
+        #nMax : int, optional
+        #    Size of the bigger window used to compute `F` (default : len(`tsVec`)/4)).
+        #nStep : int, optional
+        #    Step between two consecutive window's sizes (default : 1).
         cdef int tsLen = len(self.tsVec)
 
         if polOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
-        if nStep < 1:
-            raise ValueError('Error: Step for scales must be greater than 0.')
-        if nMax == -999:
-            nMax = int(tsLen / 4)
-        if nMax < 3 or nMin < 3:
-            raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
-        if nMax <= nMin:
-            raise ValueError('Error: Variable nMax must be greater than variable nMin.')
-        if nMax > tsLen:
-            raise ValueError('Error: Variable nMax must be less than the input vector length.')
-        if nMin < (polOrd + 2):
-            raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
+        #if nStep < 1:
+        #    raise ValueError('Error: Step for scales must be greater than 0.')
+        #if nMax == -999:
+        #    nMax = int(tsLen / 4)
+        #if nMax < 3 or nMin < 3:
+        #    raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
+        #if nMax <= nMin:
+        #    raise ValueError('Error: Variable nMax must be greater than variable nMin.')
+        #if nMax > tsLen:
+        #    raise ValueError('Error: Variable nMax must be less than the input vector length.')
+        #if nMin < (polOrd + 2):
+        #    raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
+        if winSizes[-1] <= winSizes[0]:
+            raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
+        if winSizes[-1] > tsLen:
+            raise ValueError('Error: `winSizes[-1]` must be smaller than the input vector length.')
+        if winSizes[0] < (polOrd + 2):
+            raise ValueError('Error: `winSizes[0]` must be at least equal to {}.'.format(polOrd + 2))
 
-        self.nStep = nStep
-        self.n = np.arange(nMin, nMax + 1, nStep, dtype=ctypes.c_int)
+        #self.nStep = nStep
+        self.n = np.array(winSizes, dtype=ctypes.c_int) #np.arange(nMin, nMax + 1, nStep, dtype=ctypes.c_int)
         self.F = np.zeros((len(self.n), ), dtype=ctypes.c_double)
         self.cy_flucCompute(np.array(self.tsVec, dtype=ctypes.c_double), self.n, self.F, polOrd, revSeg)
         self.isComputed = True
@@ -124,15 +133,19 @@ cdef class DFA():
 
     @cython.boundscheck(False)
     @cython.nonecheck(False)
-    cpdef fitFlucVec(self, int n_start=-999, int n_end=-999, float logBase=np.e, bint verbose=False):
+    cpdef fitFlucVec(self, int nStart=-999, int nEnd=-999, float logBase=np.e, bint verbose=False):
         """Fit of the fluctuations values.
 
         Parameters
         ----------
-        n_start : int, optional
+        nStart : int, optional
             Size of the smaller window used to fit `F` (default : first value of `n`).
-        n_end : int, optional
+        nEnd : int, optional
             Size of the bigger window used to fit `F` (default : last value of `n`).
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -145,24 +158,26 @@ cdef class DFA():
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit
 
         if self.isComputed:
-            if n_start == -999:
-                n_start = self.n[0]
-            if n_end == -999:
-                n_end = self.n[-1]
-            if n_start > n_end:
-                raise ValueError('Error: Variable n_end must be greater than variable n_start.')
-            if (n_start < self.n[0]) or (n_end > self.n[-1]):
+            if nStart == -999:
+                nStart = self.n[0]
+            if nEnd == -999:
+                nEnd = self.n[-1]
+            if nStart > nEnd:
+                raise ValueError('Error: Variable nEnd must be greater than variable nStart.')
+            if (nStart < self.n[0]) or (nEnd > self.n[-1]):
                 raise ValueError('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
-            if (n_start not in self.n) or (n_end not in self.n):
-                raise ValueError('Error: Fit limits must be included in the n vector.')
+            if (nStart not in self.n) or (nEnd not in self.n):
+                raise ValueError('Error: Fit limits must be included in the window\'s sizes vector.')
 
-            start = int((n_start - self.n[0]) / self.nStep)
-            end = int((n_end - self.n[0]) / self.nStep)
-            log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase) , np.log(self.F[start:end+1]) / np.log(logBase), 1)
+            #start = int((nStart - self.n[0]) / self.nStep)
+            #end = int((nEnd - self.n[0]) / self.nStep)
+            start = np.where(self.n==nStart)[0][0]
+            end = np.where(self.n==nEnd)[0][0]
+            log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase), np.log(self.F[start:end+1]) / np.log(logBase), 1)
             
             if verbose:
-                print('Fit limits: [{}, {}]'.format(n_start, n_end))
-                print('Fit result: H_intercept = {:.2f}, H = {:.2f}'.format(log_fit[1], log_fit[0]))
+                print('Fit limits: [{}, {}]'.format(nStart, nEnd))
+                print('Fit result: H intercept = {:.2f}, H = {:.2f}'.format(log_fit[1], log_fit[0]))
                 
             return log_fit[0], log_fit[1]
         else:
@@ -171,13 +186,17 @@ cdef class DFA():
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limits_list, float logBase=np.e, bint verbose=False):
+    cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limitsList, float logBase=np.e, bint verbose=False):
         """Fit of the fluctuations values in different intervals at the same time.
 
         Parameters
         ----------
-        limits_list : numpy ndarray
+        limitsList : numpy ndarray
             kx2 array with the sizes of k starting and ending windows used to fit `F`.
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -187,7 +206,7 @@ cdef class DFA():
             Intercepts of the fits.
         """
         cdef Py_ssize_t i
-        cdef int limLen = len(limits_list)
+        cdef int limLen = len(limitsList)
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] list_H, list_H_intercept
 
         if self.isComputed:
@@ -197,7 +216,7 @@ cdef class DFA():
             for i in range(limLen):
                 if verbose:
                     print('----------')
-                list_H[i], list_H_intercept[i] = self.fitFlucVec(n_start=limits_list[i][0], n_end=limits_list[i][1], logBase=logBase, verbose=verbose)
+                list_H[i], list_H_intercept[i] = self.fitFlucVec(nStart=limitsList[i][0], nEnd=limitsList[i][1], logBase=logBase, verbose=verbose)
                 
             if verbose:
                 print('----------')

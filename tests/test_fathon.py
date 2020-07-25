@@ -46,7 +46,8 @@ def get_idxs(vec, scales):
 #####
 def test_mat_dfa_wn():
     w_dfa = fathon.DFA(fathon.toAggregated(wn))
-    n_w, F_w = w_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    #n_w, F_w = w_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    n_w, F_w = w_dfa.computeFlucVec(scales, revSeg=False, polOrd=1)
     idxs = get_idxs(n_w, scales)
     n_w = n_w[idxs]
     F_w = F_w[idxs]
@@ -60,7 +61,8 @@ def test_mat_dfa_wn():
 #####
 def test_mat_dfa_mn():
     mn_dfa = fathon.DFA(fathon.toAggregated(mn))
-    n_mn, F_mn = mn_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    #n_mn, F_mn = mn_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    n_mn, F_mn = mn_dfa.computeFlucVec(scales, revSeg=False, polOrd=1)
     idxs = get_idxs(n_mn, scales)
     n_mn = n_mn[idxs]
     F_mn = F_mn[idxs]
@@ -74,7 +76,8 @@ def test_mat_dfa_mn():
 #####
 def test_mat_dfa_mf():
     mf_dfa = fathon.DFA(fathon.toAggregated(mf))
-    n_mf, F_mf = mf_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    #n_mf, F_mf = mf_dfa.computeFlucVec(nMin=nMin, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
+    n_mf, F_mf = mf_dfa.computeFlucVec(scales, revSeg=False, polOrd=1)
     idxs = get_idxs(n_mf, scales)
     n_mf = n_mf[idxs]
     F_mf = F_mf[idxs]
@@ -122,7 +125,7 @@ def test_mat_mfdfa_mn():
 # It tests MFDFA for the multifractal time series
 # Hq should be [1.4477, 1.3064, 1.0823, 0.8846, 0.6606, 0.5174]
 #####
-def test_mat_mfdfa_mn():
+def test_mat_mfdfa_mf():
     mf_mfdfa = fathon.MFDFA(fathon.toAggregated(mf))
     n_mf, F_mf = mf_mfdfa.computeFlucVec(nMin=nMin, q_list=q_list, nMax=nMax, revSeg=False, nStep=1, polOrd=1)
     idxs = get_idxs(n_mf, scales)
@@ -149,10 +152,10 @@ def test_mat_mfdfa_mn():
 #####
 # Time series for regression tests
 #####
-# co2 residuals after yearly cycle
+# co2 residuals after yearly cycle removal
 ts1 = np.loadtxt(os.path.join(TESTS_PATH, 'ts1.txt'))
 ts1 = fathon.toAggregated(ts1)
-# other co2 residuals after yearly cycle
+# other co2 residuals after yearly cycle removal
 ts2 = np.loadtxt(os.path.join(TESTS_PATH, 'ts2.txt'))
 ts2 = fathon.toAggregated(ts2)
 # multifractal data
@@ -166,7 +169,9 @@ ts3 = fathon.toAggregated(ts3)
 #####
 def test_dfa():
     pydfa = fathon.DFA(ts1)
-    n1, F1 = pydfa.computeFlucVec(10, nMax=200, revSeg=True)
+    winSizes = fathon.linRangeByStep(10, 200)
+    #n1, F1 = pydfa.computeFlucVec(10, nMax=200, revSeg=True)
+    n1, F1 = pydfa.computeFlucVec(winSizes, revSeg=True)
     H1, H_int1 = pydfa.fitFlucVec()
 
     assert math.isclose(H1, 0.7982194289592676)

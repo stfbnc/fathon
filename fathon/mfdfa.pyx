@@ -36,9 +36,9 @@ cdef class MFDFA:
         Time series used for the analysis.
     F : numpy ndarray
         Array containing the values of the fluctuations in every window.
-    list_H : numpy ndarray
+    listH : numpy ndarray
         Array containing the values of the slope of the fit at every q-order.
-    q_list : numpy ndarray
+    qList : numpy ndarray
         Array containing the values of the q-orders.
     nStep : int
         Value of the step between two consecutive window's sizes in `n`.
@@ -48,7 +48,7 @@ cdef class MFDFA:
 
     cdef:
         np.ndarray n
-        np.ndarray tsVec, F, list_H, q_list
+        np.ndarray tsVec, F, listH, qList
         int nStep
         bint isComputed
 
@@ -66,11 +66,11 @@ cdef class MFDFA:
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
 
-        self.q_list = q_list
+        self.qList = q_list
         self.nStep = nStep
-        vecn = np.arange(nMin, nMax+1, nStep, dtype=ctypes.c_int)
+        vecn = np.arange(nMin, nMax + 1, nStep, dtype=ctypes.c_int)
         nLen = len(vecn)
-        mtxf = np.zeros((len(q_list)*nLen, ), dtype=ctypes.c_double)
+        mtxf = np.zeros((len(q_list) * nLen, ), dtype=ctypes.c_double)
         vects = np.array(self.tsVec, dtype=ctypes.c_double)
         q_list_len = len(q_list)
         with nogil:
@@ -82,16 +82,16 @@ cdef class MFDFA:
                 for i in range(q_list_len):
                     for j in range(nLen):
                         mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
-        return vecn, np.reshape(mtxf, (len(self.q_list), nLen))
+        return vecn, np.reshape(mtxf, (len(self.qList), nLen))
 
-    def computeFlucVec(self, nMin, q_list, nMax=-999, polOrd=1, nStep=1, revSeg=False):
+    def computeFlucVec(self, nMin, qList, nMax=-999, polOrd=1, nStep=1, revSeg=False):
         """Computation of the fluctuations in every window for every q-order.
 
         Parameters
         ----------
         nMin : int
             Size of the smaller window used to compute `F`.
-        q_list : float or iterable or numpy ndarray
+        qList : float or iterable or numpy ndarray
             List of q-orders used to compute `F`.
         nMax : int, optional
             Size of the bigger window used to compute `F` (default : len(`tsVec`)/4)).
@@ -112,41 +112,47 @@ cdef class MFDFA:
         tsLen = len(self.tsVec)
 
         if polOrd < 1:
-            raise SystemExit('Error: Polynomial order must be greater than 0.')
+            raise ValueError('Error: Polynomial order must be greater than 0.')
         if nStep < 1:
-            raise SystemExit('Error: Step for scales must be greater than 0.')
+            raise ValueError('Error: Step for scales must be greater than 0.')
         if nMax == -999:
-            nMax = int(tsLen/4)
+            nMax = int(tsLen / 4)
         if nMax < 3 or nMin < 3:
-            raise SystemExit('Error: Variable nMin and nMax must be at least equal to 3.')
+            raise ValueError('Error: Variable nMin and nMax must be at least equal to 3.')
         if nMax <= nMin:
-            raise SystemExit('Error: Variable nMax must be greater than variable nMin.')
+            raise ValueError('Error: Variable nMax must be greater than variable nMin.')
         if nMax > tsLen:
-            raise SystemExit('Error: Variable nMax must be less than the input vector length.')
-        if nMin < (polOrd+2):
-            raise SystemExit('Error: Variable nMin must be at least equal to {}.'.format(polOrd+2))
+            raise ValueError('Error: Variable nMax must be less than the input vector length.')
+        if nMin < (polOrd + 2):
+            raise ValueError('Error: Variable nMin must be at least equal to {}.'.format(polOrd + 2))
 
-        if isinstance(q_list, float):
-            q_list = np.array([q_list], dtype=ctypes.c_double)
-        elif isinstance(q_list, list) or isinstance(q_list, np.ndarray):
-            q_list = np.array(q_list, dtype=ctypes.c_double)
+        if isinstance(qList, float):
+            qList = np.array([qList], dtype=ctypes.c_double)
+        elif isinstance(qList, list) or isinstance(qList, np.ndarray):
+            qList = np.array(qList, dtype=ctypes.c_double)
         else:
-            raise SystemExit('Error: q_list type is {}. Expected float, list, or numpy array.'.format(type(q_list)))
-        self.n, self.F = self.cy_computeFlucVec(tsLen, nMin, q_list, nMax, polOrd, nStep, revSeg)
+            raise ValueError('Error: q_list type is {}. Expected float, list, or numpy array.'.format(type(q_list)))
+            
+        self.n, self.F = self.cy_computeFlucVec(tsLen, nMin, qList, nMax, polOrd, nStep, revSeg)
         self.isComputed = True
+        
         return self.n, self.F
 
     @cython.boundscheck(False)
     @cython.nonecheck(False)
-    cpdef fitFlucVec(self, int n_start=-999, int n_end=-999):
+    cpdef fitFlucVec(self, int nStart=-999, int nEnd=-999, float logBase=np.e, bint verbose=False):
         """Fit of the fluctuations values.
 
         Parameters
         ----------
-        n_start : int, optional
+        nStart : int, optional
             Size of the smaller window used to fit `F` at every q-order (default : first value of `n`).
-        n_end : int, optional
+        nEnd : int, optional
             Size of the bigger window used to fit `F` at every q-order (default : last value of `n`).
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -160,31 +166,35 @@ cdef class MFDFA:
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit, list_H_intercept
 
         if self.isComputed:
-            if n_start == -999:
-                n_start = self.n[0]
-            if n_end == -999:
-                n_end = self.n[-1]
-            if n_start > n_end:
-                raise SystemExit('Error: Variable n_end must be greater than variable n_start.')
-            if (n_start < self.n[0]) or (n_end > self.n[-1]):
-                raise SystemExit('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
-            if (n_start not in self.n) or (n_end not in self.n):
-                raise SystemExit('Error: Fit limits must be included in the n vector.')
+            if nStart == -999:
+                nStart = self.n[0]
+            if nEnd == -999:
+                nEnd = self.n[-1]
+            if nStart > nEnd:
+                raise ValueError('Error: Variable nEnd must be greater than variable nStart.')
+            if (nStart < self.n[0]) or (nEnd > self.n[-1]):
+                raise ValueError('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
+            if (nStart not in self.n) or (nEnd not in self.n):
+                raise ValueError('Error: Fit limits must be included in the n vector.')
 
-            qLen = len(self.q_list)
-            start = int((n_start - self.n[0]) / self.nStep)
-            end = int((n_end - self.n[0]) / self.nStep)
-            self.list_H = np.zeros((qLen, ), dtype=ctypes.c_double)
+            qLen = len(self.qList)
+            start = int((nStart - self.n[0]) / self.nStep)
+            end = int((nEnd - self.n[0]) / self.nStep)
+            self.listH = np.zeros((qLen, ), dtype=ctypes.c_double)
             list_H_intercept = np.zeros((qLen, ), dtype=ctypes.c_double)
-            print('Fit limits: [{}, {}]'.format(n_start, n_end))
+            if verbose:
+                print('Fit limits: [{}, {}]'.format(nStart, nEnd))
+                
             for i in range(qLen):
-                log_fit = np.polyfit(np.log(self.n[start:end+1]) , np.log(self.F[i, start:end+1]), 1)
-                self.list_H[i] = log_fit[0]
+                log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase) , np.log(self.F[i, start:end+1]) / np.log(logBase), 1)
+                self.listH[i] = log_fit[0]
                 list_H_intercept[i] = log_fit[1]
-                print('Fit result for q = {:.2f}: H_intercept = {:.2f}, H = {:.2f}'.format(self.q_list[i], list_H_intercept[i], self.list_H[i]))
-            return self.list_H, list_H_intercept
+                if verbose:
+                    print('Fit result for q = {:.2f}: H intercept = {:.2f}, H = {:.2f}'.format(self.qList[i], list_H_intercept[i], self.listH[i]))
+                    
+            return self.listH, list_H_intercept
         else:
-            raise SystemExit('Error: Fluctuations vector has not been computed yet.')
+            print('Nothing to fit, fluctuations vector has not been computed yet.')
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -200,10 +210,11 @@ cdef class MFDFA:
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] tau
 
         if self.isComputed:
-            tau = self.list_H * self.q_list - 1
+            tau = self.listH * self.qList - 1
+            
             return tau
         else:
-            raise SystemExit('Error: Fluctuations vector has not been computed yet.')
+            print('Nothing to fit, fluctuations vector has not been computed yet.')
 
     @cython.boundscheck(False)
     @cython.nonecheck(False)
@@ -220,12 +231,13 @@ cdef class MFDFA:
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] tau, alpha, mfSpect
 
         if self.isComputed:
-            if len(self.q_list) > 1:
+            if len(self.qList) > 1:
                 tau = self.computeMassExponents()
-                alpha = np.diff(tau) / (self.q_list[1] - self.q_list[0])
-                mfSpect = self.q_list[0:-1] * alpha - tau[0:-1]
+                alpha = np.diff(tau) / (self.qList[1] - self.qList[0])
+                mfSpect = self.qList[0:-1] * alpha - tau[0:-1]
+                
                 return alpha, mfSpect
             else:
-                raise SystemExit('Error: Number of q moments must be greater than one to compute multifractal spectrum.')
+                raise ValueError('Error: Number of q moments must be greater than one to compute multifractal spectrum.')
         else:
-            raise SystemExit('Error: Fluctuations vector has not been computed yet.')
+            print('Nothing to fit, fluctuations vector has not been computed yet.')

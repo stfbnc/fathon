@@ -5,8 +5,8 @@ mkdir ./fathon/gsl_tmp
 
 ## install GSL
 cd ./fathon/gsl
-#./configure CFLAGS=-fPIC --prefix=$PWD/../gsl_tmp
-./configure --prefix=$PWD/../gsl_tmp -Wl,--rpath=$ORIGIN/3rd_party/gsl/lib/
+./configure CFLAGS=-fPIC --prefix=$PWD/../gsl_tmp
+#./configure --prefix=$PWD/../gsl_tmp -Wl,-rpath=$ORIGIN/3rd_party/gsl/lib/
 make
 make install
 
@@ -17,6 +17,6 @@ rm -rf gsl
 ## copy header files and libs
 mv gsl_tmp/include 3rd_party/gsl
 mkdir 3rd_party/gsl/lib
-#mv gsl_tmp/lib/*.a 3rd_party/gsl/lib
-mv gsl_tmp/lib/* 3rd_party/gsl/lib
+mv gsl_tmp/lib/*.a 3rd_party/gsl/lib
+#mv gsl_tmp/lib/* 3rd_party/gsl/lib
 rm -rf gsl_tmp
