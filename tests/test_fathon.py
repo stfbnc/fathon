@@ -217,7 +217,7 @@ def test_dfa_pow_count():
     assert math.isclose(H1, 0.8465301940909294)
 
 #####
-# Regression test 1.3
+# Regression test 1.4
 # It tests if the Hurst exponent of `ts1` is correct
 # using different log bases
 #####

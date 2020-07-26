@@ -46,8 +46,8 @@ cdef class HT:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd, int mfdfaPolOrd, bint verbose):
-        cdef int htRowLen, tsLen, scale, mfdfa_step
+    cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd, int mfdfaPolOrd, np.ndarray[np.float64_t, ndim=1, mode='c'] q0Fit, bint verbose):
+        cdef int htRowLen, tsLen, scale#, mfdfa_step
         cdef Py_ssize_t i, j
         cdef double H0, H0_intercept
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] vects, vecht
@@ -56,20 +56,33 @@ cdef class HT:
         htRowLen = tsLen - min(scales) + 1
         vects = np.array(self.tsVec, dtype=ctypes.c_double)
         vecht = np.zeros((htRowLen * len(scales), ), dtype=ctypes.c_double)
-        mfdfa_step = int(tsLen / 100) if tsLen > 100 else 1
+        #mfdfa_step = int(tsLen / 100) if tsLen > 100 else 1
+        
+        if len(q0Fit) == 0:
+            pymfdfa = mfdfa.MFDFA(self.tsVec)
+            _, _ = pymfdfa.computeFlucVec(fu.linRangeByCount(10, int(tsLen / 4), step=20), 0.0, revSeg=True, polOrd=mfdfaPolOrd)
+            H0, H0_intercept = pymfdfa.fitFlucVec(verbose=verbose)
+        else:
+            if verbose:
+                print('Variable q0Fit assigned, variable mfdfaPolOrd will be ignored.')
+            H0 = q0Fit[0]
+            H0_intercept = q0Fit[1]
         
         if verbose:
             print('-----')
         for i, scale in enumerate(scales):
-            for j in prange(tsLen - scale + 1, nogil=True):
-               vecht[i*htRowLen+j] = HTCompute(&vects[0], scale, tsLen, polOrd, j)
-               
-            pymfdfa = mfdfa.MFDFA(self.tsVec)
             if verbose:
                 print('scale = {}'.format(scale))
                 
-            _, _ = pymfdfa.computeFlucVec(fu.linRangeByStep(10, int(tsLen/4), step=mfdfa_step), 0.0, revSeg=True, polOrd=mfdfaPolOrd)
-            H0, H0_intercept = pymfdfa.fitFlucVec()
+            for j in prange(tsLen - scale + 1, nogil=True):
+               vecht[i*htRowLen+j] = HTCompute(&vects[0], scale, tsLen, polOrd, j)
+               
+            #pymfdfa = mfdfa.MFDFA(self.tsVec)
+            #if verbose:
+            #    print('scale = {}'.format(scale))
+                
+            #_, _ = pymfdfa.computeFlucVec(fu.linRangeByStep(10, int(tsLen/4), step=mfdfa_step), 0.0, revSeg=True, polOrd=mfdfaPolOrd)
+            #H0, H0_intercept = pymfdfa.fitFlucVec(verbose=verbose)
             if verbose:
                 print('-----')
                 
@@ -79,8 +92,8 @@ cdef class HT:
                     
         return np.reshape(vecht, (len(scales), htRowLen))
 		
-    def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1, verbose=False):
-        """Computation of the time-dependent local Hurst exponent at every scale.
+    def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1, q0Fit=[], verbose=False):
+        """Computation of the time-dependent local Hurst exponent at every scale, using Ihlen's approach.
         
         Parameters
         ----------
@@ -90,6 +103,8 @@ cdef class HT:
             Order of the polynomial to be fitted in every window (default : 1).
         mfdfaPolOrd : int, optional
             Order of the polynomial to be fitted to MFDFA's fluctuations at q = 0 (default : 1).
+        q0Fit : iterable or numpy ndarray of floats, optional
+            MFDFA's Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept]. These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly used to compute the time-dependent local Hurst exponent, ignoring `mfdfaPolOrd` value (default : []).
         verbose : bool, optional
             Verbosity (default : False).
 
@@ -102,6 +117,10 @@ cdef class HT:
             raise ValueError('Error: Polynomial order must be greater than 0.')
         if mfdfaPolOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
+        if len(q0Fit) == 1 or len(q0Fit) > 2:
+            raise ValueError('Error: List q0Fit must have length 2.')
+        if len(q0Fit) == 2 and q0Fit[0] <= 0.0:
+            raise ValueError('Error: First element of q0Fit must be greater than 0.')
 
         if isinstance(scales, int):
             if scales < 3:
@@ -116,6 +135,6 @@ cdef class HT:
         else:
             raise ValueError('Error: scales type is {}. Expected int, list, or numpy array.'.format(type(scales)))
             
-        ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd, verbose)
+        ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd, q0Fit, verbose)
         
         return ht
