@@ -124,17 +124,18 @@ cdef class HT:
 
         if isinstance(scales, int):
             if scales < 3:
-                raise ValueError('Error: Every scale at least equal to 3.')
+                raise ValueError('Error: Every scale must be at least equal to 3.')
             else:
                 scales = np.array([scales], dtype=ctypes.c_int)
         elif isinstance(scales, list) or isinstance(scales, np.ndarray):
             for scale in scales:
                 if scale < 3:
-                    raise ValueError('Error: Every scale at least equal to 3.')
+                    raise ValueError('Error: Every scale must be at least equal to 3.')
             scales = np.array(scales, dtype=ctypes.c_int)
         else:
             raise ValueError('Error: scales type is {}. Expected int, list, or numpy array.'.format(type(scales)))
-            
+         
+        q0Fit = np.array(q0Fit, dtype=ctypes.c_double)
         ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd, q0Fit, verbose)
         
         return ht
