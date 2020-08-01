@@ -10,7 +10,9 @@
 #    GNU General Public License for more details.
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-class DFA():
+import numpy as np
+import ctypes
+class DFA:
     """Detrended Fluctuation Analysis class.
 
     Parameters
@@ -21,8 +23,6 @@ class DFA():
         Time series used for the analysis.
     F : numpy ndarray
         Array containing the values of the fluctuations in every window.
-    nStep : int
-        Value of the step between two consecutive window's sizes in `n`.
     isComputed : bool
         Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
     """
@@ -30,19 +30,15 @@ class DFA():
     def __init__(self, tsVec):
     	pass
 
-    def computeFlucVec(self, nMin, nMax=-999, polOrd=1, nStep=1, revSeg=False):
+    def computeFlucVec(self, winSizes, polOrd=1, revSeg=False):
         """Computation of the fluctuations in every window.
 
         Parameters
         ----------
-        nMin : int
-            Size of the smaller window used to compute `F`.
-        nMax : int, optional
-            Size of the bigger window used to compute `F` (default : len(`tsVec`)/4)).
+        winSizes : numpy ndarray
+            Array of window's sizes.
         polOrd : int, optional
             Order of the polynomial to be fitted in every window (default : 1).
-        nStep : int, optional
-            Step between two consecutive window's sizes (default : 1).
         revSeg : bool, optional
             If True, the computation of `F` is repeated starting from the end of the time series (default : False).
 
@@ -55,15 +51,19 @@ class DFA():
         """
         return 0
 
-    def fitFlucVec(self, n_start=-999, n_end=-999):
+    def fitFlucVec(self, nStart=-999, nEnd=-999, logBase=np.e, verbose=False):
         """Fit of the fluctuations values.
 
         Parameters
         ----------
-        n_start : int, optional
+        nStart : int, optional
             Size of the smaller window used to fit `F` (default : first value of `n`).
-        n_end : int, optional
+        nEnd : int, optional
             Size of the bigger window used to fit `F` (default : last value of `n`).
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -74,13 +74,17 @@ class DFA():
         """
         return 0
 
-    def multiFitFlucVec(self, limits_list):
+    def multiFitFlucVec(self, limitsList, logBase=np.e, verbose=False):
         """Fit of the fluctuations values in different intervals at the same time.
 
         Parameters
         ----------
-        limits_list : numpy ndarray
+        limitsList : numpy ndarray
             kx2 array with the sizes of k starting and ending windows used to fit `F`.
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------

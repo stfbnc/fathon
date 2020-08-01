@@ -36,8 +36,6 @@ cdef class DFA:
         Time series used for the analysis.
     F : numpy ndarray
         Array containing the values of the fluctuations in every window.
-    nStep : int
-        Value of the step between two consecutive `n` elements.
     isComputed : bool
         Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
     """

@@ -10,6 +10,9 @@
 #    GNU General Public License for more details.
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import numpy as np
+import ctypes
+import warnings
 class DCCA:
     """Detrended Cross-Correlation Analysis class.
 
@@ -23,8 +26,6 @@ class DCCA:
         Second time series used for the analysis.
     F : numpy ndarray
         Array containing the values of the fluctuations in every window.
-    nStep : int
-        Value of the step between two consecutive window's sizes in `n`.
     isComputed : bool
         Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
     """
@@ -32,19 +33,15 @@ class DCCA:
     def __init__(self, tsVec1=[], tsVec2=[]):
     	pass
 
-    def computeFlucVec(self, nMin, nMax=-999, polOrd=1, nStep=1, absVals=True):
+    def computeFlucVec(self, winSizes, polOrd=1, absVals=True):
         """Computation of the fluctuations in every window.
 
         Parameters
         ----------
-        nMin : int
-            Size of the smaller window used to compute `F`.
-        nMax : int, optional
-            Size of the bigger window used to compute `F` (default : len(`tsVec`)/4)).
+        winSizes : numpy ndarray
+            Array of window's sizes.
         polOrd : int, optional
             Order of the polynomial to be fitted in every window (default : 1).
-        nStep : int, optional
-            Step between two consecutive window's sizes (default : 1).
         absVals : bool, optional
             If True, the computation of `F` is performed using the abolute values of the fluctuations of both `tsVec1` and `tsVec2` (default : True).
 
@@ -57,15 +54,19 @@ class DCCA:
         """
         return 0
 
-    def fitFlucVec(self, n_start=-999, n_end=-999):
+    def fitFlucVec(self, nStart=-999, nEnd=-999, logBase=np.e, verbose=False):
         """Fit of the fluctuations values.
 
         Parameters
         ----------
-        n_start : int, optional
+        nStart : int, optional
             Size of the smaller window used to fit `F` (default : first value of `n`).
-        n_end : int, optional
+        nEnd : int, optional
             Size of the bigger window used to fit `F` (default : last value of `n`).
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -76,13 +77,17 @@ class DCCA:
         """
         return 0
 
-    def multiFitFlucVec(self, limits_list):
+    def multiFitFlucVec(self, limitsList, logBase=np.e, verbose=False):
         """Fit of the fluctuations values in different intervals at the same time.
 
         Parameters
         ----------
-        limits_list : numpy ndarray
+        limitsList : numpy ndarray
             kx2 array with the sizes of k starting and ending windows used to fit `F`.
+        logBase : float, optional
+            Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -93,19 +98,17 @@ class DCCA:
         """
         return 0
 
-    def computeRho(self, nMin, nMax=-999, polOrd=1, nStep=1):
+    def computeRho(self, winSizes, polOrd=1, verbose=False):
         """Computation of the cross-correlation index in every window.
 
         Parameters
         ----------
-        nMin : int
-            Size of the smaller window used to compute the cross-correlation index.
-        nMax : int, optional
-            Size of the bigger window used to compute the cross-correlation index (default : len(`tsVec`)/4)).
+        winSizes : numpy ndarray
+            Array of window's sizes.
         polOrd : int, optional
             Order of the polynomial to be fitted in every window (default : 1).
-        nStep : int, optional
-            Step between two consecutive window's sizes (default : 1).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------
@@ -116,25 +119,23 @@ class DCCA:
         """
         return 0
 
-    def rhoThresholds(self, L, nMin, nMax, nSim, confLvl, polOrd=1, nStep=1):
+    def rhoThresholds(self, winSizes, nSim, confLvl, polOrd=1, verbose=False):
         """Computation of the cross-correlation index's confidence levels in every window.
 
         Parameters
         ----------
         L : int
             Size of the random time series used to evaluate confidence levels.
-        nMin : int
-            Size of the smaller window used to compute the cross-correlation index.
-        nMax : int
-            Size of the bigger window used to compute the cross-correlation index.
+        winSizes : numpy ndarray
+            Array of window's sizes.
         nSim : int
             Number of times the cross-correlation index between two random time series is computed in order to evaluate the confidence levels.
         confLvl : float
             Confidence level.
         polOrd : int, optional
             Order of the polynomial to be fitted in every window (default : 1).
-        nStep : int, optional
-            Step between two consecutive window's sizes (default : 1).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------

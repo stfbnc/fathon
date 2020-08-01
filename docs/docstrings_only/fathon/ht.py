@@ -10,6 +10,11 @@
 #    GNU General Public License for more details.
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import numpy as np
+from cython.parallel import prange
+import ctypes
+from . import mfdfa
+from . import fathonUtils as fu
 class HT:
     """Time-dependent local Hurst exponent class.
     
@@ -22,8 +27,8 @@ class HT:
     def __init__(self, tsVec):
     	pass
 
-    def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1):
-        """Computation of the time-dependent local Hurst exponent at every scale.
+    def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1, q0Fit=[], verbose=False):
+        """Computation of the time-dependent local Hurst exponent at every scale, using Ihlen's approach.
         
         Parameters
         ----------
@@ -33,6 +38,10 @@ class HT:
             Order of the polynomial to be fitted in every window (default : 1).
         mfdfaPolOrd : int, optional
             Order of the polynomial to be fitted to MFDFA's fluctuations at q = 0 (default : 1).
+        q0Fit : iterable or numpy ndarray of floats, optional
+            MFDFA's Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept]. These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly used to compute the time-dependent local Hurst exponent, ignoring `mfdfaPolOrd` value (default : []).
+        verbose : bool, optional
+            Verbosity (default : False).
 
         Returns
         -------

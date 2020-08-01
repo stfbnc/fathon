@@ -17,17 +17,19 @@ Usage examples
 
    import numpy as np
    import fathon
+   from fathon import fathonUtils as fu
 
    #time series
    a = np.random.randn(10000)
 
    #zero-mean cumulative sum
-   a = fathon.toAggregated(a)
+   a = fu.toAggregated(a)
 
    #initialize dfa object
    pydfa = fathon.DFA(a)
    #compute fluctuation function and Hurst exponent
-   n, F = pydfa.computeFlucVec(10, nMax=2000, revSeg=True, nStep=1, polOrd=3)
+   wins = fu.linRangeByStep(10, 2000)
+   n, F = pydfa.computeFlucVec(wins, revSeg=True, polOrd=3)
    H, H_intercept = pydfa.fitFlucVec()
 
    #compute Hurst exponent in different ranges

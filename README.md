@@ -36,7 +36,7 @@ It is mostly written in Cython and C in order to speed up computations.
 
 As easy as `pip install fathon`
 
-###Examples
+### Examples
 
 A jupyter notebook can be used (<code>fathon_example.ipynb</code>) to play with the four algorithms provided by the `fathon` package.
 

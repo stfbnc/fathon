@@ -146,7 +146,7 @@ def test_mat_mfdfa_mf():
 
 # REGRESSION TESTS
 # ----------------
-# - the element of the array tested in tests 2-5,7 has no
+# - the element of the array tested in tests 2-5,7,8 has no
 #   particular meaning, it was just chosen randomly.
 # - the numbers to which results are tested against have
 #   been produced by fathon and have many significant figures
@@ -313,4 +313,16 @@ def test_ht():
     scales = [10, 100]
     ht = pyht.computeHt(scales, mfdfaPolOrd=3)
     
-    assert math.isclose(ht[0, 42], 0.7309239957968274) and math.isclose(ht[1, 12], 0.6966701052592185)
+    assert math.isclose(ht[0, 42], 0.7091788895838137) and math.isclose(ht[1, 12], 0.5758723286513718)
+    
+#####
+# Regression test 8
+# It tests if the fortysecond element at scale 10 and the twelfth at
+# scale 100 of the local Hurst exponent of `ts2` are correct
+#####
+def test_ht_hq0():
+    pyht = fathon.HT(ts2)
+    scales = [10, 100]
+    ht = pyht.computeHt(scales, mfdfaPolOrd=1, q0Fit=[0.5, -0.2])
+    
+    assert math.isclose(ht[0, 42], 0.9576568128926679) and math.isclose(ht[1, 12], 3.1007577894168263)

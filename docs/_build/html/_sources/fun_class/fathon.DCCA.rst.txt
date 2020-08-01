@@ -19,19 +19,21 @@ Usage examples
 
    import numpy as np
    import fathon
+   from fathon import fathonUtils as fu
 
    #time series
    a = np.random.randn(10000)
    b = np.random.randn(10000)
 
    #zero-mean cumulative sum
-   a = fathon.toAggregated(a)
-   b = fathon.toAggregated(b)
+   a = fu.toAggregated(a)
+   b = fu.toAggregated(b)
 
    #initialize non-empty dcca object
    pydcca = fathon.DCCA(a, b)
    #compute fluctuation function and Hurst exponent
-   n, F = pydcca.computeFlucVec(20, nMax=1000, nStep=50, polOrd=1)
+   wins = fu.linRangeByStep(20, 100, step=50)
+   n, F = pydcca.computeFlucVec(wins, polOrd=1)
    H, H_intercept = pydcca.fitFlucVec()
 
    #compute Hurst exponent in different ranges
@@ -39,10 +41,12 @@ Usage examples
    list_H, list_H_intercept = pydcca.multiFitFlucVec(limits_list)
 
    #compute rho index
-   n, rho = pydcca.computeRho(20, nMax=1000, nStep=50, polOrd=1)
+   wins = fu.linRangeByStep(20, 100, step=50)
+   n, rho = pydcca.computeRho(wins, polOrd=1)
 
    #initialize empty dcca object
    pythresh = fathon.DCCA()
    #compute confidence levels
-   n, cInt1, cInt2 = pythresh.rhoThresholds(300, 4, 100, 100, 0.95, polOrd=1, nStep=1)
+   wins = fu.linRangeByStep(4, 100)
+   n, cInt1, cInt2 = pythresh.rhoThresholds(300, wins, 100, 0.95, polOrd=1)
 

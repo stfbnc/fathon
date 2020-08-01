@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>powRangeByStep &#8212; fathon  documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="powRangeByCount" href="fathonUtils.powRangeByCount.html" />
+    <link rel="prev" title="linRangeByCount" href="fathonUtils.linRangeByCount.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="fathonUtils.powRangeByCount.html" title="powRangeByCount"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fathonUtils.linRangeByCount.html" title="linRangeByCount"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">fathon  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../fathon.fathonUtils.html" accesskey="U">fathonUtils</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="powrangebystep">
+<h1>powRangeByStep<a class="headerlink" href="#powrangebystep" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="fathon.fathonUtils.powRangeByStep">
+<code class="sig-prename descclassname">fathon.fathonUtils.</code><code class="sig-name descname">powRangeByStep</code><span class="sig-paren">(</span><em class="sig-param">start</em>, <em class="sig-param">end</em>, <em class="sig-param">step=1</em>, <em class="sig-param">base=2</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.fathonUtils.powRangeByStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array of elements given by <cite>base</cite> raised to linearly separated exponents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>start</strong><span class="classifier">int</span></dt><dd><p>Smallest element.</p>
+</dd>
+<dt><strong>end</strong><span class="classifier">int</span></dt><dd><p>Biggest element.</p>
+</dd>
+<dt><strong>step</strong><span class="classifier">int</span></dt><dd><p>Step between two consecutive exponents (default : 1).</p>
+</dd>
+<dt><strong>base</strong><span class="classifier">int</span></dt><dd><p>Base of the exponential (default : 2).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="usage-examples">
+<h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
+
+<span class="c1">#elements given by `base` raised to linearly separated exponents</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">fu</span><span class="o">.</span><span class="n">powRangeByStep</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">powRangeByStep</a><ul>
+<li><a class="reference internal" href="#usage-examples">Usage examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fathonUtils.linRangeByCount.html"
+                        title="previous chapter">linRangeByCount</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fathonUtils.powRangeByCount.html"
+                        title="next chapter">powRangeByCount</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/fun_class/fu/fathonUtils.powRangeByStep.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="fathonUtils.powRangeByCount.html" title="powRangeByCount"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fathonUtils.linRangeByCount.html" title="linRangeByCount"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">fathon  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../fathon.fathonUtils.html" >fathonUtils</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019-2020, Stefano Bianchi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

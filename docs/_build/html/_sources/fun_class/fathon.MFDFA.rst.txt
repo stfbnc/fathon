@@ -18,17 +18,19 @@ Usage examples
 
    import numpy as np
    import fathon
+   from fathon import fathonUtils as fu
 
    #time series
    a = np.random.randn(10000)
 
    #zero-mean cumulative sum
-   a = fathon.toAggregated(a)
+   a = fu.toAggregated(a)
 
    #initialize mfdfa object
    pymfdfa = fathon.MFDFA(a)
    #compute fluctuation function and generalized Hurst exponents
-   n, F = pymfdfa.computeFlucVec(10, np.arange(-3, 4, 0.1), nMax=2000, revSeg=True, nStep=1, polOrd=1)
+   wins = fu.linRangeByStep(10, 2000)
+   n, F = pymfdfa.computeFlucVec(wins, np.arange(-3, 4, 0.1), revSeg=True, polOrd=1)
    list_H, list_H_intercept = pymfdfa.fitFlucVec()
 
    #compute mass exponents

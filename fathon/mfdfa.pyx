@@ -40,8 +40,6 @@ cdef class MFDFA:
         Array containing the values of the slope of the fit at every q-order.
     qList : numpy ndarray
         Array containing the values of the q-orders.
-    nStep : int
-        Value of the step between two consecutive window's sizes in `n`.
     isComputed : bool
         Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
     """

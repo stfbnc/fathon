@@ -1,32 +1,21 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>HT &#8212; fathon  documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="DCCA" href="fathon.DCCA.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -49,65 +38,58 @@
 <h1>HT<a class="headerlink" href="#ht" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="fathon.HT">
-<em class="property">class </em><code class="descclassname">fathon.</code><code class="descname">HT</code><span class="sig-paren">(</span><em>tsVec</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">fathon.</code><code class="sig-name descname">HT</code><span class="sig-paren">(</span><em class="sig-param">tsVec</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Time-dependent local Hurst exponent class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>tsVec</strong> : iterable</p>
-<blockquote class="last">
-<div><p>Time series used for the analysis.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tsVec</strong><span class="classifier">iterable</span></dt><dd><p>Time series used for the analysis.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="method">
 <dt id="fathon.HT.computeHt">
-<code class="descname">computeHt</code><span class="sig-paren">(</span><em>scales</em>, <em>polOrd=1</em>, <em>mfdfaPolOrd=1</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT.computeHt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computation of the time-dependent local Hurst exponent at every scale.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>scales</strong> : int or iterable or numpy ndarray</p>
-<blockquote>
-<div><p>Window’s sizes used for the computation of the time-dependent local Hurst exponent.</p>
-</div></blockquote>
-<p><strong>polOrd</strong> : int, optional</p>
-<blockquote>
-<div><p>Order of the polynomial to be fitted in every window (default : 1).</p>
-</div></blockquote>
-<p><strong>mfdfaPolOrd</strong> : int, optional</p>
-<blockquote>
-<div><p>Order of the polynomial to be fitted to MFDFA’s fluctuations at q = 0 (default : 1).</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">numpy ndarray</p>
-<blockquote class="last">
-<div><p>Time-dependent local Hurst exponent.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">computeHt</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">scales</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">mfdfaPolOrd=1</em>, <em class="sig-param">q0Fit=[]</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT.computeHt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computation of the time-dependent local Hurst exponent at every scale, using Ihlen’s approach.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>scales</strong><span class="classifier">int or iterable or numpy ndarray</span></dt><dd><p>Window’s sizes used for the computation of the time-dependent local Hurst exponent.</p>
+</dd>
+<dt><strong>polOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted in every window (default : 1).</p>
+</dd>
+<dt><strong>mfdfaPolOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted to MFDFA’s fluctuations at q = 0 (default : 1).</p>
+</dd>
+<dt><strong>q0Fit</strong><span class="classifier">iterable or numpy ndarray of floats, optional</span></dt><dd><p>MFDFA’s Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept]. These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPolOrd</cite> value (default : []).</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool, optional</span></dt><dd><p>Verbosity (default : False).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>numpy ndarray</dt><dd><p>Time-dependent local Hurst exponent.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <div class="section" id="usage-examples">
 <h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fathon</span>
+<span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
 
 <span class="c1">#time series</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
 
 <span class="c1">#zero-mean cumulative sum</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">fathon</span><span class="o">.</span><span class="n">toAggregated</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">fu</span><span class="o">.</span><span class="n">toAggregated</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 
 <span class="c1">#initialize ht object</span>
 <span class="n">pyht</span> <span class="o">=</span> <span class="n">fathon</span><span class="o">.</span><span class="n">HT</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -124,7 +106,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">HT</a><ul>
 <li><a class="reference internal" href="#usage-examples">Usage examples</a></li>
@@ -143,13 +125,13 @@
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -169,8 +151,8 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Stefano Bianchi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
+        &#169; Copyright 2019-2020, Stefano Bianchi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>
 </html>
