@@ -60,7 +60,7 @@ cdef class HT:
         
         if len(q0Fit) == 0:
             pymfdfa = mfdfa.MFDFA(self.tsVec)
-            _, _ = pymfdfa.computeFlucVec(fu.linRangeByCount(10, int(tsLen / 4), step=20), 0.0, revSeg=True, polOrd=mfdfaPolOrd)
+            _, _ = pymfdfa.computeFlucVec(fu.linRangeByCount(10, int(tsLen / 4), count=20), 0.0, revSeg=True, polOrd=mfdfaPolOrd)
             H0, H0_intercept = pymfdfa.fitFlucVec(verbose=verbose)
         else:
             if verbose:
