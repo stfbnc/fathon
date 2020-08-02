@@ -18,7 +18,7 @@ import platform
 import os
 init_dir = os.path.dirname(os.path.abspath(__file__))
 if platform.system() == "Linux":
-    cmd = "cp " + init_dir + "/3rd_party/gsl/lib/*.so " + init_dir + "/../fathon.libs"
+    cmd = "cp " + init_dir + "/3rd_party/gsl/lib/*.so* " + init_dir + "/../fathon.libs"
     os.system(cmd)
     
 from .dfa import DFA
