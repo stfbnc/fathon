@@ -77,12 +77,12 @@ if __name__ == "__main__":
             readme_file.close()
 
             setup(name="fathon",
-                  version="0.1.2.post14",
+                  version="0.1.2.post15",
                   author="Stefano Bianchi",
                   author_email="fathon.package@gmail.com",
                   url="https://github.com/stfbnc/fathon.git",
                   license="GPLv3.0",
-                  description="pyhton package for detrended fluctuation analysis (DFA) and related algorithms.",
+                  description="A pyhton package for detrended fluctuation analysis (DFA) and related algorithms.",
                   long_description_content_type="text/markdown",
                   long_description=README,
                   packages=find_packages(),
@@ -104,6 +104,10 @@ if __name__ == "__main__":
                   ext_modules=cythonize(extensions),
                   package_data={"fathon": ["LICENSE"]},
                   include_package_data=True)
+            
+            if running_os == "Linux":
+                cmd_dfa = "patchelf --set-rpath '$ORIGIN/../fathon.libs:$ORIGIN/3rd_party/gsl/lib' dfa.cpython*.so"
+                os.system(cmd_dfa)
 
         else:
             sys.exit("fathon is not available on Windows.")
