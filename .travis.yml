@@ -5,7 +5,8 @@ branches:
 env:
   global:
     - CIBW_BUILD_VERBOSITY=3
-    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
+#    - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
+    - CIBW_BUILD="cp37-*"
     - CIBW_SKIP: "*-manylinux_i686"
     - CIBW_TEST_REQUIRES=pytest
     - CIBW_TEST_COMMAND="pytest {project}/tests"
@@ -22,10 +23,10 @@ matrix:
       services:
         - docker
     # ======= macOS ========
-    - name: "Python 3.7 on macOS 10.14"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+#    - name: "Python 3.7 on macOS 10.14"
+#      os: osx
+#      osx_image: xcode10.2
+#      language: shell
 
 before_install:
   - python3 --version

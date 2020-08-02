@@ -6,7 +6,7 @@
 
 
 
-:warning::warning: At the moment, `fathon` is only available for Linux and macOS :warning::warning:
+:warning::warning: At the moment, `fathon` is only available for Linux (64 bit) and macOS :warning::warning:
 
 `fathon` is a python package for DFA (*Detrended Fluctuation Analysis*) and related algorithms.
 
