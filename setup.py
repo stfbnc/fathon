@@ -106,7 +106,8 @@ if __name__ == "__main__":
                   include_package_data=True)
             
             if running_os == "Linux":
-                print("####### PATCHELF ####### -- {}".format(os.system("ls")))
+                print("####### PATCHELF #######")
+                os.system("ls fathon")
                 cmd_dfa = "patchelf --set-rpath '$ORIGIN/../fathon.libs:$ORIGIN/3rd_party/gsl/lib' fathon/dfa.cpython*.so"
                 os.system(cmd_dfa)
 
