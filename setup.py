@@ -104,13 +104,7 @@ if __name__ == "__main__":
                   ext_modules=cythonize(extensions),
                   package_data={"fathon": ["LICENSE"]},
                   include_package_data=True)
-            
-            if running_os == "Linux":
-                print("####### PATCHELF #######")
-                os.system("ls /project/fathon")
-                cmd_dfa = "patchelf --set-rpath '$ORIGIN/../fathon.libs:$ORIGIN/3rd_party/gsl/lib' fathon/dfa.cpython*.so"
-                os.system(cmd_dfa)
-
+                
         else:
             sys.exit("fathon is not available on Windows.")
     else:

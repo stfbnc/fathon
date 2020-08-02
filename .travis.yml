@@ -30,7 +30,6 @@ matrix:
 
 before_install:
   - python3 --version
-  - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get -y install patchelf; fi
 
 install:
   - pip3 install --upgrade cibuildwheel

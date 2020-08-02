@@ -14,6 +14,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import platform
+import os
+if platform.system() == "Linux":
+    os.system("cp *.cpython*.so ../fathon.libs")
+    
+
 from .dfa import DFA
 from .mfdfa import MFDFA
 from .dcca import DCCA
@@ -23,6 +29,6 @@ from .ht import HT
     and related algorithms.
 """
 
-__version__ = '0.1.2'
+__version__ = '1.0'
 __author__ = 'Stefano Bianchi'
 __git_repo__ = 'https://github.com/stfbnc/fathon'
