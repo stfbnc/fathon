@@ -47,7 +47,7 @@ cdef class HT:
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd, int mfdfaPolOrd, np.ndarray[np.float64_t, ndim=1, mode='c'] q0Fit, bint verbose):
-        cdef int htRowLen, tsLen, scale#, mfdfa_step
+        cdef int htRowLen, tsLen, scale
         cdef Py_ssize_t i, j
         cdef double H0, H0_intercept
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] vects, vecht
@@ -56,7 +56,6 @@ cdef class HT:
         htRowLen = tsLen - min(scales) + 1
         vects = np.array(self.tsVec, dtype=ctypes.c_double)
         vecht = np.zeros((htRowLen * len(scales), ), dtype=ctypes.c_double)
-        #mfdfa_step = int(tsLen / 100) if tsLen > 100 else 1
         
         if len(q0Fit) == 0:
             pymfdfa = mfdfa.MFDFA(self.tsVec)
@@ -77,12 +76,6 @@ cdef class HT:
             for j in prange(tsLen - scale + 1, nogil=True):
                vecht[i*htRowLen+j] = HTCompute(&vects[0], scale, tsLen, polOrd, j)
                
-            #pymfdfa = mfdfa.MFDFA(self.tsVec)
-            #if verbose:
-            #    print('scale = {}'.format(scale))
-                
-            #_, _ = pymfdfa.computeFlucVec(fu.linRangeByStep(10, int(tsLen/4), step=mfdfa_step), 0.0, revSeg=True, polOrd=mfdfaPolOrd)
-            #H0, H0_intercept = pymfdfa.fitFlucVec(verbose=verbose)
             if verbose:
                 print('-----')
                 
