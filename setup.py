@@ -11,16 +11,6 @@ if platform.system() == "Darwin":
     os.environ["CC"] = "gcc-9"
     os.environ["CXX"] = "g++-9"
 
-#    iGSL_1 = "chmod 777 fathon_gsl_install_osx"
-#    os.system(iGSL_1)
-#    iGSL_2 = "./fathon_gsl_install_osx"
-#    os.system(iGSL_2)
-#elif platform.system() == "Linux":
-#    iGSL_1 = "chmod 777 fathon_gsl_install_linux"
-#    os.system(iGSL_1)
-#    iGSL_2 = "./fathon_gsl_install_linux"
-#    os.system(iGSL_2)
-
 iGSL_1 = "chmod 777 fathon_gsl_install"
 os.system(iGSL_1)
 iGSL_2 = "./fathon_gsl_install"

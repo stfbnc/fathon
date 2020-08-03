@@ -5,9 +5,6 @@ branches:
 env:
   global:
     - CIBW_BUILD_VERBOSITY=1
-#    - CIBW_BUILD="cp35-* cp36-*"
-#    - CIBW_BUILD="cp37-* cp38-*"
-#    - CIBW_SKIP: "*-manylinux_i686"
     - CIBW_TEST_REQUIRES=pytest
     - CIBW_TEST_COMMAND="pytest {project}/tests"
     - CIBW_BEFORE_BUILD="pip3 install -r requirements.txt"
