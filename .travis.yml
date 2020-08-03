@@ -4,7 +4,7 @@ branches:
 
 env:
   global:
-    - CIBW_BUILD_VERBOSITY=3
+    - CIBW_BUILD_VERBOSITY=1
     - CIBW_BUILD="cp35-* cp36-* cp37-* cp38-*"
     - CIBW_SKIP: "*-manylinux_i686"
     - CIBW_TEST_REQUIRES=pytest

@@ -66,7 +66,7 @@ fathon v1.0
 
 #### v1.0
 
-- wheels available :tada:
+- wheels! :ferris_wheel::ferris_wheel:
 - no more pre-installing step of the GSL library :tada::tada:
 - window's sizes array must be now passed to all the methods
 - `logBase` option for methods that perform fits
