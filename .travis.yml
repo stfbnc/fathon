@@ -1,6 +1,6 @@
 branches:
   only:
-  - fathon-dev
+  - master
 
 env:
   global:
@@ -47,4 +47,4 @@ script:
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
   - pip install twine
-  - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${TEST_PYPI_USR} -p ${TEST_PYPI_PWD}
+  - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${PYPI_USR} -p ${PYPI_PWD}
