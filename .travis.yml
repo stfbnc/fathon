@@ -47,4 +47,4 @@ script:
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
   - pip install twine
-  - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/* -u ${PYPI_USR} -p ${PYPI_PWD}
+  - twine upload --skip-existing wheelhouse/* -u ${PYPI_USR} -p ${PYPI_PWD}
