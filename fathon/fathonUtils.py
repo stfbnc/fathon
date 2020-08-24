@@ -17,34 +17,34 @@
 import numpy as np
 
 def subtractMean(vec):
-	"""Subtracts mean of a vector.
+    """Subtracts mean of a vector.
 	
-	Parameters
-	----------
-	vec : iterable
-		Python iterable whose mean will be subtracted.
+    Parameters
+    ----------
+    vec : iterable
+        Python iterable whose mean will be subtracted.
 	
-	Returns
-	-------
-	numpy ndarray
-		`vec` with its mean subtracted.
-	"""
-	return np.array(vec - np.nanmean(vec), dtype=float)
+    Returns
+    -------
+    numpy ndarray
+        `vec` with its mean subtracted.
+    """
+    return np.array(vec - np.nanmean(vec), dtype=float)
 	
 def toAggregated(vec):
-	"""Subtracts mean of a vector and computes the cumulative sum.
+    """Subtracts mean of a vector and computes the cumulative sum.
 	
-	Parameters
-	----------
-	vec : iterable
-		The vector to be integrated.
+    Parameters
+    ----------
+    vec : iterable
+        The vector to be integrated.
 	
-	Returns
-	-------
-	numpy ndarray
-		Cumulative sum of `vec` after subtraction of its mean.
-	"""
-	return np.array(np.nancumsum(vec - np.nanmean(vec)), dtype=float)
+    Returns
+    -------
+    numpy ndarray
+        Cumulative sum of `vec` after subtraction of its mean.
+    """
+    return np.array(np.nancumsum(vec - np.nanmean(vec)), dtype=float)
 
 def linRangeByStep(start, end, step=1):
     """Array of linearly separated elements.

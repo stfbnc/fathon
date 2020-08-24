@@ -1,14 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import fathon
+from fathon import fathonUtils as fu
 
 print('This is fathon v{}'.format(fathon.__version__))
 
 a = np.random.randn(10000)
 b = np.random.randn(10000)
 
-a = fathon.toAggregated(a)
-b = fathon.toAggregated(b)
+a = fu.toAggregated(a)
+b = fu.toAggregated(b)
 
 pyht = fathon.HT(a)
 
