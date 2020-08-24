@@ -46,5 +46,5 @@ install:
 script:
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
-  - pip install twine
-  - twine upload --skip-existing wheelhouse/* -u ${PYPI_USR} -p ${PYPI_PWD}
+#  - pip install twine
+#  - twine upload --skip-existing wheelhouse/* -u ${PYPI_USR} -p ${PYPI_PWD}
