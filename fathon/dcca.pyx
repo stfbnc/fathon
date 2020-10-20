@@ -376,7 +376,7 @@ cdef class DCCA:
         
         return vecn, up_lim, down_lim
 
-    def saveObject(outFileName):
+    def saveObject(self, outFileName):
         saveDict = {}
         saveDict['kind'] = 'dcca'
         saveDict['tsVec1'] = self.tsVec1.tolist()

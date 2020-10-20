@@ -145,10 +145,10 @@ cdef class HT:
         
         return self.ht
 
-        def saveObject(outFileName):
-            saveDict = {}
-            saveDict['kind'] = 'ht'
-            saveDict['tsVec'] = self.tsVec.tolist()
-            saveDict['ht'] = self.ht.tolist()
+    def saveObject(self, outFileName):
+        saveDict = {}
+        saveDict['kind'] = 'ht'
+        saveDict['tsVec'] = self.tsVec.tolist()
+        saveDict['ht'] = self.ht.tolist()
 
-            json.dump(saveDict, open(outFileName + '.fathon', 'w'))
+        json.dump(saveDict, open(outFileName + '.fathon', 'w'))

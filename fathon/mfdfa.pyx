@@ -244,7 +244,7 @@ cdef class MFDFA:
         else:
             print('Nothing to fit, fluctuations vector has not been computed yet.')
 
-    def saveObject(outFileName):
+    def saveObject(self, outFileName):
         saveDict = {}
         saveDict['kind'] = 'mfdfa'
         saveDict['tsVec'] = self.tsVec.tolist()
