@@ -20,6 +20,7 @@ import numpy as np
 cimport numpy as np
 cimport cython
 import ctypes
+import json
 
 cdef extern from "cLoops.h" nogil:
     double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int pol_ord)
@@ -50,9 +51,24 @@ cdef class MFDFA:
         bint isComputed
 
     def __init__(self, tsVec):
-        self.tsVec = np.array(tsVec, dtype=float)
-        self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
-        self.isComputed = False
+        if isinstance(tsVec, str):
+            if len(tsVec.split('.')) > 1 and tsVec.split('.')[-1] == 'fathon':
+                data = json.load(open(tsVec, 'r'))
+                if data['kind'] != 'mfdfa':
+                    raise ValueError('Error: Loaded object is not a MFDFA object.')
+                else:
+                    self.tsVec = np.array(data['tsVec'], dtype=float)
+                    self.n = np.array(data['n'], dtype=ctypes.c_int)
+                    self.F = np.array(data['F'], dtype=ctypes.c_double)
+                    self.listH = np.array(data['listH'], dtype=ctypes.c_double)
+                    self.qList = np.array(data['qList'], dtype=ctypes.c_double)
+                    self.isComputed = data['isComputed']
+            else:
+                raise ValueError('Error: Not recognized extension.')
+        else:
+            self.tsVec = np.array(tsVec, dtype=float)
+            self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
+            self.isComputed = False
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -227,3 +243,15 @@ cdef class MFDFA:
                 raise ValueError('Error: Number of q moments must be greater than one to compute multifractal spectrum.')
         else:
             print('Nothing to fit, fluctuations vector has not been computed yet.')
+
+    def saveObject(outFileName):
+        saveDict = {}
+        saveDict['kind'] = 'mfdfa'
+        saveDict['tsVec'] = self.tsVec.tolist()
+        saveDict['n'] = self.n.tolist()
+        saveDict['F'] = self.F.tolist()
+        saveDict['listH'] = self.listH.tolist()
+        saveDict['qList'] = self.qList.tolist()
+        saveDict['isComputed'] = self.isComputed
+
+        json.dump(saveDict, open(outFileName + '.fathon', 'w'))

@@ -20,6 +20,7 @@ import numpy as np
 cimport numpy as np
 cimport cython
 import ctypes
+import json
 import warnings
 
 cdef extern from "cLoops.h" nogil:
@@ -49,16 +50,32 @@ cdef class DCCA:
         bint isComputed
 
     def __init__(self, tsVec1=[], tsVec2=[]):
-        if len(tsVec1) != 0 and len(tsVec2) != 0:
-            self.tsVec1 = np.array(tsVec1, dtype=float)
-            self.tsVec1 = self.tsVec1[~np.isnan(self.tsVec1)]
-            self.tsVec2 = np.array(tsVec2, dtype=float)
-            self.tsVec2 = self.tsVec2[~np.isnan(self.tsVec2)]
-            if len(self.tsVec1) != len(self.tsVec2):
-                warnings.warn("Warning: Input vectors have different length. The longest vector has been reduced to the size of the shortest one.")
-                self.tsVec1 = self.tsVec1[0:np.min([len(self.tsVec1), len(self.tsVec2)])]
-                self.tsVec2 = self.tsVec2[0:np.min([len(self.tsVec1), len(self.tsVec2)])]
-        self.isComputed = False
+        if (isinstance(tsVec1, list) or isinstance(tsVec1, np.ndarray)) and (isinstance(tsVec2, list) or isinstance(tsVec2, np.ndarray)):
+            if len(tsVec1) != 0 and len(tsVec2) != 0:
+                self.tsVec1 = np.array(tsVec1, dtype=float)
+                self.tsVec1 = self.tsVec1[~np.isnan(self.tsVec1)]
+                self.tsVec2 = np.array(tsVec2, dtype=float)
+                self.tsVec2 = self.tsVec2[~np.isnan(self.tsVec2)]
+                if len(self.tsVec1) != len(self.tsVec2):
+                    warnings.warn("Warning: Input vectors have different length. The longest vector has been reduced to the size of the shortest one.")
+                    self.tsVec1 = self.tsVec1[0:np.min([len(self.tsVec1), len(self.tsVec2)])]
+                    self.tsVec2 = self.tsVec2[0:np.min([len(self.tsVec1), len(self.tsVec2)])]
+            self.isComputed = False
+        elif isinstance(tsVec1, str) and len(tsVec2) == 0:
+            if len(tsVec1.split('.')) > 1 and tsVec1.split('.')[-1] == 'fathon':
+                data = json.load(open(tsVec1, 'r'))
+                if data['kind'] != 'dcca':
+                    raise ValueError('Error: Loaded object is not a DCCA object.')
+                else:
+                    self.tsVec1 = np.array(data['tsVec1'], dtype=float)
+                    self.tsVec2 = np.array(data['tsVec2'], dtype=float)
+                    self.n = np.array(data['n'], dtype=ctypes.c_int)
+                    self.F = np.array(data['F'], dtype=ctypes.c_double)
+                    self.isComputed = data['isComputed']
+            else:
+                raise ValueError('Error: Not recognized extension.')
+        else:
+           raise ValueError('Error: Wrong inputs, expected two arrays or a single string.') 
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -358,3 +375,14 @@ cdef class DCCA:
         down_lim = np.quantile(rho_all, 1 - confLvl, axis=0)
         
         return vecn, up_lim, down_lim
+
+    def saveObject(outFileName):
+        saveDict = {}
+        saveDict['kind'] = 'dcca'
+        saveDict['tsVec1'] = self.tsVec1.tolist()
+        saveDict['tsVec2'] = self.tsVec2.tolist()
+        saveDict['n'] = self.n.tolist()
+        saveDict['F'] = self.F.tolist()
+        saveDict['isComputed'] = self.isComputed
+
+        json.dump(saveDict, open(outFileName + '.fathon', 'w'))

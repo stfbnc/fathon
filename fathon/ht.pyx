@@ -21,6 +21,7 @@ cimport numpy as np
 cimport cython
 from cython.parallel import prange
 import ctypes
+import json
 from . import mfdfa
 from . import fathonUtils as fu
 	
@@ -37,11 +38,22 @@ cdef class HT:
     """
 
     cdef:
-        np.ndarray tsVec
+        np.ndarray tsVec, ht
 
     def __init__(self, tsVec):
-        self.tsVec = np.array(tsVec, dtype=float)
-        self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
+        if isinstance(tsVec, str):
+            if len(tsVec.split('.')) > 1 and tsVec.split('.')[-1] == 'fathon':
+                data = json.load(open(tsVec, 'r'))
+                if data['kind'] != 'ht':
+                    raise ValueError('Error: Loaded object is not a HT object.')
+                else:
+                    self.tsVec = np.array(data['tsVec'], dtype=float)
+                    self.ht = np.array(data['ht'], dtype=ctypes.c_double)
+            else:
+                raise ValueError('Error: Not recognized extension.')
+        else:
+            self.tsVec = np.array(tsVec, dtype=float)
+            self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
 		
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -129,6 +141,14 @@ cdef class HT:
             raise ValueError('Error: scales type is {}. Expected int, list, or numpy array.'.format(type(scales)))
          
         q0Fit = np.array(q0Fit, dtype=ctypes.c_double)
-        ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd, q0Fit, verbose)
+        self.ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd, q0Fit, verbose)
         
-        return ht
+        return self.ht
+
+        def saveObject(outFileName):
+            saveDict = {}
+            saveDict['kind'] = 'ht'
+            saveDict['tsVec'] = self.tsVec.tolist()
+            saveDict['ht'] = self.ht.tolist()
+
+            json.dump(saveDict, open(outFileName + '.fathon', 'w'))
