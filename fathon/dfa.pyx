@@ -20,7 +20,7 @@ import numpy as np
 cimport numpy as np
 cimport cython
 import ctypes
-import json
+import pickle
 
 cdef extern from "cLoops.h" nogil:
     double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
@@ -49,7 +49,9 @@ cdef class DFA:
     def __init__(self, tsVec):
         if isinstance(tsVec, str):
             if len(tsVec.split('.')) > 1 and tsVec.split('.')[-1] == 'fathon':
-                data = json.load(open(tsVec, 'r'))
+                f = open(tsVec, 'rb')
+                data = pickle.load(f)
+                f.close()
                 if data['kind'] != 'dfa':
                     raise ValueError('Error: Loaded object is not a DFA object.')
                 else:
@@ -215,6 +217,13 @@ cdef class DFA:
             print('Nothing to fit, fluctuations vector has not been computed yet.')
 
     def saveObject(self, outFileName):
+        """Save current object state to binary file.
+        
+        Parameters
+        ----------
+        outFileName : str
+            Output binary file. `.fathon` extension will be appended to the file name.
+        """
         saveDict = {}
         saveDict['kind'] = 'dfa'
         saveDict['tsVec'] = self.tsVec.tolist()
@@ -222,5 +231,7 @@ cdef class DFA:
         saveDict['F'] = self.F.tolist()
         saveDict['isComputed'] = self.isComputed
 
-        json.dump(saveDict, open(outFileName + '.fathon', 'w'))
+        f = open(outFileName + '.fathon', 'wb')
+        pickle.dump(saveDict, f)
+        f.close()
 

@@ -21,7 +21,7 @@ cimport numpy as np
 cimport cython
 from cython.parallel import prange
 import ctypes
-import json
+import pickle
 from . import mfdfa
 from . import fathonUtils as fu
 	
@@ -43,7 +43,9 @@ cdef class HT:
     def __init__(self, tsVec):
         if isinstance(tsVec, str):
             if len(tsVec.split('.')) > 1 and tsVec.split('.')[-1] == 'fathon':
-                data = json.load(open(tsVec, 'r'))
+                f = open(tsVec, 'rb')
+                data = pickle.load(f)
+                f.close()
                 if data['kind'] != 'ht':
                     raise ValueError('Error: Loaded object is not a HT object.')
                 else:
@@ -146,9 +148,18 @@ cdef class HT:
         return self.ht
 
     def saveObject(self, outFileName):
+        """Save current object state to binary file.
+        
+        Parameters
+        ----------
+        outFileName : str
+            Output binary file. `.fathon` extension will be appended to the file name.
+        """
         saveDict = {}
         saveDict['kind'] = 'ht'
         saveDict['tsVec'] = self.tsVec.tolist()
         saveDict['ht'] = self.ht.tolist()
 
-        json.dump(saveDict, open(outFileName + '.fathon', 'w'))
+        f = open(outFileName + '.fathon', 'wb')
+        pickle.dump(saveDict, f)
+        f.close()

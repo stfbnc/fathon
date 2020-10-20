@@ -20,7 +20,7 @@ import numpy as np
 cimport numpy as np
 cimport cython
 import ctypes
-import json
+import pickle
 import warnings
 
 cdef extern from "cLoops.h" nogil:
@@ -63,7 +63,9 @@ cdef class DCCA:
             self.isComputed = False
         elif isinstance(tsVec1, str) and len(tsVec2) == 0:
             if len(tsVec1.split('.')) > 1 and tsVec1.split('.')[-1] == 'fathon':
-                data = json.load(open(tsVec1, 'r'))
+                f = open(tsVec1, 'rb')
+                data = pickle.load(f)
+                f.close()
                 if data['kind'] != 'dcca':
                     raise ValueError('Error: Loaded object is not a DCCA object.')
                 else:
@@ -377,6 +379,13 @@ cdef class DCCA:
         return vecn, up_lim, down_lim
 
     def saveObject(self, outFileName):
+        """Save current object state to binary file.
+        
+        Parameters
+        ----------
+        outFileName : str
+            Output binary file. `.fathon` extension will be appended to the file name.
+        """
         saveDict = {}
         saveDict['kind'] = 'dcca'
         saveDict['tsVec1'] = self.tsVec1.tolist()
@@ -385,4 +394,7 @@ cdef class DCCA:
         saveDict['F'] = self.F.tolist()
         saveDict['isComputed'] = self.isComputed
 
-        json.dump(saveDict, open(outFileName + '.fathon', 'w'))
+        f = open(outFileName + '.fathon', 'wb')
+        pickle.dump(saveDict, f)
+        f.close()
+
