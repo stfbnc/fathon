@@ -40,13 +40,23 @@ cdef class DCCA:
         Second time series used for the analysis.
     F : numpy ndarray
         Array containing the values of the fluctuations in every window.
+    nRho : numpy ndarray
+        Array of window's sizes used for the computation of `rho`.
+    rho : numpy ndarray
+        Array containing the cross-correlation index in every window.
+    nThr : numpy ndarray
+        Array of window's sizes used for the computation of `rho` thresholds.
+    confUp : numpy ndarray
+        Array containing the first confidence interval in every window.
+    confDown : numpy ndarray
+        Array containing the second confidence interval in every window.
     isComputed : bool
         Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
     """
 
     cdef:
-        np.ndarray n
-        np.ndarray tsVec1, tsVec2, F
+        np.ndarray n, nRho, nThr
+        np.ndarray tsVec1, tsVec2, F, rho, confUp, confDown
         bint isComputed
 
     def __init__(self, tsVec1=[], tsVec2=[]):
@@ -271,8 +281,7 @@ cdef class DCCA:
         """
         cdef Py_ssize_t i
         cdef int nLen, tsLen = len(self.tsVec1)
-        cdef np.ndarray[int, ndim=1, mode='c'] nn
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] Fxy, Fxx, Fyy, rho
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] Fxy, Fxx, Fyy
 
         if polOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
@@ -283,22 +292,22 @@ cdef class DCCA:
         if winSizes[0] < (polOrd + 2):
             raise ValueError('Error: `winSizes[0]` must be at least equal to {}.'.format(polOrd + 2))
 
-        nn, Fxy = self.computeFlucVec(winSizes, polOrd=polOrd, absVals=False)
+        self.nRho, Fxy = self.computeFlucVec(winSizes, polOrd=polOrd, absVals=False)
         if verbose:
             print('DCCA between series 1 and 2 computed.')
-        Fxx = self.computeFlucVecSameTs(self.tsVec1, nn, polOrd=polOrd)
+        Fxx = self.computeFlucVecSameTs(self.tsVec1, self.nRho, polOrd=polOrd)
         if verbose:
             print('DCCA between series 1 and 1 computed.')
-        Fyy = self.computeFlucVecSameTs(self.tsVec2, nn, polOrd=polOrd)
+        Fyy = self.computeFlucVecSameTs(self.tsVec2, self.nRho, polOrd=polOrd)
         if verbose:
             print('DCCA between series 2 and 2 computed.')
 
-        nLen = len(nn)
-        rho = np.zeros((nLen, ), dtype=float)
+        nLen = len(self.nRho)
+        self.rho = np.zeros((nLen, ), dtype=float)
         for i in range(nLen):
-            rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
+            self.rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
                 
-        return nn, rho
+        return self.nRho, self.rho
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -331,8 +340,7 @@ cdef class DCCA:
             Array containing the second confidence interval.
         """
         cdef np.ndarray[np.float64_t, ndim=2, mode='c'] rho_all
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] ran1, ran2, vecfx, vecfy, vecfxy, up_lim, down_lim
-        cdef np.ndarray[int, ndim=1, mode='c'] vecn
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] ran1, ran2, vecfx, vecfy, vecfxy
         cdef int nLen
 
         if polOrd < 1:
@@ -348,10 +356,10 @@ cdef class DCCA:
         if confLvl < 0 or confLvl > 1:
             raise ValueError('Error: Confidence level must be included in the interval [0,1].')
 
-        vecn = np.array(winSizes, dtype=ctypes.c_int)
-        nLen = len(vecn)
-        up_lim = np.zeros((nLen, ), dtype=ctypes.c_double)
-        down_lim = np.zeros((nLen, ), dtype=ctypes.c_double)
+        self.nThr = np.array(winSizes, dtype=ctypes.c_int)
+        nLen = len(self.nThr)
+        self.confUp = np.zeros((nLen, ), dtype=ctypes.c_double)
+        self.confDown = np.zeros((nLen, ), dtype=ctypes.c_double)
         rho_all = np.zeros((nSim, nLen), dtype=ctypes.c_double)
         
         for i in range(nSim):
@@ -366,17 +374,17 @@ cdef class DCCA:
             vecfy = np.zeros((nLen, ), dtype=ctypes.c_double)
             vecfxy = np.zeros((nLen, ), dtype=ctypes.c_double)
             
-            self.cy_flucCompute(ran1, ran2, vecn, vecfxy, polOrd, False)
-            self.cy_flucCompute(ran1, ran1, vecn, vecfx, polOrd, False)
-            self.cy_flucCompute(ran2, ran2, vecn, vecfy, polOrd, False)
+            self.cy_flucCompute(ran1, ran2, self.nThr, vecfxy, polOrd, False)
+            self.cy_flucCompute(ran1, ran1, self.nThr, vecfx, polOrd, False)
+            self.cy_flucCompute(ran2, ran2, self.nThr, vecfy, polOrd, False)
             
             for j in range(nLen):
                 rho_all[i, j] = vecfxy[j] / (vecfx[j] * vecfy[j])
                 
-        up_lim = np.quantile(rho_all, confLvl, axis=0)
-        down_lim = np.quantile(rho_all, 1 - confLvl, axis=0)
+        self.confUp = np.quantile(rho_all, confLvl, axis=0)
+        self.confDown = np.quantile(rho_all, 1 - confLvl, axis=0)
         
-        return vecn, up_lim, down_lim
+        return self.nThr, self.confUp, self.confDown
 
     def saveObject(self, outFileName):
         """Save current object state to binary file.
@@ -392,6 +400,11 @@ cdef class DCCA:
         saveDict['tsVec2'] = self.tsVec2.tolist()
         saveDict['n'] = self.n.tolist()
         saveDict['F'] = self.F.tolist()
+        saveDict['nRho'] = self.nRho.tolist()
+        saveDict['rho'] = self.rho.tolist()
+        saveDict['nThr'] = self.nThr.tolist()
+        saveDict['confUp'] = self.confUp.tolist()
+        saveDict['confDown'] = self.confDown.tolist()
         saveDict['isComputed'] = self.isComputed
 
         f = open(outFileName + '.fathon', 'wb')
