@@ -158,9 +158,9 @@ def getObjectMember(fileName, memberName):
     if memberName not in data.keys() or memberName == 'isComputed':
         raise ValueError('Error: Member not present.')
     else:
-    ret = data[memberName]
-    if len(ret) != 0:
-        ret = np.array(ret, dtype=type(ret[0]))
+        ret = data[memberName]
+        if len(ret) != 0:
+            ret = np.array(ret, dtype=type(ret[0]))
 
     return ret
 
