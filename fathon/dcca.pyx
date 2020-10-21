@@ -398,13 +398,34 @@ cdef class DCCA:
         saveDict['kind'] = 'dcca'
         saveDict['tsVec1'] = self.tsVec1.tolist()
         saveDict['tsVec2'] = self.tsVec2.tolist()
-        saveDict['n'] = self.n.tolist()
-        saveDict['F'] = self.F.tolist()
-        saveDict['nRho'] = self.nRho.tolist()
-        saveDict['rho'] = self.rho.tolist()
-        saveDict['nThr'] = self.nThr.tolist()
-        saveDict['confUp'] = self.confUp.tolist()
-        saveDict['confDown'] = self.confDown.tolist()
+        try:
+            saveDict['n'] = self.n.tolist()
+        except:
+            saveDict['n'] = []
+        try:
+            saveDict['F'] = self.F.tolist()
+        except:
+            saveDict['F'] = []
+        try:
+            saveDict['nRho'] = self.nRho.tolist()
+        except:
+            saveDict['nRho'] = []
+        try:
+            saveDict['rho'] = self.rho.tolist()
+        except:
+            saveDict['rho'] = []
+        try:
+            saveDict['nThr'] = self.nThr.tolist()
+        except:
+            saveDict['nThr'] = []
+        try:
+            saveDict['confUp'] = self.confUp.tolist()
+        except:
+            saveDict['confUp'] = []
+        try:
+            saveDict['confDown'] = self.confDown.tolist()
+        except:
+            saveDict['confDown'] = []
         saveDict['isComputed'] = self.isComputed
 
         f = open(outFileName + '.fathon', 'wb')

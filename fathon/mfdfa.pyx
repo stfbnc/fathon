@@ -257,10 +257,22 @@ cdef class MFDFA:
         saveDict = {}
         saveDict['kind'] = 'mfdfa'
         saveDict['tsVec'] = self.tsVec.tolist()
-        saveDict['n'] = self.n.tolist()
-        saveDict['F'] = self.F.tolist()
-        saveDict['listH'] = self.listH.tolist()
-        saveDict['qList'] = self.qList.tolist()
+        try:
+            saveDict['n'] = self.n.tolist()
+        except:
+            saveDict['n'] = []
+        try:
+            saveDict['F'] = self.F.tolist()
+        except:
+            saveDict['F'] = []
+        try:
+            saveDict['listH'] = self.listH.tolist()
+        except:
+            saveDict['listH'] = []
+        try:
+            saveDict['qList'] = self.qList.tolist()
+        except:
+            saveDict['qList'] = []
         saveDict['isComputed'] = self.isComputed
 
         f = open(outFileName + '.fathon', 'wb')

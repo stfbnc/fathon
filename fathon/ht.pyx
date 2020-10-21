@@ -160,7 +160,10 @@ cdef class HT:
         saveDict = {}
         saveDict['kind'] = 'ht'
         saveDict['tsVec'] = self.tsVec.tolist()
-        saveDict['ht'] = self.ht.tolist()
+        try:
+            saveDict['ht'] = self.ht.tolist()
+        except:
+            saveDict['ht'] = []
 
         f = open(outFileName + '.fathon', 'wb')
         pickle.dump(saveDict, f)

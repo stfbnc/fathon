@@ -227,8 +227,14 @@ cdef class DFA:
         saveDict = {}
         saveDict['kind'] = 'dfa'
         saveDict['tsVec'] = self.tsVec.tolist()
-        saveDict['n'] = self.n.tolist()
-        saveDict['F'] = self.F.tolist()
+        try:
+            saveDict['n'] = self.n.tolist()
+        except:
+            saveDict['n'] = []
+        try:
+            saveDict['F'] = self.F.tolist()
+        except:
+            saveDict['F'] = []
         saveDict['isComputed'] = self.isComputed
 
         f = open(outFileName + '.fathon', 'wb')
