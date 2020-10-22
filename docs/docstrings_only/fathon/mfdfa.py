@@ -12,6 +12,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 import ctypes
+import pickle
 class MFDFA:
     """MultiFractal Detrended Fluctuation Analysis class.
 
@@ -99,6 +100,16 @@ class MFDFA:
             Singularity strengths.
         numpy ndarray
             Multifractal spectrum.
+        """
+        return 0
+
+    def saveObject(self, outFileName):
+        """Save current object state to binary file.
+        
+        Parameters
+        ----------
+        outFileName : str
+            Output binary file. `.fathon` extension will be appended to the file name.
         """
         return 0
 

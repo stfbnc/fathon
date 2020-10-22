@@ -12,6 +12,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 import ctypes
+import pickle
 import warnings
 class DCCA:
     """Detrended Cross-Correlation Analysis class.
@@ -26,6 +27,16 @@ class DCCA:
         Second time series used for the analysis.
     F : numpy ndarray
         Array containing the values of the fluctuations in every window.
+    nRho : numpy ndarray
+        Array of window's sizes used for the computation of `rho`.
+    rho : numpy ndarray
+        Array containing the cross-correlation index in every window.
+    nThr : numpy ndarray
+        Array of window's sizes used for the computation of `rho` thresholds.
+    confUp : numpy ndarray
+        Array containing the first confidence interval in every window.
+    confDown : numpy ndarray
+        Array containing the second confidence interval in every window.
     isComputed : bool
         Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
     """
@@ -145,6 +156,16 @@ class DCCA:
             Array containing the first confidence interval.
         numpy ndarray
             Array containing the second confidence interval.
+        """
+        return 0
+
+    def saveObject(self, outFileName):
+        """Save current object state to binary file.
+        
+        Parameters
+        ----------
+        outFileName : str
+            Output binary file. `.fathon` extension will be appended to the file name.
         """
         return 0
 

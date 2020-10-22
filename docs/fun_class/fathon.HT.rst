@@ -7,6 +7,7 @@ HT
    :show-inheritance:
 
    .. automethod:: computeHt
+   .. automethod:: saveObject
 
 Usage examples
 ^^^^^^^^^^^^^^

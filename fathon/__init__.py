@@ -30,6 +30,6 @@ from .ht import HT
     and related algorithms.
 """
 
-__version__ = '1.0'
+__version__ = '1.1'
 __author__ = 'Stefano Bianchi'
 __git_repo__ = 'https://github.com/stfbnc/fathon'

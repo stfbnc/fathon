@@ -51,37 +51,3 @@ void polynomialFit(int obs, int degree, double *dx, double *dy, double *store)
     gsl_vector_free(y);
     gsl_vector_free(c);
 }
-
-//range of double values
-/*void double_range(double *vec, int L, double start, double step)
-{
-    int i;
-
-    for(i = 0; i < L; i++){
-        vec[i] = (double)(i * step + start);
-    }
-}*/
-
-//creates a vector that is a portion of a bigger vector
-/*void slice_vec(double *all_vec, double *sliced_vec, int start, int end)
-{
-    int i;
-
-    for(i = 0; i <= (end - start); i++){
-        sliced_vec[i] = all_vec[start+i];
-    }
-}*/
-
-//mean of a vector
-/*double mean(double *vec, int L)
-{
-    double avg = 0.0;
-    int i;
-
-    for(i = 0; i < L; i++){
-        avg += vec[i];
-    }
-    avg /= (double)L;
-
-    return avg;
-}*/

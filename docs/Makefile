@@ -4,7 +4,7 @@
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
-SPHINXBUILD   ?= /anaconda3/bin/sphinx-build
+SPHINXBUILD   ?= "$(HOME)/.local/bin/sphinx-build"
 SOURCEDIR     = .
 BUILDDIR      = _build
 

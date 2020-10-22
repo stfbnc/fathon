@@ -11,6 +11,7 @@ DCCA
    .. automethod:: fitFlucVec
    .. automethod:: multiFitFlucVec
    .. automethod:: rhoThresholds
+   .. automethod:: saveObject
 
 Usage examples
 ^^^^^^^^^^^^^^

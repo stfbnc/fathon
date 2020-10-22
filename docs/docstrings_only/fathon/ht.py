@@ -13,6 +13,7 @@
 import numpy as np
 from cython.parallel import prange
 import ctypes
+import pickle
 from . import mfdfa
 from . import fathonUtils as fu
 class HT:
@@ -22,6 +23,8 @@ class HT:
     ----------
     tsVec : iterable
         Time series used for the analysis.
+    ht : numpy ndarray
+        Time-dependent local Hurst exponent.
     """
 
     def __init__(self, tsVec):
@@ -47,6 +50,16 @@ class HT:
         -------
         numpy ndarray
             Time-dependent local Hurst exponent.
+        """
+        return 0
+
+    def saveObject(self, outFileName):
+        """Save current object state to binary file.
+        
+        Parameters
+        ----------
+        outFileName : str
+            Output binary file. `.fathon` extension will be appended to the file name.
         """
         return 0
 
