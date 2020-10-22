@@ -12,5 +12,6 @@ fathonUtils
    fu/fathonUtils.linRangeByCount
    fu/fathonUtils.powRangeByStep
    fu/fathonUtils.powRangeByCount
+   fu/fathonUtils.getObjectMember
 
 

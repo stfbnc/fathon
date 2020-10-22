@@ -14,6 +14,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import platform
+import os
+init_dir = os.path.dirname(os.path.abspath(__file__))
+if platform.system() == "Linux":
+    cmd = "cp " + init_dir + "/3rd_party/gsl/lib/*.so* " + init_dir + "/../fathon.libs"
+    os.system(cmd)
+    
 from .dfa import DFA
 from .mfdfa import MFDFA
 from .dcca import DCCA

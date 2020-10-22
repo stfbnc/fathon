@@ -292,7 +292,11 @@ cdef class DCCA:
         if winSizes[0] < (polOrd + 2):
             raise ValueError('Error: `winSizes[0]` must be at least equal to {}.'.format(polOrd + 2))
 
-        self.nRho, Fxy = self.computeFlucVec(winSizes, polOrd=polOrd, absVals=False)
+        self.nRho = np.array(winSizes, dtype=ctypes.c_int)
+        nLen = len(self.nRho)
+        Fxy = np.zeros((nLen, ), dtype=ctypes.c_double)
+
+        self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2, dtype=ctypes.c_double), self.nRho, Fxy, polOrd, False)
         if verbose:
             print('DCCA between series 1 and 2 computed.')
         Fxx = self.computeFlucVecSameTs(self.tsVec1, self.nRho, polOrd=polOrd)
@@ -302,7 +306,6 @@ cdef class DCCA:
         if verbose:
             print('DCCA between series 2 and 2 computed.')
 
-        nLen = len(self.nRho)
         self.rho = np.zeros((nLen, ), dtype=float)
         for i in range(nLen):
             self.rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
