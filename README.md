@@ -60,9 +60,13 @@ Bianchi, S., (2020). fathon: A Python package for a fast computation of  detrend
 
 ## Version  [![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon)
 
-fathon v1.0
+fathon v1.1
 
 ## Changelog
+
+#### v1.1
+
+- save object state to binary file and reload it later
 
 #### v1.0
 
