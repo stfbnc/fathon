@@ -1,17 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MFDFA &#8212; fathon  documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="DCCA" href="fathon.DCCA.html" />
@@ -29,7 +30,8 @@
         <li class="right" >
           <a href="fathon.DFA.html" title="DFA"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MFDFA</a></li> 
       </ul>
     </div>  
 
@@ -40,9 +42,9 @@
             
   <div class="section" id="mfdfa">
 <h1>MFDFA<a class="headerlink" href="#mfdfa" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="fathon.MFDFA">
-<em class="property">class </em><code class="sig-prename descclassname">fathon.</code><code class="sig-name descname">MFDFA</code><span class="sig-paren">(</span><em class="sig-param">tsVec</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fathon.</code><code class="sig-name descname">MFDFA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tsVec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>MultiFractal Detrended Fluctuation Analysis class.</p>
 <dl class="field-list simple">
@@ -63,9 +65,9 @@
 </dl>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="fathon.MFDFA.computeFlucVec">
-<code class="sig-name descname">computeFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">winSizes</em>, <em class="sig-param">qList</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">revSeg=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">computeFlucVec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">winSizes</span></em>, <em class="sig-param"><span class="n">qList</span></em>, <em class="sig-param"><span class="n">polOrd</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">revSeg</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the fluctuations in every window for every q-order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -91,9 +93,9 @@
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fathon.MFDFA.computeMassExponents">
-<code class="sig-name descname">computeMassExponents</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeMassExponents" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">computeMassExponents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeMassExponents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the mass exponents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -105,9 +107,9 @@
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fathon.MFDFA.computeMultifractalSpectrum">
-<code class="sig-name descname">computeMultifractalSpectrum</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeMultifractalSpectrum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">computeMultifractalSpectrum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeMultifractalSpectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the multifractal spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -121,9 +123,9 @@
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fathon.MFDFA.fitFlucVec">
-<code class="sig-name descname">fitFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nStart=-999</em>, <em class="sig-param">nEnd=-999</em>, <em class="sig-param">logBase=2.718281828459045</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.fitFlucVec" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fitFlucVec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nStart</span><span class="o">=</span><span class="default_value">- 999</span></em>, <em class="sig-param"><span class="n">nEnd</span><span class="o">=</span><span class="default_value">- 999</span></em>, <em class="sig-param"><span class="n">logBase</span><span class="o">=</span><span class="default_value">2.718281828459045</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.fitFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit of the fluctuations values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -149,11 +151,25 @@
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="fathon.MFDFA.saveObject">
+<code class="sig-name descname">saveObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outFileName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.saveObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save current object state to binary file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>outFileName</strong><span class="classifier">str</span></dt><dd><p>Output binary file. <cite>.fathon</cite> extension will be appended to the file name.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <div class="section" id="usage-examples">
 <h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fathon</span>
 <span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
 
@@ -167,7 +183,7 @@
 <span class="n">pymfdfa</span> <span class="o">=</span> <span class="n">fathon</span><span class="o">.</span><span class="n">MFDFA</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="c1">#compute fluctuation function and generalized Hurst exponents</span>
 <span class="n">wins</span> <span class="o">=</span> <span class="n">fu</span><span class="o">.</span><span class="n">linRangeByStep</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-<span class="n">n</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">pymfdfa</span><span class="o">.</span><span class="n">computeFlucVec</span><span class="p">(</span><span class="n">wins</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">revSeg</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">polOrd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">pymfdfa</span><span class="o">.</span><span class="n">computeFlucVec</span><span class="p">(</span><span class="n">wins</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">revSeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">polOrd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">list_H</span><span class="p">,</span> <span class="n">list_H_intercept</span> <span class="o">=</span> <span class="n">pymfdfa</span><span class="o">.</span><span class="n">fitFlucVec</span><span class="p">()</span>
 
 <span class="c1">#compute mass exponents</span>
@@ -181,6 +197,7 @@
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -216,7 +233,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -233,12 +250,13 @@
         <li class="right" >
           <a href="fathon.DFA.html" title="DFA"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MFDFA</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019-2020, Stefano Bianchi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

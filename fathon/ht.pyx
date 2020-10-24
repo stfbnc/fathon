@@ -21,6 +21,7 @@ cimport numpy as np
 cimport cython
 from cython.parallel import prange
 import ctypes
+import pickle
 from . import mfdfa
 from . import fathonUtils as fu
 	
@@ -34,14 +35,29 @@ cdef class HT:
     ----------
     tsVec : iterable
         Time series used for the analysis.
+    ht : numpy ndarray
+        Time-dependent local Hurst exponent.
     """
 
     cdef:
-        np.ndarray tsVec
+        np.ndarray tsVec, ht
 
     def __init__(self, tsVec):
-        self.tsVec = np.array(tsVec, dtype=float)
-        self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
+        if isinstance(tsVec, str):
+            if len(tsVec.split('.')) > 1 and tsVec.split('.')[-1] == 'fathon':
+                f = open(tsVec, 'rb')
+                data = pickle.load(f)
+                f.close()
+                if data['kind'] != 'ht':
+                    raise ValueError('Error: Loaded object is not a HT object.')
+                else:
+                    self.tsVec = np.array(data['tsVec'], dtype=float)
+                    self.ht = np.array(data['ht'], dtype=ctypes.c_double)
+            else:
+                raise ValueError('Error: Not recognized extension.')
+        else:
+            self.tsVec = np.array(tsVec, dtype=float)
+            self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
 		
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -129,6 +145,26 @@ cdef class HT:
             raise ValueError('Error: scales type is {}. Expected int, list, or numpy array.'.format(type(scales)))
          
         q0Fit = np.array(q0Fit, dtype=ctypes.c_double)
-        ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd, q0Fit, verbose)
+        self.ht = self.cy_computeHt(scales, polOrd, mfdfaPolOrd, q0Fit, verbose)
         
-        return ht
+        return self.ht
+
+    def saveObject(self, outFileName):
+        """Save current object state to binary file.
+        
+        Parameters
+        ----------
+        outFileName : str
+            Output binary file. `.fathon` extension will be appended to the file name.
+        """
+        saveDict = {}
+        saveDict['kind'] = 'ht'
+        saveDict['tsVec'] = self.tsVec.tolist()
+        try:
+            saveDict['ht'] = self.ht.tolist()
+        except:
+            saveDict['ht'] = []
+
+        f = open(outFileName + '.fathon', 'wb')
+        pickle.dump(saveDict, f)
+        f.close()

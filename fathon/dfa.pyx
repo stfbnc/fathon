@@ -20,6 +20,7 @@ import numpy as np
 cimport numpy as np
 cimport cython
 import ctypes
+import pickle
 
 cdef extern from "cLoops.h" nogil:
     double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
@@ -46,9 +47,24 @@ cdef class DFA:
         bint isComputed
 
     def __init__(self, tsVec):
-        self.tsVec = np.array(tsVec, dtype=float)
-        self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
-        self.isComputed = False
+        if isinstance(tsVec, str):
+            if len(tsVec.split('.')) > 1 and tsVec.split('.')[-1] == 'fathon':
+                f = open(tsVec, 'rb')
+                data = pickle.load(f)
+                f.close()
+                if data['kind'] != 'dfa':
+                    raise ValueError('Error: Loaded object is not a DFA object.')
+                else:
+                    self.tsVec = np.array(data['tsVec'], dtype=float)
+                    self.n = np.array(data['n'], dtype=ctypes.c_int)
+                    self.F = np.array(data['F'], dtype=ctypes.c_double)
+                    self.isComputed = data['isComputed']
+            else:
+                raise ValueError('Error: Not recognized extension.')
+        else:
+            self.tsVec = np.array(tsVec, dtype=float)
+            self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
+            self.isComputed = False
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -199,3 +215,29 @@ cdef class DFA:
             return list_H, list_H_intercept
         else:
             print('Nothing to fit, fluctuations vector has not been computed yet.')
+
+    def saveObject(self, outFileName):
+        """Save current object state to binary file.
+        
+        Parameters
+        ----------
+        outFileName : str
+            Output binary file. `.fathon` extension will be appended to the file name.
+        """
+        saveDict = {}
+        saveDict['kind'] = 'dfa'
+        saveDict['tsVec'] = self.tsVec.tolist()
+        try:
+            saveDict['n'] = self.n.tolist()
+        except:
+            saveDict['n'] = []
+        try:
+            saveDict['F'] = self.F.tolist()
+        except:
+            saveDict['F'] = []
+        saveDict['isComputed'] = self.isComputed
+
+        f = open(outFileName + '.fathon', 'wb')
+        pickle.dump(saveDict, f)
+        f.close()
+

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-fathon (v1.0)
+fathon (v1.1)
 ***************
 
 Current version is available for Linux (64 bit) and macOS only.

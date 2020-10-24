@@ -10,6 +10,7 @@ MFDFA
    .. automethod:: computeMassExponents
    .. automethod:: computeMultifractalSpectrum
    .. automethod:: fitFlucVec
+   .. automethod:: saveObject
 
 Usage examples
 ^^^^^^^^^^^^^^

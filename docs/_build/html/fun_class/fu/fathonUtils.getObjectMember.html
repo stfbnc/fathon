@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>linRangeByStep &#8212; fathon  documentation</title>
+    <title>getObjectMember &#8212; fathon  documentation</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script src="../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="linRangeByCount" href="fathonUtils.linRangeByCount.html" />
-    <link rel="prev" title="toAggregated" href="fathonUtils.toAggregated.html" /> 
+    <link rel="next" title="DFA" href="../fathon.DFA.html" />
+    <link rel="prev" title="powRangeByCount" href="fathonUtils.powRangeByCount.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -25,14 +25,14 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="fathonUtils.linRangeByCount.html" title="linRangeByCount"
+          <a href="../fathon.DFA.html" title="DFA"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="fathonUtils.toAggregated.html" title="toAggregated"
+          <a href="fathonUtils.powRangeByCount.html" title="powRangeByCount"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">fathon  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../fathon.fathonUtils.html" accesskey="U">fathonUtils</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">linRangeByStep</a></li> 
+        <li class="nav-item nav-item-this"><a href="">getObjectMember</a></li> 
       </ul>
     </div>  
 
@@ -41,41 +41,30 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="linrangebystep">
-<h1>linRangeByStep<a class="headerlink" href="#linrangebystep" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="getobjectmember">
+<h1>getObjectMember<a class="headerlink" href="#getobjectmember" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="fathon.fathonUtils.linRangeByStep">
-<code class="sig-prename descclassname">fathon.fathonUtils.</code><code class="sig-name descname">linRangeByStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.fathonUtils.linRangeByStep" title="Permalink to this definition">¶</a></dt>
-<dd><p>Array of linearly separated elements.</p>
+<dt id="fathon.fathonUtils.getObjectMember">
+<code class="sig-prename descclassname">fathon.fathonUtils.</code><code class="sig-name descname">getObjectMember</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fileName</span></em>, <em class="sig-param"><span class="n">memberName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.fathonUtils.getObjectMember" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return member of a previously saved object. Member’s name is the same of the object’s member it refers to. Member <cite>isComputed</cite> has no practical use and cannot be retrieved.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>start</strong><span class="classifier">int</span></dt><dd><p>Smallest element.</p>
+<dt><strong>fileName</strong><span class="classifier">str</span></dt><dd><p>Path to a previously saved <cite>.fathon</cite> file.</p>
 </dd>
-<dt><strong>end</strong><span class="classifier">int</span></dt><dd><p>Biggest element.</p>
-</dd>
-<dt><strong>step</strong><span class="classifier">int</span></dt><dd><p>Step between two consecutive elements (default : 1).</p>
+<dt><strong>memberName</strong><span class="classifier">str</span></dt><dd><p>Desired member’s name.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>numpy ndarray</dt><dd><p>Array of linearly separated elements.</p>
+<dt>numpy ndarray</dt><dd><p>Object’s member.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
 
-<div class="section" id="usage-examples">
-<h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
-
-<span class="c1">#linearly separated elements</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">fu</span><span class="o">.</span><span class="n">linRangeByStep</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
 </div>
 
 
@@ -85,24 +74,16 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">linRangeByStep</a><ul>
-<li><a class="reference internal" href="#usage-examples">Usage examples</a></li>
-</ul>
-</li>
-</ul>
-
   <h4>Previous topic</h4>
-  <p class="topless"><a href="fathonUtils.toAggregated.html"
-                        title="previous chapter">toAggregated</a></p>
+  <p class="topless"><a href="fathonUtils.powRangeByCount.html"
+                        title="previous chapter">powRangeByCount</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="fathonUtils.linRangeByCount.html"
-                        title="next chapter">linRangeByCount</a></p>
+  <p class="topless"><a href="../fathon.DFA.html"
+                        title="next chapter">DFA</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/fun_class/fu/fathonUtils.linRangeByStep.rst.txt"
+      <li><a href="../../_sources/fun_class/fu/fathonUtils.getObjectMember.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -127,14 +108,14 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="fathonUtils.linRangeByCount.html" title="linRangeByCount"
+          <a href="../fathon.DFA.html" title="DFA"
              >next</a> |</li>
         <li class="right" >
-          <a href="fathonUtils.toAggregated.html" title="toAggregated"
+          <a href="fathonUtils.powRangeByCount.html" title="powRangeByCount"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">fathon  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../fathon.fathonUtils.html" >fathonUtils</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">linRangeByStep</a></li> 
+        <li class="nav-item nav-item-this"><a href="">getObjectMember</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

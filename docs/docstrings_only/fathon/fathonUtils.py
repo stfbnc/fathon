@@ -11,35 +11,36 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
+import pickle
 def subtractMean(vec):
-	"""Subtracts mean of a vector.
+    """Subtracts mean of a vector.
 	
-	Parameters
-	----------
-	vec : iterable
-		Python iterable whose mean will be subtracted.
+    Parameters
+    ----------
+    vec : iterable
+        Python iterable whose mean will be subtracted.
 	
-	Returns
-	-------
-	numpy ndarray
-		`vec` with its mean subtracted.
-	"""
-	return 0
+    Returns
+    -------
+    numpy ndarray
+        `vec` with its mean subtracted.
+    """
+    return 0
 
 def toAggregated(vec):
-	"""Subtracts mean of a vector and computes the cumulative sum.
+    """Subtracts mean of a vector and computes the cumulative sum.
 	
-	Parameters
-	----------
-	vec : iterable
-		The vector to be integrated.
+    Parameters
+    ----------
+    vec : iterable
+        The vector to be integrated.
 	
-	Returns
-	-------
-	numpy ndarray
-		Cumulative sum of `vec` after subtraction of its mean.
-	"""
-	return 0
+    Returns
+    -------
+    numpy ndarray
+        Cumulative sum of `vec` after subtraction of its mean.
+    """
+    return 0
 
 def linRangeByStep(start, end, step=1):
     """Array of linearly separated elements.
@@ -52,6 +53,11 @@ def linRangeByStep(start, end, step=1):
         Biggest element.
     step : int
         Step between two consecutive elements (default : 1).
+
+    Returns
+    -------
+    numpy ndarray
+        Array of linearly separated elements.
     """
     return 0
 
@@ -66,6 +72,11 @@ def linRangeByCount(start, end, count=-1):
         Biggest element.
     count : int
         Number of elements (default : `end` - `start` + 1).
+
+    Returns
+    -------
+    numpy ndarray
+        Array of linearly separated elements.
     """
     return 0
 
@@ -82,6 +93,11 @@ def powRangeByStep(start, end, step=1, base=2):
         Step between two consecutive exponents (default : 1).
     base : int
         Base of the exponential (default : 2).
+
+    Returns
+    -------
+    numpy ndarray
+        Array of elements given by `base` raised to linearly separated exponents.
     """
     return 0
 
@@ -98,6 +114,28 @@ def powRangeByCount(start, end, count=-1, base=2):
         Number of elements (default : `end` - `start` + 1).
     base : int
         Base of the exponential (default : 2).
+
+    Returns
+    -------
+    numpy ndarray
+        Array of elements given by `base` raised to linearly separated exponents.
+    """
+    return 0
+
+def getObjectMember(fileName, memberName):
+    """Return member of a previously saved object. Member's name is the same of the object's member it refers to. Member `isComputed` has no practical use and cannot be retrieved.
+
+    Parameters
+    ----------
+    fileName : str
+        Path to a previously saved `.fathon` file.
+    memberName : str
+        Desired member's name.
+
+    Returns
+    -------
+    numpy ndarray
+        Object's member.
     """
     return 0
 

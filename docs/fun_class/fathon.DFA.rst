@@ -9,6 +9,7 @@ DFA
    .. automethod:: computeFlucVec
    .. automethod:: fitFlucVec
    .. automethod:: multiFitFlucVec
+   .. automethod:: saveObject
 
 Usage examples
 ^^^^^^^^^^^^^^
