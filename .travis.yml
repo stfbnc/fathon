@@ -12,27 +12,34 @@ env:
 matrix:
   include:
     # ===== Linux ======
-    - name: "Python 3.7 on Linux"
-      env:
-        - CIBW_BUILD="cp35-manylinux* cp36-manylinux* cp37-manylinux* cp38-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.7 on Linux"
+    #  env:
+    #    - CIBW_BUILD="cp35-manylinux* cp36-manylinux* cp37-manylinux* cp38-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     # ======= macOS ========
-    - name: "Python 3.7 on macOS 10.14 (1)"
-      env:
-        - CIBW_BUILD="cp35-macosx* cp36-macosx*"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+    #- name: "Python 3.7 on macOS 10.14 (1)"
+    #  env:
+    #    - CIBW_BUILD="cp35-macosx* cp36-macosx*"
+    #  os: osx
+    #  osx_image: xcode10.2
+    #  language: shell
     # ======= macOS ========
-    - name: "Python 3.7 on macOS 10.14 (2)"
+    #- name: "Python 3.7 on macOS 10.14 (2)"
+    #  env:
+    #    - CIBW_BUILD="cp37-macosx* cp38-macosx*"
+    #  os: osx
+    #  osx_image: xcode10.2
+    #  language: shell
+    # ======= macOS ========
+    - name: "Python 3.7 on macOS 10.14 (3)"
       env:
-        - CIBW_BUILD="cp37-macosx* cp38-macosx*"
+        - CIBW_BUILD="cp39-macosx*"
       os: osx
       osx_image: xcode10.2
       language: shell
@@ -46,5 +53,7 @@ install:
 script:
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
+  - which pip
+  - which pip3
   - pip install twine
   - twine upload --skip-existing wheelhouse/* -u ${PYPI_USR} -p ${PYPI_PWD}
