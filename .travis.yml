@@ -22,6 +22,17 @@ matrix:
     #  python: "3.7"
     #  services:
     #    - docker
+    # ===== Linux ======
+    - name: "Python 3.7 on Linux"
+      env:
+        - CIBW_BUILD="cp39-manylinux*"
+        - CIBW_SKIP: "*-manylinux_i686"
+      language: python
+      dist: xenial
+      sudo: required
+      python: "3.7"
+      services:
+        - docker
     # ======= macOS ========
     #- name: "Python 3.7 on macOS 10.14 (1)"
     #  env:
@@ -37,12 +48,12 @@ matrix:
     #  osx_image: xcode10.2
     #  language: shell
     # ======= macOS ========
-    - name: "Python 3.7 on macOS 10.14 (3)"
-      env:
-        - CIBW_BUILD="cp39-macosx*"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+    #- name: "Python 3.7 on macOS 10.14 (3)"
+    #  env:
+    #    - CIBW_BUILD="cp39-macosx*"
+    #  os: osx
+    #  osx_image: xcode10.2
+    #  language: shell
 
 before_install:
   - python3 --version
@@ -53,7 +64,10 @@ install:
 script:
   - cibuildwheel --output-dir wheelhouse
   - ls wheelhouse
-  - which pip
-  - which pip3
-  - pip install twine
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+      pip3 install --upgrade pip;
+      pip3 install --upgrade --upgrade-strategy eager twine;
+    elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
+      pip install twine;
+    fi
   - twine upload --skip-existing wheelhouse/* -u ${PYPI_USR} -p ${PYPI_PWD}
