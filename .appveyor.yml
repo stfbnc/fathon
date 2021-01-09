@@ -50,7 +50,7 @@ build_script:
   - dir wheelhouse
   - ps: >-
       if ($env:PYPI_UPLOAD -eq "test") {
-        "python -m twine upload --skip-existing wheelhouse\\* --repository-url https://test.pypi.org/legacy/ -u %TEST_PYPI_USR% -p %TEST_PYPI_PWD%"
+        python -m twine upload --skip-existing wheelhouse\\* --repository-url https://test.pypi.org/legacy/ -u "%TEST_PYPI_USR%" -p "%TEST_PYPI_PWD%"
       } elseif ($env:PYPI_UPLOAD -eq "release") {
-        "python -m twine upload --skip-existing wheelhouse\\* -u %PYPI_USR% -p %PYPI_PWD%"
+        python -m twine upload --skip-existing wheelhouse\\* -u "%PYPI_USR%" -p "%PYPI_PWD%"
       }
