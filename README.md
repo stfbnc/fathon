@@ -1,12 +1,10 @@
-# fathon [![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon)
+# fathon [![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon)[![Build status](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p?svg=true)](https://ci.appveyor.com/project/stfbnc/fathon)
 
 [![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]() [![Python 3.5+](https://img.shields.io/badge/python-3.5+-blue.svg)](https://www.python.org/)
 
 [![DOI](https://zenodo.org/badge/214290119.svg)](https://zenodo.org/badge/latestdoi/214290119) [![DOI](https://joss.theoj.org/papers/10.21105/joss.01828/status.svg)](https://doi.org/10.21105/joss.01828)
 
 
-
-:warning::warning: At the moment, `fathon` is only available for Linux (64 bit) and macOS :warning::warning:
 
 `fathon` is a python package for DFA (*Detrended Fluctuation Analysis*) and related algorithms.
 
@@ -27,8 +25,13 @@ It is mostly written in Cython and C in order to speed up computations.
 
 ### Prerequisites
 
-- Python 3.5 or higher
+| Linux i686 |    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | Windows 32bit |    Windows 64bit    |
+| :--------: | :----------------: | :----------------: | :----------------: | :-----------: | :-----------------: |
+|    :x:     | :white_check_mark: | :white_check_mark: | :white_check_mark: |      :x:      | :white_check_mark:* |
 
+<sub>*It is possible that OpenMP was not activated during compilation, so `fathon` could run slower on Windows compared to macOS and Linux</sub>
+
+- Python 3.5 or higher
  - numpy (version >= 1.15)
  - Cython
 
@@ -60,9 +63,13 @@ Bianchi, S., (2020). fathon: A Python package for a fast computation of  detrend
 
 ## Version  [![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon)
 
-fathon v1.1
+fathon v1.2
 
 ## Changelog
+
+#### v1.2
+
+- few adjustments to C extensions for Windows' C compiler compatibility
 
 #### v1.1
 

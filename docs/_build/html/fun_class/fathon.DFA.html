@@ -1,18 +1,17 @@
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DFA &#8212; fathon  documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="MFDFA" href="fathon.MFDFA.html" />
@@ -30,8 +29,7 @@
         <li class="right" >
           <a href="fu/fathonUtils.getObjectMember.html" title="getObjectMember"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">DFA</a></li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -42,9 +40,9 @@
             
   <div class="section" id="dfa">
 <h1>DFA<a class="headerlink" href="#dfa" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
+<dl class="class">
 <dt id="fathon.DFA">
-<em class="property">class </em><code class="sig-prename descclassname">fathon.</code><code class="sig-name descname">DFA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tsVec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fathon.</code><code class="sig-name descname">DFA</code><span class="sig-paren">(</span><em class="sig-param">tsVec</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Detrended Fluctuation Analysis class.</p>
 <dl class="field-list simple">
@@ -61,9 +59,9 @@
 </dl>
 </dd>
 </dl>
-<dl class="py method">
+<dl class="method">
 <dt id="fathon.DFA.computeFlucVec">
-<code class="sig-name descname">computeFlucVec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">winSizes</span></em>, <em class="sig-param"><span class="n">polOrd</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">revSeg</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">computeFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">winSizes</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">revSeg=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the fluctuations in every window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -87,9 +85,9 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="fathon.DFA.fitFlucVec">
-<code class="sig-name descname">fitFlucVec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nStart</span><span class="o">=</span><span class="default_value">- 999</span></em>, <em class="sig-param"><span class="n">nEnd</span><span class="o">=</span><span class="default_value">- 999</span></em>, <em class="sig-param"><span class="n">logBase</span><span class="o">=</span><span class="default_value">2.718281828459045</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.fitFlucVec" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fitFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nStart=-999</em>, <em class="sig-param">nEnd=-999</em>, <em class="sig-param">logBase=2.718281828459045</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.fitFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit of the fluctuations values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -115,9 +113,9 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="fathon.DFA.multiFitFlucVec">
-<code class="sig-name descname">multiFitFlucVec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">limitsList</span></em>, <em class="sig-param"><span class="n">logBase</span><span class="o">=</span><span class="default_value">2.718281828459045</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.multiFitFlucVec" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">multiFitFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">limitsList</em>, <em class="sig-param">logBase=2.718281828459045</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.multiFitFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit of the fluctuations values in different intervals at the same time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -141,9 +139,9 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="fathon.DFA.saveObject">
-<code class="sig-name descname">saveObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outFileName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.saveObject" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">saveObject</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">outFileName</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.saveObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save current object state to binary file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -159,7 +157,7 @@
 
 <div class="section" id="usage-examples">
 <h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fathon</span>
 <span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
 
@@ -173,7 +171,7 @@
 <span class="n">pydfa</span> <span class="o">=</span> <span class="n">fathon</span><span class="o">.</span><span class="n">DFA</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="c1">#compute fluctuation function and Hurst exponent</span>
 <span class="n">wins</span> <span class="o">=</span> <span class="n">fu</span><span class="o">.</span><span class="n">linRangeByStep</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-<span class="n">n</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">pydfa</span><span class="o">.</span><span class="n">computeFlucVec</span><span class="p">(</span><span class="n">wins</span><span class="p">,</span> <span class="n">revSeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">polOrd</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">pydfa</span><span class="o">.</span><span class="n">computeFlucVec</span><span class="p">(</span><span class="n">wins</span><span class="p">,</span> <span class="n">revSeg</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">polOrd</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">H</span><span class="p">,</span> <span class="n">H_intercept</span> <span class="o">=</span> <span class="n">pydfa</span><span class="o">.</span><span class="n">fitFlucVec</span><span class="p">()</span>
 
 <span class="c1">#compute Hurst exponent in different ranges</span>
@@ -185,7 +183,6 @@
 </div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -221,7 +218,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -238,13 +235,12 @@
         <li class="right" >
           <a href="fu/fathonUtils.getObjectMember.html" title="getObjectMember"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">DFA</a></li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019-2020, Stefano Bianchi.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>
 </html>

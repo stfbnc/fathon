@@ -1,5 +1,5 @@
 #    __init__.py - init for fathon package
-#    Copyright (C) 2019-2020  Stefano Bianchi
+#    Copyright (C) 2019-2021  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -30,6 +30,6 @@ from .ht import HT
     and related algorithms.
 """
 
-__version__ = '1.1'
+__version__ = '1.2'
 __author__ = 'Stefano Bianchi'
 __git_repo__ = 'https://github.com/stfbnc/fathon'
