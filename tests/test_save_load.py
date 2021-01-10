@@ -91,7 +91,7 @@ def test_ht_save_load():
     ht_load = fu.getObjectMember(get_object_path('ht_obj', ext=True), 'ht')
     assert np.array_equal(ht_load, [])
     #save and load with results
-    ht_mtx = ht.computeHt([100, 300])
+    ht_mtx = ht.computeHt(np.array([100, 300], dtype=np.int64))
     ht.saveObject(get_object_path('ht_obj'))
     ht_load = fu.getObjectMember(get_object_path('ht_obj', ext=True), 'ht')
     assert np.array_equal(ht_load, ht_mtx)

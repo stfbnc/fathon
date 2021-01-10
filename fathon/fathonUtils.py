@@ -1,5 +1,5 @@
 #    fathonUtils.py - utils functions for fathon package
-#    Copyright (C) 2019-2020  Stefano Bianchi
+#    Copyright (C) 2019-2021  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ def linRangeByStep(start, end, step=1):
     numpy ndarray
         Array of linearly separated elements.
     """
-    return np.arange(start, end + 1, step, dtype=int)
+    return np.arange(start, end + 1, step, dtype=np.int64)
 
 def linRangeByCount(start, end, count=-1):
     """Array of linearly separated elements.
@@ -86,7 +86,7 @@ def linRangeByCount(start, end, count=-1):
     if count == -1 or count > (end - start + 1):
         count = end - start + 1
         
-    return np.linspace(start, end, count, endpoint=True, dtype=int)
+    return np.linspace(start, end, count, endpoint=True, dtype=np.int64)
 
 def powRangeByStep(start, end, step=1, base=2):
     """Array of elements given by `base` raised to linearly separated exponents.
@@ -109,7 +109,7 @@ def powRangeByStep(start, end, step=1, base=2):
     """
     exponents = linRangeByStep(start, end, step=step)
     
-    return np.power(base, exponents, dtype=int)
+    return np.power(base, exponents, dtype=np.int64)
 
 def powRangeByCount(start, end, count=-1, base=2):
     """Array of elements given by `base` raised to linearly separated exponents.
@@ -132,7 +132,7 @@ def powRangeByCount(start, end, count=-1, base=2):
     """
     exponents = linRangeByCount(start, end, count=count)
         
-    return np.power(base, exponents, dtype=int)
+    return np.power(base, exponents, dtype=np.int64)
 
 def getObjectMember(fileName, memberName):
     """Return member of a previously saved object. Member's name is the same of the object's member it refers to. Member `isComputed` has no practical use and cannot be retrieved.

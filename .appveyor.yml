@@ -1,0 +1,56 @@
+branches:
+  only:
+    - master
+
+environment:
+  global:
+    PYTHON: "C:\\Python37-x64"
+    PYTHON_VERSION: "3.7.x"
+    PYTHON_ARCH: "64"
+    CIBW_BUILD_VERBOSITY: 1
+    CIBW_TEST_REQUIRES: pytest
+    CIBW_TEST_COMMAND: "pytest %APPVEYOR_BUILD_FOLDER%\\tests"
+    CIBW_BEFORE_BUILD: "python -m pip install -r requirements.txt"
+
+  matrix:
+    - CIBW_BUILD: "cp35-win_amd64"
+    - CIBW_BUILD: "cp36-win_amd64"
+    - CIBW_BUILD: "cp37-win_amd64"
+    - CIBW_BUILD: "cp38-win_amd64"
+    - CIBW_BUILD: "cp39-win_amd64"
+
+stack: python 3.7
+
+init:
+  - cmd: PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+
+install:
+  ### GSL ###
+  - cd C:\Tools\vcpkg
+  - git pull
+  - .\bootstrap-vcpkg.bat
+  - .\vcpkg integrate install
+  - .\vcpkg.exe install gsl:x64-windows-static
+  - md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\include
+  - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\include %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\include /f /s /e
+  - md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib
+  - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\lib %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib /f /s /e
+  ### PYTHON ###
+  - "python -m pip install --upgrade pip"
+  - "python -m pip install --upgrade cibuildwheel"
+  - "python -m pip install --upgrade twine"
+
+build_script:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - "python --version"
+  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+  - "python -m pip --version"
+  - "python -m twine --version"
+  - "python -m cibuildwheel --output-dir wheelhouse"
+  - dir wheelhouse
+  - ps: >-
+      if ($env:PYPI_UPLOAD -eq "test") {
+        python -m twine upload --skip-existing wheelhouse\* --repository-url https://test.pypi.org/legacy/ -u $env:TEST_PYPI_USR -p $env:TEST_PYPI_PWD
+      } elseif ($env:PYPI_UPLOAD -eq "release") {
+        python -m twine upload --skip-existing wheelhouse\* -u $env:PYPI_USR -p $env:PYPI_PWD
+      }

@@ -1,5 +1,5 @@
 //    cLoops.c - C loops of fathon package
-//    Copyright (C) 2019-2020  Stefano Bianchi
+//    Copyright (C) 2019-2021  Stefano Bianchi
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -35,14 +35,15 @@ double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
     {
         int start_lim = v * curr_win_size;
 
-        double t_fit[curr_win_size], y_fit[curr_win_size];
+        double *t_fit = malloc(curr_win_size * sizeof(double));
+        double *y_fit = malloc(curr_win_size * sizeof(double));
         for(int i = 0; i < curr_win_size; i++)
         {
             t_fit[i] = t[start_lim + i];
             y_fit[i] = y[start_lim + i];
         }
 
-        double fit_coeffs[pol_ord + 1];
+        double *fit_coeffs = malloc((pol_ord + 1) * sizeof(double));
         polynomialFit(curr_win_size, pol_ord+1, t_fit, y_fit, fit_coeffs);
 
         for(int j = 0; j < curr_win_size; j++)
@@ -54,6 +55,10 @@ double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
             }
             f += pow(var, 2.0);
         }
+        
+        free(t_fit);
+        free(y_fit);
+        free(fit_coeffs);
     }
 
     f = sqrt(f / (N_s * curr_win_size));
@@ -81,14 +86,15 @@ double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord)
     {
         int start_lim = v * curr_win_size;
 
-        double t_fit[curr_win_size], y_fit[curr_win_size];
+        double *t_fit = malloc(curr_win_size * sizeof(double));
+        double *y_fit = malloc(curr_win_size * sizeof(double));
         for(int i = 0; i < curr_win_size; i++)
         {
             t_fit[i] = t[start_lim + i];
             y_fit[i] = y[start_lim + i];
         }
 
-        double fit_coeffs[pol_ord + 1];
+        double *fit_coeffs = malloc((pol_ord + 1) * sizeof(double));
         polynomialFit(curr_win_size, pol_ord+1, t_fit, y_fit, fit_coeffs);
 
         for(int j = 0; j < curr_win_size; j++)
@@ -120,6 +126,10 @@ double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord)
             }
             f += pow(var_2, 2.0);
         }
+        
+        free(t_fit);
+        free(y_fit);
+        free(fit_coeffs);
     }
 
     f = sqrt(f / (2.0 * N_s * curr_win_size));
@@ -147,14 +157,15 @@ double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int p
         double rms = 0.0;
         int start_lim = v * curr_win_size;
 
-        double t_fit[curr_win_size], y_fit[curr_win_size];
+        double *t_fit = malloc(curr_win_size * sizeof(double));
+        double *y_fit = malloc(curr_win_size * sizeof(double));
         for(int i = 0; i < curr_win_size; i++)
         {
             t_fit[i] = t[start_lim + i];
             y_fit[i] = y[start_lim + i];
         }
 
-        double fit_coeffs[pol_ord + 1];
+        double *fit_coeffs = malloc((pol_ord + 1) * sizeof(double));
         polynomialFit(curr_win_size, pol_ord+1, t_fit, y_fit, fit_coeffs);
 
         for(int j = 0; j < curr_win_size; j++)
@@ -175,6 +186,10 @@ double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int p
         {
             f += pow(rms / (double)curr_win_size, 0.5 * q);
         }
+        
+        free(t_fit);
+        free(y_fit);
+        free(fit_coeffs);
     }
 
     if(q == 0.0)
@@ -211,14 +226,15 @@ double flucMFDFAForwBackwCompute(double *y, int curr_win_size, double q, int N, 
         double rms2 = 0.0;
         int start_lim = v * curr_win_size;
 
-        double t_fit[curr_win_size], y_fit[curr_win_size];
+        double *t_fit = malloc(curr_win_size * sizeof(double));
+        double *y_fit = malloc(curr_win_size * sizeof(double));
         for(int i = 0; i < curr_win_size; i++)
         {
             t_fit[i] = t[start_lim + i];
             y_fit[i] = y[start_lim + i];
         }
 
-        double fit_coeffs[pol_ord + 1];
+        double *fit_coeffs = malloc((pol_ord + 1) * sizeof(double));
         polynomialFit(curr_win_size, pol_ord+1, t_fit, y_fit, fit_coeffs);
 
         for(int j = 0; j < curr_win_size; j++)
@@ -259,6 +275,10 @@ double flucMFDFAForwBackwCompute(double *y, int curr_win_size, double q, int N, 
         {
             f += (pow(rms1 / (double)curr_win_size, 0.5 * q) + pow(rms2 / (double)curr_win_size, 0.5 * q));
         }
+        
+        free(t_fit);
+        free(y_fit);
+        free(fit_coeffs);
     }
 
     if(q == 0.0)
@@ -290,7 +310,9 @@ double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int 
     #pragma omp parallel for reduction(+ : f)
     for(int v = 0; v < N_s; v++)
     {
-        double t_fit[curr_win_size + 1], y_fit1[curr_win_size + 1], y_fit2[curr_win_size + 1];
+        double *t_fit = malloc((curr_win_size + 1) * sizeof(double));
+        double *y_fit1 = malloc((curr_win_size + 1) * sizeof(double));
+        double *y_fit2 = malloc((curr_win_size + 1) * sizeof(double));
         for(int i = 0; i <= curr_win_size; i++)
         {
             t_fit[i] = t[v + i];
@@ -298,7 +320,8 @@ double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int 
             y_fit2[i] = y2[v + i];
         }
 
-        double fit_coeffs1[pol_ord + 1], fit_coeffs2[pol_ord + 1];
+        double *fit_coeffs1 = malloc((pol_ord + 1) * sizeof(double));
+        double *fit_coeffs2 = malloc((pol_ord + 1) * sizeof(double));
         polynomialFit(curr_win_size+1, pol_ord+1, t_fit, y_fit1, fit_coeffs1);
         polynomialFit(curr_win_size+1, pol_ord+1, t_fit, y_fit2, fit_coeffs2);
 
@@ -313,6 +336,12 @@ double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int 
             }
             f += fabs(var_1 * var_2);
         }
+        
+        free(t_fit);
+        free(y_fit1);
+        free(y_fit2);
+        free(fit_coeffs1);
+        free(fit_coeffs2);
     }
 
     f = sqrt(f / (N_s * (curr_win_size - 1)));
@@ -337,7 +366,9 @@ double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, in
     #pragma omp parallel for reduction(+ : f)
     for(int v = 0; v < N_s; v++)
     {
-        double t_fit[curr_win_size + 1], y_fit1[curr_win_size + 1], y_fit2[curr_win_size + 1];
+        double *t_fit = malloc((curr_win_size + 1) * sizeof(double));
+        double *y_fit1 = malloc((curr_win_size + 1) * sizeof(double));
+        double *y_fit2 = malloc((curr_win_size + 1) * sizeof(double));;
         for(int i = 0; i <= curr_win_size; i++)
         {
             t_fit[i] = t[v + i];
@@ -345,7 +376,8 @@ double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, in
             y_fit2[i] = y2[v + i];
         }
 
-        double fit_coeffs1[pol_ord + 1], fit_coeffs2[pol_ord + 1];
+        double *fit_coeffs1 = malloc((pol_ord + 1) * sizeof(double));
+        double *fit_coeffs2 = malloc((pol_ord + 1) * sizeof(double));
         polynomialFit(curr_win_size+1, pol_ord+1, t_fit, y_fit1, fit_coeffs1);
         polynomialFit(curr_win_size+1, pol_ord+1, t_fit, y_fit2, fit_coeffs2);
 
@@ -360,6 +392,12 @@ double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, in
             }
             f += var_1 * var_2;
         }
+        
+        free(t_fit);
+        free(y_fit1);
+        free(y_fit2);
+        free(fit_coeffs1);
+        free(fit_coeffs2);
     }
 
     f = f / (N_s * (curr_win_size - 1));
@@ -379,14 +417,15 @@ double HTCompute(double *y, int scale, int N, int pol_ord, int v)
     }
 
     double f = 0.0;
-    double t_fit[scale], y_fit[scale];
+    double *t_fit = malloc(scale * sizeof(double));
+    double *y_fit = malloc(scale * sizeof(double));
     for(int i = 0; i < scale; i++)
     {
         t_fit[i] = t[v + i];
         y_fit[i] = y[v + i];
     }
 
-    double fit_coeffs[pol_ord + 1];
+    double *fit_coeffs = malloc((pol_ord + 1) * sizeof(double));
     polynomialFit(scale, pol_ord+1, t_fit, y_fit, fit_coeffs);
 
     for(int j = 0; j < scale; j++)
@@ -402,6 +441,9 @@ double HTCompute(double *y, int scale, int N, int pol_ord, int v)
     f = sqrt(f / (double)scale);
 
     free(t);
+    free(t_fit);
+    free(y_fit);
+    free(fit_coeffs);
 
     return f;
 }

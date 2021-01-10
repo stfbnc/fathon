@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-fathon (v1.1)
+fathon (v1.2)
 ***************
 
-Current version is available for Linux (64 bit) and macOS only.
+Current version is available for Linux (x86_64 and ARM64), macOS, and Windows (64bit).
 
 Python package for detrended fluctuation analysis (DFA) and related algorithms.
 `fathon` provides four main algorithms, namely

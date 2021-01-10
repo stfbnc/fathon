@@ -31,7 +31,7 @@ nMin = 16
 nMax = 1024
 nScales = 19
 exponents = np.linspace(np.log2(nMin), np.log2(nMax), nScales)
-scales = np.round(np.power(2.0, exponents)).astype(int)
+scales = np.round(np.power(2.0, exponents)).astype(np.int64)
 q_list = [-5, -3, -1, 1, 3, 5]
 
 def get_idxs(vec, scales):

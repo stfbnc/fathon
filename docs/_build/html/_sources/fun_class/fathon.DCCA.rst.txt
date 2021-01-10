@@ -33,7 +33,7 @@ Usage examples
    #initialize non-empty dcca object
    pydcca = fathon.DCCA(a, b)
    #compute fluctuation function and Hurst exponent
-   wins = fu.linRangeByStep(20, 100, step=50)
+   wins = fu.linRangeByStep(20, 1000, step=50)
    n, F = pydcca.computeFlucVec(wins, polOrd=1)
    H, H_intercept = pydcca.fitFlucVec()
 
