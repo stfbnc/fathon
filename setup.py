@@ -56,8 +56,8 @@ def get_extension(module_name, src_name, current_os):
                          include_dirs=[numpy.get_include(), gsl_inc],
                          library_dirs=[gsl_lib],
                          libraries=["gsl", "gslcblas"],
-                         extra_compile_args=["/O2", "/OpenMP"],
-                         extra_link_args=["/OpenMP"])
+                         extra_compile_args=["/O2", "-openmp"],
+                         extra_link_args=[])
 
 if __name__ == "__main__":
     if sys.version_info[0] == 3:
