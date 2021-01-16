@@ -29,9 +29,16 @@ double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
 
     int N_s = N / curr_win_size;
     double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
 
     #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
     for(int v = 0; v < N_s; v++)
+#endif
     {
         int start_lim = v * curr_win_size;
 
@@ -80,9 +87,16 @@ double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord)
 
     int N_s = N / curr_win_size;
     double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
 
     #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
     for(int v = 0; v < N_s; v++)
+#endif
     {
         int start_lim = v * curr_win_size;
 
@@ -150,9 +164,16 @@ double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int p
 
     int N_s = N / curr_win_size;
     double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
 
     #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
     for(int v = 0; v < N_s; v++)
+#endif
     {
         double rms = 0.0;
         int start_lim = v * curr_win_size;
@@ -218,9 +239,16 @@ double flucMFDFAForwBackwCompute(double *y, int curr_win_size, double q, int N, 
 
     int N_s = N / curr_win_size;
     double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
 
     #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
     for(int v = 0; v < N_s; v++)
+#endif
     {
         double rms1 = 0.0;
         double rms2 = 0.0;
@@ -306,9 +334,16 @@ double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int 
 
     int N_s = N - curr_win_size;
     double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
 
     #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
     for(int v = 0; v < N_s; v++)
+#endif
     {
         double *t_fit = malloc((curr_win_size + 1) * sizeof(double));
         double *y_fit1 = malloc((curr_win_size + 1) * sizeof(double));
@@ -362,9 +397,16 @@ double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, in
 
     int N_s = N - curr_win_size;
     double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
 
     #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
     for(int v = 0; v < N_s; v++)
+#endif
     {
         double *t_fit = malloc((curr_win_size + 1) * sizeof(double));
         double *y_fit1 = malloc((curr_win_size + 1) * sizeof(double));
