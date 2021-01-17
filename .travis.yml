@@ -1,6 +1,6 @@
 branches:
   only:
-  - master
+  - fathon-dev
 
 env:
   global:
@@ -14,47 +14,47 @@ matrix:
     ##### Linux #####
     ##### ARM #####
     ### 3.5 ###
-    - name: "Python 3.5 on Linux arm64"
-      arch:
-        - arm64
-      env:
-        - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
-        - CIBW_BUILD="cp35-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.5 on Linux arm64"
+    #  arch:
+    #    - arm64
+    #  env:
+    #    - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
+    #    - CIBW_BUILD="cp35-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     ### 3.6 ###
-    - name: "Python 3.6 on Linux arm64"
-      arch:
-        - arm64
-      env:
-        - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
-        - CIBW_BUILD="cp36-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.6 on Linux arm64"
+    #  arch:
+    #    - arm64
+    #  env:
+    #    - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
+    #    - CIBW_BUILD="cp36-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     ### 3.7 ###
-    - name: "Python 3.7 on Linux arm64"
-      arch:
-        - arm64
-      env:
-        - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
-        - CIBW_BUILD="cp37-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.7 on Linux arm64"
+    #  arch:
+    #    - arm64
+    #  env:
+    #    - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
+    #    - CIBW_BUILD="cp37-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     ### 3.8 ###
     - name: "Python 3.8 on Linux arm64"
       arch:
@@ -70,59 +70,59 @@ matrix:
       services:
         - docker
     ### 3.9 ###
-    - name: "Python 3.9 on Linux arm64"
-      arch:
-        - arm64
-      env:
-        - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
-        - CIBW_BUILD="cp39-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.9 on Linux arm64"
+    #  arch:
+    #    - arm64
+    #  env:
+    #    - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
+    #    - CIBW_BUILD="cp39-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     ##### x86_64 #####
     ### 3.5 ###
-    - name: "Python 3.5 on Linux amd64"
-      arch:
-        - amd64
-      env:
-        - CIBW_BUILD="cp35-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.5 on Linux amd64"
+    #  arch:
+    #    - amd64
+    #  env:
+    #    - CIBW_BUILD="cp35-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     ### 3.6 ###
-    - name: "Python 3.6 on Linux amd64"
-      arch:
-        - amd64
-      env:
-        - CIBW_BUILD="cp36-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.6 on Linux amd64"
+    #  arch:
+    #    - amd64
+    #  env:
+    #    - CIBW_BUILD="cp36-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     ### 3.7 ###
-    - name: "Python 3.7 on Linux amd64"
-      arch:
-        - amd64
-      env:
-        - CIBW_BUILD="cp37-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.7 on Linux amd64"
+    #  arch:
+    #    - amd64
+    #  env:
+    #    - CIBW_BUILD="cp37-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     ### 3.8 ###
     - name: "Python 3.8 on Linux amd64"
       arch:
@@ -137,40 +137,40 @@ matrix:
       services:
         - docker
     ### 3.9 ###
-    - name: "Python 3.9 on Linux amd64"
-      arch:
-        - amd64
-      env:
-        - CIBW_BUILD="cp39-manylinux*"
-        - CIBW_SKIP: "*-manylinux_i686"
-      language: python
-      dist: xenial
-      sudo: required
-      python: "3.7"
-      services:
-        - docker
+    #- name: "Python 3.9 on Linux amd64"
+    #  arch:
+    #    - amd64
+    #  env:
+    #    - CIBW_BUILD="cp39-manylinux*"
+    #    - CIBW_SKIP: "*-manylinux_i686"
+    #  language: python
+    #  dist: xenial
+    #  sudo: required
+    #  python: "3.7"
+    #  services:
+    #    - docker
     ##### macOS #####
     ### 3.5 ###
-    - name: "Python 3.5 on macOS 10.14"
-      env:
-        - CIBW_BUILD="cp35-macosx*"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+    #- name: "Python 3.5 on macOS 10.14"
+    #  env:
+    #    - CIBW_BUILD="cp35-macosx*"
+    #  os: osx
+    #  osx_image: xcode10.2
+    #  language: shell
     ### 3.6 ###
-    - name: "Python 3.6 on macOS 10.14"
-      env:
-        - CIBW_BUILD="cp36-macosx*"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+    #- name: "Python 3.6 on macOS 10.14"
+    #  env:
+    #    - CIBW_BUILD="cp36-macosx*"
+    #  os: osx
+    #  osx_image: xcode10.2
+    #  language: shell
     ### 3.7 ###
-    - name: "Python 3.7 on macOS 10.14"
-      env:
-        - CIBW_BUILD="cp37-macosx*"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+    #- name: "Python 3.7 on macOS 10.14"
+    #  env:
+    #    - CIBW_BUILD="cp37-macosx*"
+    #  os: osx
+    #  osx_image: xcode10.2
+    #  language: shell
     ### 3.8 ###
     - name: "Python 3.8 on macOS 10.14"
       env:
@@ -179,12 +179,12 @@ matrix:
       osx_image: xcode10.2
       language: shell
     ### 3.9 ###
-    - name: "Python 3.9 on macOS 10.14"
-      env:
-        - CIBW_BUILD="cp39-macosx*"
-      os: osx
-      osx_image: xcode10.2
-      language: shell
+    #- name: "Python 3.9 on macOS 10.14"
+    #  env:
+    #    - CIBW_BUILD="cp39-macosx*"
+    #  os: osx
+    #  osx_image: xcode10.2
+    #  language: shell
 
 before_install:
   - python3 --version
