@@ -376,16 +376,16 @@ double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int 
         double *fit_coeffs1 = malloc((pol_ord + 1) * sizeof(double));
         double *fit_coeffs2 = malloc((pol_ord + 1) * sizeof(double));
         //polynomialFit(curr_win_size+1, pol_ord+1, t_fit, y_fit1, fit_coeffs1);
-        polynomialFit(curr_win_size + 1, pol_ord + 1, t + v, y + v, fit_coeffs1);
+        polynomialFit(curr_win_size + 1, pol_ord + 1, t + v, y1 + v, fit_coeffs1);
         //polynomialFit(curr_win_size+1, pol_ord+1, t_fit, y_fit2, fit_coeffs2);
-        polynomialFit(curr_win_size + 1, pol_ord + 1, t + v, y + v, fit_coeffs2);
+        polynomialFit(curr_win_size + 1, pol_ord + 1, t + v, y2 + v, fit_coeffs2);
 
         for(int j = 0; j <= curr_win_size; j++)
         {
             //double var_1 = y_fit1[j];
-            double var_1 = y[v + j];
+            double var_1 = y1[v + j];
             //double var_2 = y_fit2[j];
-            double var_2 = y[v + j];
+            double var_2 = y2[v + j];
             for(int k = 0; k < (pol_ord + 1); k++)
             {
                 //var_1 -= fit_coeffs1[k] * pow(t_fit[j], k);
@@ -445,16 +445,16 @@ double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, in
         double *fit_coeffs1 = malloc((pol_ord + 1) * sizeof(double));
         double *fit_coeffs2 = malloc((pol_ord + 1) * sizeof(double));
         //polynomialFit(curr_win_size+1, pol_ord+1, t_fit, y_fit1, fit_coeffs1);
-        polynomialFit(curr_win_size + 1, pol_ord + 1, t + v, y + v, fit_coeffs1);
+        polynomialFit(curr_win_size + 1, pol_ord + 1, t + v, y1 + v, fit_coeffs1);
         //polynomialFit(curr_win_size+1, pol_ord+1, t_fit, y_fit2, fit_coeffs2);
-        polynomialFit(curr_win_size + 1, pol_ord + 1, t + v, y + v, fit_coeffs2);
+        polynomialFit(curr_win_size + 1, pol_ord + 1, t + v, y2 + v, fit_coeffs2);
 
         for(int j = 0; j <= curr_win_size; j++)
         {
             //double var_1 = y_fit1[j];
-            double var_1 = y[v + j];
+            double var_1 = y1[v + j];
             //double var_2 = y_fit2[j];
-            double var_2 = y[v + j];
+            double var_2 = y2[v + j];
             for(int k = 0; k < (pol_ord + 1); k++)
             {
                 //var_1 -= fit_coeffs1[k] * pow(t_fit[j], k);
