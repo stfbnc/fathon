@@ -26,7 +26,7 @@ from . import mfdfa
 from . import fathonUtils as fu
 	
 cdef extern from "cLoops.h" nogil:
-    double HTCompute(double *y, int scale, int N, int pol_ord, int v)
+    double HTCompute(double *y, double *t, int scale, int N, int pol_ord, int v)
 
 cdef class HT:
     """Time-dependent local Hurst exponent class.
@@ -62,11 +62,14 @@ cdef class HT:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd, int mfdfaPolOrd, np.ndarray[np.float64_t, ndim=1, mode='c'] q0Fit, bint verbose):
+    cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd,
+                      int mfdfaPolOrd, np.ndarray[np.float64_t, ndim=1, mode='c'] q0Fit,
+                      bint verbose):
         cdef int htRowLen, tsLen, scale
         cdef Py_ssize_t i, j
         cdef double H0, H0_intercept
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] vects, vecht
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
         
         tsLen = len(self.tsVec)
         htRowLen = tsLen - min(scales) + 1
@@ -75,13 +78,18 @@ cdef class HT:
         
         if len(q0Fit) == 0:
             pymfdfa = mfdfa.MFDFA(self.tsVec)
-            _, _ = pymfdfa.computeFlucVec(fu.linRangeByCount(10, int(tsLen / 4), count=20), 0.0, revSeg=True, polOrd=mfdfaPolOrd)
+            _, _ = pymfdfa.computeFlucVec(fu.linRangeByCount(10, int(tsLen / 4), count=20),
+                                          0.0, revSeg=True, polOrd=mfdfaPolOrd)
             H0, H0_intercept = pymfdfa.fitFlucVec(verbose=verbose)
         else:
             if verbose:
                 print('Variable q0Fit assigned, variable mfdfaPolOrd will be ignored.')
             H0 = q0Fit[0]
             H0_intercept = q0Fit[1]
+            
+        t = np.empty((tsLen, ), dtype=ctypes.c_double)
+        for j in prange(tsLen, nogil=True):
+            t[j] = float(j) + 1.0
         
         if verbose:
             print('-----')
@@ -90,7 +98,7 @@ cdef class HT:
                 print('scale = {}'.format(scale))
                 
             for j in prange(tsLen - scale + 1, nogil=True):
-               vecht[i*htRowLen+j] = HTCompute(&vects[0], scale, tsLen, polOrd, j)
+                vecht[i*htRowLen+j] = HTCompute(&vects[0], &t[0], scale, tsLen, polOrd, j)
                
             if verbose:
                 print('-----')
@@ -102,18 +110,20 @@ cdef class HT:
         return np.reshape(vecht, (len(scales), htRowLen))
 		
     def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1, q0Fit=[], verbose=False):
-        """Computation of the time-dependent local Hurst exponent at every scale, using Ihlen's approach.
+        """Computation of the time-dependent local Hurst exponent at each scale, using Ihlen's approach.
         
         Parameters
         ----------
         scales : int or iterable or numpy ndarray
             Window's sizes used for the computation of the time-dependent local Hurst exponent.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         mfdfaPolOrd : int, optional
             Order of the polynomial to be fitted to MFDFA's fluctuations at q = 0 (default : 1).
         q0Fit : iterable or numpy ndarray of floats, optional
-            MFDFA's Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept]. These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly used to compute the time-dependent local Hurst exponent, ignoring `mfdfaPolOrd` value (default : []).
+            MFDFA's Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept].
+            These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly
+            used to compute the time-dependent local Hurst exponent, ignoring `mfdfaPolOrd` value (default : []).
         verbose : bool, optional
             Verbosity (default : False).
 
@@ -133,13 +143,13 @@ cdef class HT:
 
         if isinstance(scales, int):
             if scales < 3:
-                raise ValueError('Error: Every scale must be at least equal to 3.')
+                raise ValueError('Error: Each scale must be at least equal to 3.')
             else:
                 scales = np.array([scales], dtype=ctypes.c_int)
         elif isinstance(scales, list) or isinstance(scales, np.ndarray):
             for scale in scales:
                 if scale < 3:
-                    raise ValueError('Error: Every scale must be at least equal to 3.')
+                    raise ValueError('Error: Each scale must be at least equal to 3.')
             scales = np.array(scales, dtype=ctypes.c_int)
         else:
             raise ValueError('Error: scales type is {}. Expected int, list, or numpy array.'.format(type(scales)))

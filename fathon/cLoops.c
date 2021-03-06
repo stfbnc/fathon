@@ -125,13 +125,13 @@ double flucDFAForwBackwCompute(double *y, double *t, int curr_win_size, int N, i
 }
 
 //main loop for MFDFA (computes fluctuations starting from the beginning of the array y)
-double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int pol_ord)
+double flucMFDFAForwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
 {
-    double *t = malloc(N * sizeof(double));
+    /*double *t = malloc(N * sizeof(double));
     for(int i = 0; i < N; i++)
     {
         t[i] = (double)(i + 1);
-    }
+    }*/
 
     int N_s = N / curr_win_size;
     double f = 0.0;
@@ -182,20 +182,20 @@ double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int p
         f = pow(f / (double)N_s, 1 / (double)q);
     }
 
-    free(t);
+    //free(t);
 
     return f;
 }
 
 //main loop for MFDFA (computes fluctuations starting from the beginning of the array y
 //and then computes fluctuations again starting from the end of the array y)
-double flucMFDFAForwBackwCompute(double *y, int curr_win_size, double q, int N, int pol_ord)
+double flucMFDFAForwBackwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
 {
-    double *t = malloc(N * sizeof(double));
+    /*double *t = malloc(N * sizeof(double));
     for(int i = 0; i < N; i++)
     {
         t[i] = (double)(i + 1);
-    }
+    }*/
 
     int N_s = N / curr_win_size;
     double f = 0.0;
@@ -260,19 +260,19 @@ double flucMFDFAForwBackwCompute(double *y, int curr_win_size, double q, int N, 
         f = pow(f / (double)(2 * N_s), 1 / (double)q);
     }
 
-    free(t);
+    //free(t);
 
     return f;
 }
 
 //main loop for DCCA (computes fluctuations using absolute values)
-double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int pol_ord)
+double flucDCCAAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
 {
-    double *t = malloc(N * sizeof(double));
+    /*double *t = malloc(N * sizeof(double));
     for(int i = 0; i < N; i++)
     {
         t[i] = (double)(i + 1);
-    }
+    }*/
 
     int N_s = N - curr_win_size;
     double f = 0.0;
@@ -310,19 +310,19 @@ double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int 
 
     f = sqrt(f / (N_s * (curr_win_size - 1)));
 
-    free(t);
+    //free(t);
 
     return f;
 }
 
 //main loop for DCCA (computes fluctuations without using absolute values)
-double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, int pol_ord)
+double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
 {
-    double *t = malloc(N * sizeof(double));
+    /*double *t = malloc(N * sizeof(double));
     for(int i = 0; i < N; i++)
     {
         t[i] = (double)(i + 1);
-    }
+    }*/
 
     int N_s = N - curr_win_size;
     double f = 0.0;
@@ -360,19 +360,19 @@ double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, in
 
     f = f / (N_s * (curr_win_size - 1));
 
-    free(t);
+    //free(t);
 
     return f;
 }
 
 //main loop for HT (computes fluctuations)
-double HTCompute(double *y, int scale, int N, int pol_ord, int v)
+double HTCompute(double *y, double *t, int scale, int N, int pol_ord, int v)
 {
-    double *t = malloc(N * sizeof(double));
+    /*double *t = malloc(N * sizeof(double));
     for(int i = 0; i < N; i++)
     {
         t[i] = (double)(i + 1);
-    }
+    }*/
 
     double f = 0.0;
     double *fit_coeffs = malloc((pol_ord + 1) * sizeof(double));
@@ -390,7 +390,7 @@ double HTCompute(double *y, int scale, int N, int pol_ord, int v)
 
     f = sqrt(f / (double)scale);
 
-    free(t);
+    //free(t);
     free(fit_coeffs);
 
     return f;

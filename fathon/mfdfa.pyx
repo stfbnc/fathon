@@ -19,12 +19,15 @@
 import numpy as np
 cimport numpy as np
 cimport cython
+from cython.parallel import prange
 import ctypes
 import pickle
 
 cdef extern from "cLoops.h" nogil:
-    double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int pol_ord)
-    double flucMFDFAForwBackwCompute(double *y, int curr_win_size, double q, int N, int pol_ord)
+    double flucMFDFAForwCompute(double *y, double *t, int curr_win_size,
+                                double q, int N, int pol_ord)
+    double flucMFDFAForwBackwCompute(double *y, double *t, int curr_win_size,
+                                     double q, int N, int pol_ord)
 
 cdef class MFDFA:
     """MultiFractal Detrended Fluctuation Analysis class.
@@ -36,13 +39,14 @@ cdef class MFDFA:
     tsVec : iterable
         Time series used for the analysis.
     F : numpy ndarray
-        Array containing the values of the fluctuations in every window.
+        Array containing the values of the fluctuations in each window.
     listH : numpy ndarray
-        Array containing the values of the slope of the fit at every q-order.
+        Array containing the values of the slope of the fit at each q-order.
     qList : numpy ndarray
         Array containing the values of the q-orders.
     isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
+        Boolean value to know if `F` has been computed in order to prevent the
+        computation of other functions that need `F`.
     """
 
     cdef:
@@ -75,11 +79,13 @@ cdef class MFDFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
+    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes,
+                           np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
         cdef Py_ssize_t i, j
         cdef int nLen
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
 
         self.qList = q_list
         vecn = np.array(winSizes, dtype=ctypes.c_int)
@@ -87,19 +93,27 @@ cdef class MFDFA:
         mtxf = np.zeros((len(q_list) * nLen, ), dtype=ctypes.c_double)
         vects = np.array(self.tsVec, dtype=ctypes.c_double)
         q_list_len = len(q_list)
+        
+        t = np.empty((tsLen, ), dtype=ctypes.c_double)
+        for j in prange(tsLen, nogil=True):
+            t[j] = float(j) + 1.0
+        
         with nogil:
             if revSeg:
                 for i in range(q_list_len):
                     for j in range(nLen):
-                        mtxf[i*nLen+j] = flucMFDFAForwBackwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
+                        mtxf[i*nLen+j] = flucMFDFAForwBackwCompute(&vects[0], &t[0], vecn[j],
+                                                                   q_list[i], tsLen, polOrd)
             else:
                 for i in range(q_list_len):
                     for j in range(nLen):
-                        mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], vecn[j], q_list[i], tsLen, polOrd)
+                        mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], &t[0], vecn[j],
+                                                              q_list[i], tsLen, polOrd)
+                        
         return vecn, np.reshape(mtxf, (len(self.qList), nLen))
 
     def computeFlucVec(self, winSizes, qList, polOrd=1, revSeg=False):
-        """Computation of the fluctuations in every window for every q-order.
+        """Computation of the fluctuations in each window for each q-order.
 
         Parameters
         ----------
@@ -108,16 +122,18 @@ cdef class MFDFA:
         qList : float or iterable or numpy ndarray
             List of q-orders used to compute `F`.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         revSeg : bool, optional
-            If True, the computation of `F` is repeated starting from the end of the time series (default : False).
+            If True, the computation of `F` is repeated starting from the end
+            of the time series (default : False).
 
         Returns
         -------
         numpy ndarray
             Array `n` of window's sizes.
         numpy ndarray
-            qxn array `F` containing the values of the fluctuations in every window for every q-order.
+            qxn array `F` containing the values of the fluctuations in each
+            window for each q-order.
         """
         tsLen = len(self.tsVec)
 
@@ -150,9 +166,9 @@ cdef class MFDFA:
         Parameters
         ----------
         nStart : int, optional
-            Size of the smaller window used to fit `F` at every q-order (default : first value of `n`).
+            Size of the smaller window used to fit `F` at each q-order (default : first value of `n`).
         nEnd : int, optional
-            Size of the bigger window used to fit `F` at every q-order (default : last value of `n`).
+            Size of the bigger window used to fit `F` at each q-order (default : last value of `n`).
         logBase : float, optional
             Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
         verbose : bool, optional
@@ -161,9 +177,9 @@ cdef class MFDFA:
         Returns
         -------
         numpy ndarray
-            Slope of the fit for every q-order.
+            Slope of the fit for each q-order.
         numpy ndarray
-            Intercept of the fit for every q-order.
+            Intercept of the fit for each q-order.
         """
         cdef int start, end, qLen
         cdef Py_ssize_t i

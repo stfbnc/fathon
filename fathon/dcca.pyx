@@ -19,13 +19,14 @@
 import numpy as np
 cimport numpy as np
 cimport cython
+from cython.parallel import prange
 import ctypes
 import pickle
 import warnings
 
 cdef extern from "cLoops.h" nogil:
-    double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int pol_ord)
-    double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, int pol_ord)
+    double flucDCCAAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
+    double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
 
 cdef class DCCA:
     """Detrended Cross-Correlation Analysis class.
@@ -39,19 +40,20 @@ cdef class DCCA:
     tsVec2 : iterable
         Second time series used for the analysis.
     F : numpy ndarray
-        Array containing the values of the fluctuations in every window.
+        Array containing the values of the fluctuations in each window.
     nRho : numpy ndarray
         Array of window's sizes used for the computation of `rho`.
     rho : numpy ndarray
-        Array containing the cross-correlation index in every window.
+        Array containing the cross-correlation index in each window.
     nThr : numpy ndarray
         Array of window's sizes used for the computation of `rho` thresholds.
     confUp : numpy ndarray
-        Array containing the first confidence interval in every window.
+        Array containing the first confidence interval in each window.
     confDown : numpy ndarray
-        Array containing the second confidence interval in every window.
+        Array containing the second confidence interval in each window.
     isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
+        Boolean value to know if `F` has been computed in order to prevent the
+        computation of other functions that need `F`.
     """
 
     cdef:
@@ -93,41 +95,48 @@ cdef class DCCA:
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects1, np.ndarray[np.float64_t, ndim=1, mode='c'] vects2,
-                                np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint absVals):
+                        np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint absVals):
         cdef int nLen, tsLen
-        cdef Py_ssize_t i
+        cdef Py_ssize_t i, j
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
 
         nLen = len(vecn)
         tsLen = len(vects1)
+        
+        t = np.empty((tsLen, ), dtype=ctypes.c_double)
+        for j in prange(tsLen, nogil=True):
+            t[j] = float(j) + 1.0
+        
         with nogil:
             if absVals:
                 for i in range(nLen):
-                    vecf[i] = flucDCCAAbsCompute(&vects1[0], &vects2[0], vecn[i], tsLen, polOrd)
+                    vecf[i] = flucDCCAAbsCompute(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
             else:
                 for i in range(nLen):
-                    vecf[i] = flucDCCANoAbsCompute(&vects1[0], &vects2[0], vecn[i], tsLen, polOrd)
+                    vecf[i] = flucDCCANoAbsCompute(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint absVals=True):
-        """Computation of the fluctuations in every window.
+        """Computation of the fluctuations in each window.
 
         Parameters
         ----------
         winSizes : numpy ndarray
             Array of window's sizes.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         absVals : bool, optional
-            If True, the computation of `F` is performed using the abolute values of the fluctuations of both `tsVec1` and `tsVec2` (default : True).
+            If True, the computation of `F` is performed using the abolute values of
+            the fluctuations of both `tsVec1` and `tsVec2` (default : True).
 
         Returns
         -------
         numpy ndarray
             Array `n` of window's sizes.
         numpy ndarray
-            Array `F` containing the values of the fluctuations in every window.
+            Array `F` containing the values of the fluctuations in each window.
         """
         cdef int tsLen = len(self.tsVec1)
 
@@ -142,7 +151,8 @@ cdef class DCCA:
 
         self.n = np.array(winSizes, dtype=ctypes.c_int)
         self.F = np.zeros((len(self.n), ), dtype=ctypes.c_double)
-        self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2, dtype=ctypes.c_double), self.n, self.F, polOrd, absVals)
+        self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2, dtype=ctypes.c_double),
+                            self.n, self.F, polOrd, absVals)
         self.isComputed = True
         
         return self.n, self.F
@@ -150,18 +160,25 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef computeFlucVecSameTs(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vec, np.ndarray[int, ndim=1, mode='c'] wins, int polOrd):
+    cdef computeFlucVecSameTs(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vec,
+                              np.ndarray[int, ndim=1, mode='c'] wins, int polOrd):
         cdef int nLen, tsLen = len(vec)
-        cdef Py_ssize_t i
+        cdef Py_ssize_t i, j
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] F_same
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
 
         vecn = np.array(wins, dtype=ctypes.c_int)
         nLen = len(vecn)
         F_same = np.zeros((nLen, ), dtype=ctypes.c_double)
+        
+        t = np.empty((tsLen, ), dtype=ctypes.c_double)
+        for j in prange(tsLen, nogil=True):
+            t[j] = float(j) + 1.0
+        
         with nogil:
             for i in range(nLen):
-                F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], vecn[i], tsLen, polOrd)
+                F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
                 
         return F_same
 
@@ -248,7 +265,8 @@ cdef class DCCA:
             for i in range(limLen):
                 if verbose:
                     print('----------')
-                list_H[i], list_H_intercept[i] = self.fitFlucVec(nStart=limitsList[i][0], nEnd=limitsList[i][1], logBase=logBase, verbose=verbose)
+                list_H[i], list_H_intercept[i] = self.fitFlucVec(nStart=limitsList[i][0], nEnd=limitsList[i][1],
+                                                                 logBase=logBase, verbose=verbose)
             
             if verbose:
                 print('----------')
@@ -261,14 +279,14 @@ cdef class DCCA:
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cpdef computeRho(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint verbose=False):
-        """Computation of the cross-correlation index in every window.
+        """Computation of the cross-correlation index in each window.
 
         Parameters
         ----------
         winSizes : numpy ndarray
             Array of window's sizes.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         verbose : bool, optional
             Verbosity (default : False).
 
@@ -296,7 +314,8 @@ cdef class DCCA:
         nLen = len(self.nRho)
         Fxy = np.zeros((nLen, ), dtype=ctypes.c_double)
 
-        self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2, dtype=ctypes.c_double), self.nRho, Fxy, polOrd, False)
+        self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2,
+                            dtype=ctypes.c_double), self.nRho, Fxy, polOrd, False)
         if verbose:
             print('DCCA between series 1 and 2 computed.')
         Fxx = self.computeFlucVecSameTs(self.tsVec1, self.nRho, polOrd=polOrd)
@@ -315,8 +334,9 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef rhoThresholds(self, int L, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int nSim, double confLvl, int polOrd=1, bint verbose=False):
-        """Computation of the cross-correlation index's confidence levels in every window.
+    cpdef rhoThresholds(self, int L, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes,
+                        int nSim, double confLvl, int polOrd=1, bint verbose=False):
+        """Computation of the cross-correlation index's confidence levels in each window.
 
         Parameters
         ----------
@@ -325,11 +345,12 @@ cdef class DCCA:
         winSizes : numpy ndarray
             Array of window's sizes.
         nSim : int
-            Number of times the cross-correlation index between two random time series is computed in order to evaluate the confidence levels.
+            Number of times the cross-correlation index between two random time series
+            is computed in order to evaluate the confidence levels.
         confLvl : float
             Confidence level.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         verbose : bool, optional
             Verbosity (default : False).
 

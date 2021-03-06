@@ -37,9 +37,10 @@ cdef class DFA:
     tsVec : iterable
         Time series used for the analysis.
     F : numpy ndarray
-        Array containing the values of the fluctuations in every window.
+        Array containing the values of the fluctuations in each window.
     isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
+        Boolean value to know if `F` has been computed in order to prevent the
+        computation of other functions that need `F`.
     """
 
     cdef:
@@ -95,14 +96,14 @@ cdef class DFA:
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint revSeg=False):
-        """Computation of the fluctuations in every window.
+        """Computation of the fluctuations in each window.
 
         Parameters
         ----------
         winSizes : numpy ndarray
             Array of window's sizes.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         revSeg : bool, optional
             If True, the computation of `F` is repeated starting from the end of the time series (default : False).
 
@@ -111,7 +112,7 @@ cdef class DFA:
         numpy ndarray
             Array `n` of window's sizes.
         numpy ndarray
-            Array `F` containing the values of the fluctuations in every window.
+            Array `F` containing the values of the fluctuations in each window.
         """
         cdef int tsLen = len(self.tsVec)
 
@@ -214,7 +215,8 @@ cdef class DFA:
             for i in range(limLen):
                 if verbose:
                     print('----------')
-                list_H[i], list_H_intercept[i] = self.fitFlucVec(nStart=limitsList[i][0], nEnd=limitsList[i][1], logBase=logBase, verbose=verbose)
+                list_H[i], list_H_intercept[i] = self.fitFlucVec(nStart=limitsList[i][0], nEnd=limitsList[i][1],
+                                                                 logBase=logBase, verbose=verbose)
                 
             if verbose:
                 print('----------')
