@@ -13,20 +13,6 @@ matrix:
   include:
     ##### Linux #####
     ##### ARM #####
-    ### 3.5 ###
-    #- name: "Python 3.5 on Linux arm64"
-    #  arch:
-    #    - arm64
-    #  env:
-    #    - CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
-    #    - CIBW_BUILD="cp35-manylinux*"
-    #    - CIBW_SKIP: "*-manylinux_i686"
-    #  language: python
-    #  dist: xenial
-    #  sudo: required
-    #  python: "3.7"
-    #  services:
-    #    - docker
     ### 3.6 ###
     #- name: "Python 3.6 on Linux arm64"
     #  arch:
@@ -84,19 +70,6 @@ matrix:
     #  services:
     #    - docker
     ##### x86_64 #####
-    ### 3.5 ###
-    #- name: "Python 3.5 on Linux amd64"
-    #  arch:
-    #    - amd64
-    #  env:
-    #    - CIBW_BUILD="cp35-manylinux*"
-    #    - CIBW_SKIP: "*-manylinux_i686"
-    #  language: python
-    #  dist: xenial
-    #  sudo: required
-    #  python: "3.7"
-    #  services:
-    #    - docker
     ### 3.6 ###
     #- name: "Python 3.6 on Linux amd64"
     #  arch:
@@ -150,13 +123,6 @@ matrix:
     #  services:
     #    - docker
     ##### macOS #####
-    ### 3.5 ###
-    #- name: "Python 3.5 on macOS 10.14"
-    #  env:
-    #    - CIBW_BUILD="cp35-macosx*"
-    #  os: osx
-    #  osx_image: xcode10.2
-    #  language: shell
     ### 3.6 ###
     #- name: "Python 3.6 on macOS 10.14"
     #  env:

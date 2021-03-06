@@ -1,4 +1,4 @@
-# fathon [![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon)[![Build status](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p?svg=true)](https://ci.appveyor.com/project/stfbnc/fathon)
+# fathon [![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon) [![Build status](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p?svg=true)](https://ci.appveyor.com/project/stfbnc/fathon)
 
 [![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]() [![Python 3.5+](https://img.shields.io/badge/python-3.5+-blue.svg)](https://www.python.org/)
 
@@ -25,13 +25,11 @@ It is mostly written in Cython and C in order to speed up computations.
 
 ### Prerequisites
 
-| Linux i686 |    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | Windows 32bit |    Windows 64bit    |
-| :--------: | :----------------: | :----------------: | :----------------: | :-----------: | :-----------------: |
-|    :x:     | :white_check_mark: | :white_check_mark: | :white_check_mark: |      :x:      | :white_check_mark:* |
+| Linux i686 |    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | Windows 32bit |   Windows 64bit    |
+| :--------: | :----------------: | :----------------: | :----------------: | :-----------: | :----------------: |
+|    :x:     | :white_check_mark: | :white_check_mark: | :white_check_mark: |      :x:      | :white_check_mark: |
 
-<sub>*It is possible that OpenMP was not activated during compilation, so `fathon` could run slower on Windows compared to macOS and Linux</sub>
-
-- Python 3.5 or higher
+- Python 3.6 or higher
  - numpy (version >= 1.15)
  - Cython
 
