@@ -19,13 +19,13 @@
 #include "omp.h"
 
 //main loop for DFA (computes fluctuations starting from the beginning of the array y)
-double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
+double flucDFAForwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord)
 {
-    double *t = malloc(N * sizeof(double));
+    /*double *t = malloc(N * sizeof(double));
     for(int i = 0; i < N; i++)
     {
         t[i] = (double)(i + 1);
-    }
+    }*/
 
     int N_s = N / curr_win_size;
     double f = 0.0;
@@ -53,26 +53,26 @@ double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
             }
             f += pow(var, 2.0);
         }
-        
+
         free(fit_coeffs);
     }
 
     f = sqrt(f / (N_s * curr_win_size));
 
-    free(t);
+    //free(t);
 
     return f;
 }
 
 //main loop for DFA (computes fluctuations starting from the beginning of the array y
 //and then computes fluctuations again starting from the end of the array y)
-double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord)
+double flucDFAForwBackwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord)
 {
-    double *t = malloc(N * sizeof(double));
+    /*double *t = malloc(N * sizeof(double));
     for(int i = 0; i < N; i++)
     {
         t[i] = (double)(i + 1);
-    }
+    }*/
 
     int N_s = N / curr_win_size;
     double f = 0.0;
@@ -113,13 +113,13 @@ double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord)
             }
             f += pow(var_2, 2.0);
         }
-        
+
         free(fit_coeffs);
     }
 
     f = sqrt(f / (2.0 * N_s * curr_win_size));
 
-    free(t);
+    //free(t);
 
     return f;
 }
@@ -169,7 +169,7 @@ double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int p
         {
             f += pow(rms / (double)curr_win_size, 0.5 * q);
         }
-        
+
         free(fit_coeffs);
     }
 
@@ -247,7 +247,7 @@ double flucMFDFAForwBackwCompute(double *y, int curr_win_size, double q, int N, 
         {
             f += (pow(rms1 / (double)curr_win_size, 0.5 * q) + pow(rms2 / (double)curr_win_size, 0.5 * q));
         }
-        
+
         free(fit_coeffs);
     }
 
@@ -303,7 +303,7 @@ double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int 
             }
             f += fabs(var_1 * var_2);
         }
-        
+
         free(fit_coeffs1);
         free(fit_coeffs2);
     }
@@ -353,7 +353,7 @@ double flucDCCANoAbsCompute(double *y1, double *y2, int curr_win_size, int N, in
             }
             f += var_1 * var_2;
         }
-        
+
         free(fit_coeffs1);
         free(fit_coeffs2);
     }

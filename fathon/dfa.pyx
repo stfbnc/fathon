@@ -19,12 +19,13 @@
 import numpy as np
 cimport numpy as np
 cimport cython
+from cython.parallel import prange
 import ctypes
 import pickle
 
 cdef extern from "cLoops.h" nogil:
-    double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
-    double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord)
+    double flucDFAForwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord)
+    double flucDFAForwBackwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord)
 
 cdef class DFA:
     """Detrended Fluctuation Analysis class.
@@ -72,17 +73,23 @@ cdef class DFA:
     cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn,
                         np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg):
         cdef int nLen, tsLen
-        cdef Py_ssize_t i
+        cdef Py_ssize_t i, j
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
 
         nLen = len(vecn)
         tsLen = len(vects)
+        
+        t = np.empty((tsLen, ), dtype=ctypes.c_double)
+        for j in prange(tsLen, nogil=True):
+            t[j] = float(j) + 1.0
+        
         with nogil:
             if revSeg:
                 for i in range(nLen):
-                    vecf[i] = flucDFAForwBackwCompute(&vects[0], vecn[i], tsLen, polOrd)
+                    vecf[i] = flucDFAForwBackwCompute(&vects[0], &t[0], vecn[i], tsLen, polOrd)
             else:
                 for i in range(nLen):
-                    vecf[i] = flucDFAForwCompute(&vects[0], vecn[i], tsLen, polOrd)
+                    vecf[i] = flucDFAForwCompute(&vects[0], &t[0], vecn[i], tsLen, polOrd)
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
