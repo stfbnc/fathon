@@ -81,7 +81,7 @@ if __name__ == "__main__":
         readme_file.close()
 
         setup(name="fathon",
-              version="1.2",
+              version="1.2.1",
               author="Stefano Bianchi",
               author_email="fathon.package@gmail.com",
               url="https://github.com/stfbnc/fathon.git",
@@ -96,13 +96,12 @@ if __name__ == "__main__":
                            "Operating System :: Microsoft :: Windows",
                            "Programming Language :: Cython",
                            "Programming Language :: C",
-                           "Programming Language :: Python :: 3.5",
                            "Programming Language :: Python :: 3.6",
                            "Programming Language :: Python :: 3.7",
                            "Programming Language :: Python :: 3.8",
                            "Programming Language :: Python :: 3.9",
                            "Topic :: Scientific/Engineering"],
-              python_requires=">=3.5",
+              python_requires=">=3.6",
               install_requires=["numpy>=1.15", "Cython"],
               project_urls={"Documentation": "https://fathon.readthedocs.io/",
                             "Bug Reports": "https://github.com/stfbnc/fathon/issues",
