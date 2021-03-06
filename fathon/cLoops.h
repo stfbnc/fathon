@@ -14,8 +14,8 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-extern double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord);
-extern double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord);
+extern double flucDFAForwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord);
+extern double flucDFAForwBackwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord);
 extern double flucMFDFAForwCompute(double *y, int curr_win_size, double q, int N, int pol_ord);
 extern double flucMFDFAForwBackwCompute(double *y, int curr_win_size, double q, int N, int pol_ord);
 extern double flucDCCAAbsCompute(double *y1, double *y2, int curr_win_size, int N, int pol_ord);
