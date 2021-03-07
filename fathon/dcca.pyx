@@ -23,10 +23,15 @@ from cython.parallel import prange
 import ctypes
 import pickle
 import warnings
+from . import dfa
 
 cdef extern from "cLoops.h" nogil:
     double flucDCCAAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
     double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
+    double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
+    double flucDCCAForwBackwAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
+    double flucDCCAForwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
+    double flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
 
 cdef class DCCA:
     """Detrended Cross-Correlation Analysis class.
@@ -95,7 +100,8 @@ cdef class DCCA:
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects1, np.ndarray[np.float64_t, ndim=1, mode='c'] vects2,
-                        np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint absVals):
+                        np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd,
+                        bint absVals, bint overlap, bint revSeg):
         cdef int nLen, tsLen
         cdef Py_ssize_t i, j
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
@@ -109,16 +115,33 @@ cdef class DCCA:
         
         with nogil:
             if absVals:
-                for i in range(nLen):
-                    vecf[i] = flucDCCAAbsCompute(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                if overlap:
+                    for i in range(nLen):
+                        vecf[i] = flucDCCAAbsCompute(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                else:
+                    if revSeg:
+                        for i in range(nLen):
+                            vecf[i] = flucDCCAForwBackwAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                    else:
+                        for i in range(nLen):
+                            vecf[i] = flucDCCAForwAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
             else:
-                for i in range(nLen):
-                    vecf[i] = flucDCCANoAbsCompute(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                if overlap:
+                    for i in range(nLen):
+                        vecf[i] = flucDCCANoAbsCompute(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                else:
+                    if revSeg:
+                        for i in range(nLen):
+                            vecf[i] = flucDCCAForwBackwNoAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                    else:
+                        for i in range(nLen):
+                            vecf[i] = flucDCCAForwNoAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint absVals=True):
+    cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1,
+                         bint absVals=True, bint overlap=False, bint revSeg=False):
         """Computation of the fluctuations in each window.
 
         Parameters
@@ -130,6 +153,11 @@ cdef class DCCA:
         absVals : bool, optional
             If True, the computation of `F` is performed using the abolute values of
             the fluctuations of both `tsVec1` and `tsVec2` (default : True).
+        overlap : bool, optional
+            If True, computes `F` using overlapping segments (default : False).
+        revSeg : bool, optional
+            If True, the computation of `F` is repeated starting from the end of
+            the time series, ignored if `overlap` is True (default : False).
 
         Returns
         -------
@@ -152,7 +180,7 @@ cdef class DCCA:
         self.n = np.array(winSizes, dtype=ctypes.c_int)
         self.F = np.zeros((len(self.n), ), dtype=ctypes.c_double)
         self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2, dtype=ctypes.c_double),
-                            self.n, self.F, polOrd, absVals)
+                            self.n, self.F, polOrd, absVals, overlap, revSeg)
         self.isComputed = True
         
         return self.n, self.F
@@ -278,7 +306,8 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeRho(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint verbose=False):
+    cpdef computeRho(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1,
+                     bint verbose=False, bint overlap=False, bint revSeg=False):
         """Computation of the cross-correlation index in each window.
 
         Parameters
@@ -289,6 +318,11 @@ cdef class DCCA:
             Order of the polynomial to be fitted in each window (default : 1).
         verbose : bool, optional
             Verbosity (default : False).
+        overlap : bool, optional
+            If True, computes `F` using overlapping segments (default : False).
+        revSeg : bool, optional
+            If True, the computation of `F` is repeated starting from the end of
+            the time series, ignored if `overlap` is True (default : False).
 
         Returns
         -------
@@ -315,20 +349,30 @@ cdef class DCCA:
         Fxy = np.zeros((nLen, ), dtype=ctypes.c_double)
 
         self.cy_flucCompute(np.array(self.tsVec1, dtype=ctypes.c_double), np.array(self.tsVec2,
-                            dtype=ctypes.c_double), self.nRho, Fxy, polOrd, False)
+                            dtype=ctypes.c_double), self.nRho, Fxy, polOrd, False, overlap, revSeg)
         if verbose:
             print('DCCA between series 1 and 2 computed.')
-        Fxx = self.computeFlucVecSameTs(self.tsVec1, self.nRho, polOrd=polOrd)
+            
+        if overlap:
+            Fxx = self.computeFlucVecSameTs(self.tsVec1, self.nRho, polOrd=polOrd)
+        else:
+            pydfa = dfa.DFA(self.tsVec1)
+            _, Fxx = pydfa.computeFlucVec(self.nRho, polOrd=polOrd, revSeg=revSeg)
         if verbose:
             print('DCCA between series 1 and 1 computed.')
-        Fyy = self.computeFlucVecSameTs(self.tsVec2, self.nRho, polOrd=polOrd)
+            
+        if overlap:
+            Fyy = self.computeFlucVecSameTs(self.tsVec2, self.nRho, polOrd=polOrd)
+        else:
+            pydfa = dfa.DFA(self.tsVec2)
+            _, Fyy = pydfa.computeFlucVec(self.nRho, polOrd=polOrd, revSeg=revSeg)
         if verbose:
             print('DCCA between series 2 and 2 computed.')
 
         self.rho = np.zeros((nLen, ), dtype=float)
         for i in range(nLen):
             self.rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
-                
+
         return self.nRho, self.rho
 
     @cython.boundscheck(False)
@@ -398,9 +442,9 @@ cdef class DCCA:
             vecfy = np.zeros((nLen, ), dtype=ctypes.c_double)
             vecfxy = np.zeros((nLen, ), dtype=ctypes.c_double)
             
-            self.cy_flucCompute(ran1, ran2, self.nThr, vecfxy, polOrd, False)
-            self.cy_flucCompute(ran1, ran1, self.nThr, vecfx, polOrd, False)
-            self.cy_flucCompute(ran2, ran2, self.nThr, vecfy, polOrd, False)
+            self.cy_flucCompute(ran1, ran2, self.nThr, vecfxy, polOrd, False, False, False)
+            self.cy_flucCompute(ran1, ran1, self.nThr, vecfx, polOrd, True, False, False)
+            self.cy_flucCompute(ran2, ran2, self.nThr, vecfy, polOrd, True, False, False)
             
             for j in range(nLen):
                 rho_all[i, j] = vecfxy[j] / (vecfx[j] * vecfy[j])

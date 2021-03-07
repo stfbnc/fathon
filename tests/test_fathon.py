@@ -263,7 +263,7 @@ def test_multifractal_spectrum():
 def test_rho():
     pydcca = fathon.DCCA(ts1, ts2)
     winSizes = fu.linRangeByStep(10, 200, step=2)
-    n3, rho = pydcca.computeRho(winSizes)
+    n3, rho = pydcca.computeRho(winSizes, overlap=True)
 
     assert math.isclose(rho[53], 0.48503322468665233)
 
@@ -289,7 +289,7 @@ def test_rho_thresholds():
 def test_dcca():
     pydcca = fathon.DCCA(ts1, ts2)
     winSizes = fu.linRangeByStep(10, 200, step=2)
-    n, F = pydcca.computeFlucVec(winSizes, polOrd=2)
+    n, F = pydcca.computeFlucVec(winSizes, polOrd=2, overlap=True)
     H, H_int = pydcca.fitFlucVec()
     
     assert math.isclose(H, 0.9604004237165071)
@@ -317,3 +317,79 @@ def test_ht_hq0():
     ht = pyht.computeHt(scales, mfdfaPolOrd=1, q0Fit=[0.5, -0.2])
     
     assert math.isclose(ht[0, 42], 0.9576568128926679) and math.isclose(ht[1, 12], 3.1007577894168263)
+    
+#####
+# Regression test 9
+# It tests if the Hurst exponent between `ts1`
+# and `ts2` is correct
+#####
+def test_dcca_2():
+    pydcca = fathon.DCCA(ts1, ts2)
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n, F = pydcca.computeFlucVec(winSizes, polOrd=2, absVals=False, overlap=False, revSeg=False)
+    
+    assert math.isclose(F[9], 8.47023611e-02)
+    
+#####
+# Regression test 10
+# It tests if the Hurst exponent between `ts1`
+# and `ts2` is correct
+#####
+def test_dcca_3():
+    pydcca = fathon.DCCA(ts1, ts2)
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n, F = pydcca.computeFlucVec(winSizes, polOrd=1, absVals=False, overlap=False, revSeg=True)
+    
+    assert math.isclose(F[23], 8.61106521)
+    
+#####
+# Regression test 11
+# It tests if the Hurst exponent between `ts1`
+# and `ts2` is correct
+#####
+def test_dcca_4():
+    pydcca = fathon.DCCA(ts1, ts2)
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n, F = pydcca.computeFlucVec(winSizes, polOrd=1, absVals=True, overlap=False, revSeg=True)
+    H, H_int = pydcca.fitFlucVec()
+    
+    assert math.isclose(H, 0.85911989)
+    
+#####
+# Regression test 12
+# It tests if the Hurst exponent between `ts1`
+# and `ts2` is correct
+#####
+def test_dcca_5():
+    pydcca = fathon.DCCA(ts1, ts2)
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n, F = pydcca.computeFlucVec(winSizes, polOrd=1, absVals=True, overlap=False, revSeg=False)
+    H, H_int = pydcca.fitFlucVec()
+    
+    assert math.isclose(H, 0.82597962)
+    
+#####
+# Regression test 13
+# It tests if one element of the cross-correlation
+# coefficient between `ts1` and `ts2` is correct
+#####
+def test_rho_2():
+    pydcca = fathon.DCCA(ts1, ts2)
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n3, rho = pydcca.computeRho(winSizes, overlap=False, revSeg=False)
+
+    assert math.isclose(rho[28], 0.39579454461767466)
+    
+#####
+# Regression test 14
+# It tests if one element of the lower and upper
+# confidence levels of the cross-correlation coefficient
+# for series of the same length of `ts1` and `ts2` are correct
+#####
+def test_rho_thresholds_2():
+    np.random.seed(42)
+    pydcca = fathon.DCCA()
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n4, int1, int2 = pydcca.rhoThresholds(len(ts1), winSizes, 10, 0.95)
+
+    assert math.isclose(int1[53], 0.2619278369335029) and math.isclose(int2[53], -0.41952479444776136)

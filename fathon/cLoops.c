@@ -340,3 +340,211 @@ double HTCompute(double *y, double *t, int scale, int N, int pol_ord, int v)
 
     return f;
 }
+
+//main loop for DCCA without overlap (computes fluctuations starting from the beginning
+// of the array y and using absolute values)
+double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
+{
+    int N_s = N / curr_win_size;
+    double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
+
+    #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
+    for(int v = 0; v < N_s; v++)
+#endif
+    {
+        int start_lim = v * curr_win_size;
+        double *fit_coeffs_1 = malloc((pol_ord + 1) * sizeof(double));
+        double *fit_coeffs_2 = malloc((pol_ord + 1) * sizeof(double));
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y1[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            f += fabs(var_1 * var_2);
+        }
+
+        free(fit_coeffs_1);
+        free(fit_coeffs_2);
+    }
+
+    f = sqrt(f / (N_s * curr_win_size));
+
+    return f;
+}
+
+//main loop for DCCA without overlap (ccomputes fluctuations starting from the beginning of the array y
+//and then computes fluctuations again starting from the end of the arrays y1 and y2, and using absolute values)
+double flucDCCAForwBackwAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
+{
+    int N_s = N / curr_win_size;
+    double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
+
+    #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
+    for(int v = 0; v < N_s; v++)
+#endif
+    {
+        int start_lim = v * curr_win_size;
+        double *fit_coeffs_1 = malloc((pol_ord + 1) * sizeof(double));
+        double *fit_coeffs_2 = malloc((pol_ord + 1) * sizeof(double));
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y1[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            f += fabs(var_1 * var_2);
+        }
+
+        start_lim = v * curr_win_size + (N - N_s * curr_win_size);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y2[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            f += fabs(var_1 * var_2);
+        }
+
+        free(fit_coeffs_1);
+        free(fit_coeffs_2);
+    }
+
+    f = sqrt(f / (2.0 * N_s * curr_win_size));
+
+    return f;
+}
+
+//main loop for DCCA without overlap (computes fluctuations starting from the beginning
+// of the array y)
+double flucDCCAForwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
+{
+    int N_s = N / curr_win_size;
+    double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
+
+    #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
+    for(int v = 0; v < N_s; v++)
+#endif
+    {
+        int start_lim = v * curr_win_size;
+        double *fit_coeffs_1 = malloc((pol_ord + 1) * sizeof(double));
+        double *fit_coeffs_2 = malloc((pol_ord + 1) * sizeof(double));
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y1[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            f += var_1 * var_2;
+        }
+
+        free(fit_coeffs_1);
+        free(fit_coeffs_2);
+    }
+
+    f = f / (N_s * curr_win_size);
+
+    return f;
+}
+
+//main loop for DCCA without overlap (computes fluctuations starting from the beginning of the array y
+//and then computes fluctuations again starting from the end of the arrays y1 and y2)
+double flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
+{
+    int N_s = N / curr_win_size;
+    double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
+
+    #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
+    for(int v = 0; v < N_s; v++)
+#endif
+    {
+        int start_lim = v * curr_win_size;
+        double *fit_coeffs_1 = malloc((pol_ord + 1) * sizeof(double));
+        double *fit_coeffs_2 = malloc((pol_ord + 1) * sizeof(double));
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y1[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            f += var_1 * var_2;
+        }
+
+        start_lim = v * curr_win_size + (N - N_s * curr_win_size);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y2[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            f += var_1 * var_2;
+        }
+
+        free(fit_coeffs_1);
+        free(fit_coeffs_2);
+    }
+
+    f = f / (2.0 * N_s * curr_win_size);
+
+    return f;
+}
