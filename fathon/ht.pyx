@@ -62,9 +62,7 @@ cdef class HT:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd,
-                      int mfdfaPolOrd, np.ndarray[np.float64_t, ndim=1, mode='c'] q0Fit,
-                      bint verbose):
+    cdef cy_computeHt(self, np.ndarray[int, ndim=1, mode='c'] scales, int polOrd, int mfdfaPolOrd, np.ndarray[np.float64_t, ndim=1, mode='c'] q0Fit, bint verbose):
         cdef int htRowLen, tsLen, scale
         cdef Py_ssize_t i, j
         cdef double H0, H0_intercept

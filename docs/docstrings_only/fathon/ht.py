@@ -1,5 +1,5 @@
 #    ht.pyx - ht algorithm of fathon package
-#    Copyright (C) 2019-2020  Stefano Bianchi
+#    Copyright (C) 2019-2021  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -31,18 +31,20 @@ class HT:
     	pass
 
     def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1, q0Fit=[], verbose=False):
-        """Computation of the time-dependent local Hurst exponent at every scale, using Ihlen's approach.
+        """Computation of the time-dependent local Hurst exponent at each scale, using Ihlen's approach.
         
         Parameters
         ----------
         scales : int or iterable or numpy ndarray
             Window's sizes used for the computation of the time-dependent local Hurst exponent.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         mfdfaPolOrd : int, optional
             Order of the polynomial to be fitted to MFDFA's fluctuations at q = 0 (default : 1).
         q0Fit : iterable or numpy ndarray of floats, optional
-            MFDFA's Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept]. These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly used to compute the time-dependent local Hurst exponent, ignoring `mfdfaPolOrd` value (default : []).
+            MFDFA's Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept].
+            These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly
+            used to compute the time-dependent local Hurst exponent, ignoring `mfdfaPolOrd` value (default : []).
         verbose : bool, optional
             Verbosity (default : False).
 

@@ -52,13 +52,14 @@
 </dd>
 <dt><strong>tsVec</strong><span class="classifier">iterable</span></dt><dd><p>Time series used for the analysis.</p>
 </dd>
-<dt><strong>F</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the fluctuations in every window.</p>
+<dt><strong>F</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the fluctuations in each window.</p>
 </dd>
-<dt><strong>listH</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the slope of the fit at every q-order.</p>
+<dt><strong>listH</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the slope of the fit at each q-order.</p>
 </dd>
 <dt><strong>qList</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the q-orders.</p>
 </dd>
-<dt><strong>isComputed</strong><span class="classifier">bool</span></dt><dd><p>Boolean value to know if <cite>F</cite> has been computed in order to prevent the computation of other functions that need <cite>F</cite>.</p>
+<dt><strong>isComputed</strong><span class="classifier">bool</span></dt><dd><p>Boolean value to know if <cite>F</cite> has been computed in order to prevent the
+computation of other functions that need <cite>F</cite>.</p>
 </dd>
 </dl>
 </dd>
@@ -66,7 +67,7 @@
 <dl class="method">
 <dt id="fathon.MFDFA.computeFlucVec">
 <code class="sig-name descname">computeFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">winSizes</em>, <em class="sig-param">qList</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">revSeg=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.MFDFA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computation of the fluctuations in every window for every q-order.</p>
+<dd><p>Computation of the fluctuations in each window for each q-order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -74,9 +75,10 @@
 </dd>
 <dt><strong>qList</strong><span class="classifier">float or iterable or numpy ndarray</span></dt><dd><p>List of q-orders used to compute <cite>F</cite>.</p>
 </dd>
-<dt><strong>polOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted in every window (default : 1).</p>
+<dt><strong>polOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted in each window (default : 1).</p>
 </dd>
-<dt><strong>revSeg</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the computation of <cite>F</cite> is repeated starting from the end of the time series (default : False).</p>
+<dt><strong>revSeg</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the computation of <cite>F</cite> is repeated starting from the end
+of the time series (default : False).</p>
 </dd>
 </dl>
 </dd>
@@ -84,7 +86,8 @@
 <dd class="field-even"><dl class="simple">
 <dt>numpy ndarray</dt><dd><p>Array <cite>n</cite> of window’s sizes.</p>
 </dd>
-<dt>numpy ndarray</dt><dd><p>qxn array <cite>F</cite> containing the values of the fluctuations in every window for every q-order.</p>
+<dt>numpy ndarray</dt><dd><p>qxn array <cite>F</cite> containing the values of the fluctuations in each
+window for each q-order.</p>
 </dd>
 </dl>
 </dd>
@@ -128,9 +131,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>nStart</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the smaller window used to fit <cite>F</cite> at every q-order (default : first value of <cite>n</cite>).</p>
+<dt><strong>nStart</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the smaller window used to fit <cite>F</cite> at each q-order (default : first value of <cite>n</cite>).</p>
 </dd>
-<dt><strong>nEnd</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the bigger window used to fit <cite>F</cite> at every q-order (default : last value of <cite>n</cite>).</p>
+<dt><strong>nEnd</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the bigger window used to fit <cite>F</cite> at each q-order (default : last value of <cite>n</cite>).</p>
 </dd>
 <dt><strong>logBase</strong><span class="classifier">float, optional</span></dt><dd><p>Base of the logarithm for the log-log fit of <cite>n</cite> vs <cite>F</cite> (default : e).</p>
 </dd>
@@ -140,9 +143,9 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>numpy ndarray</dt><dd><p>Slope of the fit for every q-order.</p>
+<dt>numpy ndarray</dt><dd><p>Slope of the fit for each q-order.</p>
 </dd>
-<dt>numpy ndarray</dt><dd><p>Intercept of the fit for every q-order.</p>
+<dt>numpy ndarray</dt><dd><p>Intercept of the fit for each q-order.</p>
 </dd>
 </dl>
 </dd>
@@ -167,7 +170,7 @@
 
 <div class="section" id="usage-examples">
 <h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fathon</span>
 <span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
 
@@ -181,7 +184,7 @@
 <span class="n">pymfdfa</span> <span class="o">=</span> <span class="n">fathon</span><span class="o">.</span><span class="n">MFDFA</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="c1">#compute fluctuation function and generalized Hurst exponents</span>
 <span class="n">wins</span> <span class="o">=</span> <span class="n">fu</span><span class="o">.</span><span class="n">linRangeByStep</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-<span class="n">n</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">pymfdfa</span><span class="o">.</span><span class="n">computeFlucVec</span><span class="p">(</span><span class="n">wins</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">revSeg</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">polOrd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">pymfdfa</span><span class="o">.</span><span class="n">computeFlucVec</span><span class="p">(</span><span class="n">wins</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">revSeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">polOrd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">list_H</span><span class="p">,</span> <span class="n">list_H_intercept</span> <span class="o">=</span> <span class="n">pymfdfa</span><span class="o">.</span><span class="n">fitFlucVec</span><span class="p">()</span>
 
 <span class="c1">#compute mass exponents</span>
@@ -251,7 +254,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2020, Stefano Bianchi.
+        &#169; Copyright 2019-2021, Stefano Bianchi.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>

@@ -24,10 +24,8 @@ import ctypes
 import pickle
 
 cdef extern from "cLoops.h" nogil:
-    double flucMFDFAForwCompute(double *y, double *t, int curr_win_size,
-                                double q, int N, int pol_ord)
-    double flucMFDFAForwBackwCompute(double *y, double *t, int curr_win_size,
-                                     double q, int N, int pol_ord)
+    double flucMFDFAForwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
+    double flucMFDFAForwBackwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
 
 cdef class MFDFA:
     """MultiFractal Detrended Fluctuation Analysis class.
@@ -79,8 +77,7 @@ cdef class MFDFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes,
-                           np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
+    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
         cdef Py_ssize_t i, j
         cdef int nLen
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects

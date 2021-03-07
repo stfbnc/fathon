@@ -71,8 +71,7 @@ cdef class DFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn,
-                        np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg):
+    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg):
         cdef int nLen, tsLen
         cdef Py_ssize_t i, j
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t

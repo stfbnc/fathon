@@ -1,5 +1,5 @@
 #    mfdfa.pyx - mfdfa algorithm of fathon package
-#    Copyright (C) 2019-2020  Stefano Bianchi
+#    Copyright (C) 2019-2021  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -11,6 +11,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
+from cython.parallel import prange
 import ctypes
 import pickle
 class MFDFA:
@@ -23,20 +24,21 @@ class MFDFA:
     tsVec : iterable
         Time series used for the analysis.
     F : numpy ndarray
-        Array containing the values of the fluctuations in every window.
+        Array containing the values of the fluctuations in each window.
     listH : numpy ndarray
-        Array containing the values of the slope of the fit at every q-order.
+        Array containing the values of the slope of the fit at each q-order.
     qList : numpy ndarray
         Array containing the values of the q-orders.
     isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
+        Boolean value to know if `F` has been computed in order to prevent the
+        computation of other functions that need `F`.
     """
 
     def __init__(self, tsVec):
     	pass
 
     def computeFlucVec(self, winSizes, qList, polOrd=1, revSeg=False):
-        """Computation of the fluctuations in every window for every q-order.
+        """Computation of the fluctuations in each window for each q-order.
 
         Parameters
         ----------
@@ -45,16 +47,18 @@ class MFDFA:
         qList : float or iterable or numpy ndarray
             List of q-orders used to compute `F`.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         revSeg : bool, optional
-            If True, the computation of `F` is repeated starting from the end of the time series (default : False).
+            If True, the computation of `F` is repeated starting from the end
+            of the time series (default : False).
 
         Returns
         -------
         numpy ndarray
             Array `n` of window's sizes.
         numpy ndarray
-            qxn array `F` containing the values of the fluctuations in every window for every q-order.
+            qxn array `F` containing the values of the fluctuations in each
+            window for each q-order.
         """
         return 0
 
@@ -64,9 +68,9 @@ class MFDFA:
         Parameters
         ----------
         nStart : int, optional
-            Size of the smaller window used to fit `F` at every q-order (default : first value of `n`).
+            Size of the smaller window used to fit `F` at each q-order (default : first value of `n`).
         nEnd : int, optional
-            Size of the bigger window used to fit `F` at every q-order (default : last value of `n`).
+            Size of the bigger window used to fit `F` at each q-order (default : last value of `n`).
         logBase : float, optional
             Base of the logarithm for the log-log fit of `n` vs `F` (default : e).
         verbose : bool, optional
@@ -75,9 +79,9 @@ class MFDFA:
         Returns
         -------
         numpy ndarray
-            Slope of the fit for every q-order.
+            Slope of the fit for each q-order.
         numpy ndarray
-            Intercept of the fit for every q-order.
+            Intercept of the fit for each q-order.
         """
         return 0
 

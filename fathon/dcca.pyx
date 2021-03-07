@@ -99,9 +99,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects1, np.ndarray[np.float64_t, ndim=1, mode='c'] vects2,
-                        np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd,
-                        bint absVals, bint overlap, bint revSeg):
+    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects1, np.ndarray[np.float64_t, ndim=1, mode='c'] vects2, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint absVals, bint overlap, bint revSeg):
         cdef int nLen, tsLen
         cdef Py_ssize_t i, j
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
@@ -140,8 +138,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1,
-                         bint absVals=True, bint overlap=False, bint revSeg=False):
+    cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint absVals=True, bint overlap=False, bint revSeg=False):
         """Computation of the fluctuations in each window.
 
         Parameters
@@ -189,9 +186,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef computeFlucVecSameTs(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vec,
-                              np.ndarray[int, ndim=1, mode='c'] wins, int polOrd,
-                              bint overlap, bint revSeg):
+    cdef computeFlucVecSameTs(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vec, np.ndarray[int, ndim=1, mode='c'] wins, int polOrd, bint overlap, bint revSeg):
         cdef int nLen, tsLen = len(vec)
         cdef Py_ssize_t i, j
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] F_same
@@ -319,8 +314,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeRho(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1,
-                     bint verbose=False, bint overlap=False, bint revSeg=False):
+    cpdef computeRho(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint verbose=False, bint overlap=False, bint revSeg=False):
         """Computation of the cross-correlation index in each window.
 
         Parameters
@@ -384,8 +378,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef rhoThresholds(self, int L, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes,
-                        int nSim, double confLvl, int polOrd=1, bint verbose=False):
+    cpdef rhoThresholds(self, int L, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int nSim, double confLvl, int polOrd=1, bint verbose=False):
         """Computation of the cross-correlation index's confidence levels in each window.
 
         Parameters
