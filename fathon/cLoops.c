@@ -426,7 +426,7 @@ double flucDCCAForwBackwAbsComputeNoOverlap(double *y1, double *y2, double *t, i
 
         for(int j = 0; j < curr_win_size; j++)
         {
-            double var_1 = y2[start_lim + j];
+            double var_1 = y1[start_lim + j];
             double var_2 = y2[start_lim + j];
             for(int k = 0; k < (pol_ord + 1); k++)
             {
@@ -530,7 +530,7 @@ double flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t,
 
         for(int j = 0; j < curr_win_size; j++)
         {
-            double var_1 = y2[start_lim + j];
+            double var_1 = y1[start_lim + j];
             double var_2 = y2[start_lim + j];
             for(int k = 0; k < (pol_ord + 1); k++)
             {

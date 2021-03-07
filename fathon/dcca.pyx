@@ -189,7 +189,8 @@ cdef class DCCA:
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cdef computeFlucVecSameTs(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vec,
-                              np.ndarray[int, ndim=1, mode='c'] wins, int polOrd):
+                              np.ndarray[int, ndim=1, mode='c'] wins, int polOrd,
+                              bint overlap, bint revSeg):
         cdef int nLen, tsLen = len(vec)
         cdef Py_ssize_t i, j
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] F_same
@@ -205,8 +206,16 @@ cdef class DCCA:
             t[j] = float(j) + 1.0
         
         with nogil:
-            for i in range(nLen):
-                F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
+            if overlap:
+                for i in range(nLen):
+                    F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
+            else:
+                if revSeg:
+                    for i in range(nLen):
+                        F_same[i] = flucDCCAForwBackwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
+                else:
+                    for i in range(nLen):
+                        F_same[i] = flucDCCAForwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
                 
         return F_same
 
@@ -353,19 +362,11 @@ cdef class DCCA:
         if verbose:
             print('DCCA between series 1 and 2 computed.')
             
-        if overlap:
-            Fxx = self.computeFlucVecSameTs(self.tsVec1, self.nRho, polOrd=polOrd)
-        else:
-            pydfa = dfa.DFA(self.tsVec1)
-            _, Fxx = pydfa.computeFlucVec(self.nRho, polOrd=polOrd, revSeg=revSeg)
+        Fxx = self.computeFlucVecSameTs(self.tsVec1, self.nRho, polOrd, overlap, revSeg)
         if verbose:
             print('DCCA between series 1 and 1 computed.')
             
-        if overlap:
-            Fyy = self.computeFlucVecSameTs(self.tsVec2, self.nRho, polOrd=polOrd)
-        else:
-            pydfa = dfa.DFA(self.tsVec2)
-            _, Fyy = pydfa.computeFlucVec(self.nRho, polOrd=polOrd, revSeg=revSeg)
+        Fyy = self.computeFlucVecSameTs(self.tsVec2, self.nRho, polOrd, overlap, revSeg)
         if verbose:
             print('DCCA between series 2 and 2 computed.')
 
