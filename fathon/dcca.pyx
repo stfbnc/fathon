@@ -376,8 +376,7 @@ cdef class DCCA:
             print('DCCA between series 2 and 2 computed.')
 
         self.rho = np.zeros((nLen, ), dtype=float)
-        #for i in range(nLen):
-        for i in prange(nLen, nogil=True):
+        for i in range(nLen):
             self.rho[i] = Fxy[i] / (Fxx[i] * Fyy[i])
 
         return self.nRho, self.rho
@@ -454,8 +453,7 @@ cdef class DCCA:
             self.cy_flucCompute(ran1, ran1, self.nThr, vecfx, polOrd, True, False, False)
             self.cy_flucCompute(ran2, ran2, self.nThr, vecfy, polOrd, True, False, False)
             
-            #for j in range(nLen):
-            for j in prange(nLen, nogil=True):
+            for j in range(nLen):
                 rho_all[i, j] = vecfxy[j] / (vecfx[j] * vecfy[j])
                 
         self.confUp = np.quantile(rho_all, confLvl, axis=0)
