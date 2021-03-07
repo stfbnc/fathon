@@ -269,7 +269,7 @@ def test_rho():
 
 #####
 # Regression test 5
-# It tests if the fiftythird elements of the lower and upper
+# It tests if one element of the lower and upper
 # confidence levels of the cross-correlation coefficient
 # for series of the same length of `ts1` and `ts2` are correct
 #####
@@ -279,7 +279,7 @@ def test_rho_thresholds():
     winSizes = fu.linRangeByStep(10, 200, step=2)
     n4, int1, int2 = pydcca.rhoThresholds(len(ts1), winSizes, 10, 0.95)
 
-    assert math.isclose(int1[53], 0.03131478865331007) and math.isclose(int2[53], -0.05672796198121624)
+    assert math.isclose(int1[53], 0.2619278369335029) and math.isclose(int2[53], -0.41952479444776136)
 
 #####
 # Regression test 6
@@ -328,7 +328,7 @@ def test_dcca_2():
     winSizes = fu.linRangeByStep(10, 200, step=2)
     n, F = pydcca.computeFlucVec(winSizes, polOrd=2, absVals=False, overlap=False, revSeg=False)
     
-    assert math.isclose(F[9], 8.47023611e-02)
+    assert math.isclose(F[9], 0.08470236108797902)
     
 #####
 # Regression test 10
@@ -340,7 +340,7 @@ def test_dcca_3():
     winSizes = fu.linRangeByStep(10, 200, step=2)
     n, F = pydcca.computeFlucVec(winSizes, polOrd=1, absVals=False, overlap=False, revSeg=True)
     
-    assert math.isclose(F[23], 8.61106521)
+    assert math.isclose(F[23], 8.611065211944974)
     
 #####
 # Regression test 11
@@ -353,7 +353,7 @@ def test_dcca_4():
     n, F = pydcca.computeFlucVec(winSizes, polOrd=1, absVals=True, overlap=False, revSeg=True)
     H, H_int = pydcca.fitFlucVec()
     
-    assert math.isclose(H, 0.85911989)
+    assert math.isclose(H, 0.859119892990511)
     
 #####
 # Regression test 12
@@ -366,7 +366,7 @@ def test_dcca_5():
     n, F = pydcca.computeFlucVec(winSizes, polOrd=1, absVals=True, overlap=False, revSeg=False)
     H, H_int = pydcca.fitFlucVec()
     
-    assert math.isclose(H, 0.82597962)
+    assert math.isclose(H, 0.8259796205478073)
     
 #####
 # Regression test 13
@@ -379,17 +379,3 @@ def test_rho_2():
     n3, rho = pydcca.computeRho(winSizes, overlap=False, revSeg=False)
 
     assert math.isclose(rho[28], 0.39579454461767466)
-    
-#####
-# Regression test 14
-# It tests if one element of the lower and upper
-# confidence levels of the cross-correlation coefficient
-# for series of the same length of `ts1` and `ts2` are correct
-#####
-def test_rho_thresholds_2():
-    np.random.seed(42)
-    pydcca = fathon.DCCA()
-    winSizes = fu.linRangeByStep(10, 200, step=2)
-    n4, int1, int2 = pydcca.rhoThresholds(len(ts1), winSizes, 10, 0.95)
-
-    assert math.isclose(int1[53], 0.2619278369335029) and math.isclose(int2[53], -0.41952479444776136)

@@ -118,8 +118,9 @@ cdef class DFA:
 
         if polOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
-        if winSizes[len(winSizes)-1] <= winSizes[0]:
-            raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
+        if len(winSizes) > 1:
+            if winSizes[len(winSizes)-1] <= winSizes[0]:
+                raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
         if winSizes[len(winSizes)-1] > tsLen:
             raise ValueError('Error: `winSizes[-1]` must be smaller than the input vector length.')
         if winSizes[0] < (polOrd + 2):
@@ -158,29 +159,32 @@ cdef class DFA:
         cdef int start, end
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit
 
-        if self.isComputed:
-            if nStart == -999:
-                nStart = self.n[0]
-            if nEnd == -999:
-                nEnd = self.n[-1]
-            if nStart > nEnd:
-                raise ValueError('Error: Variable nEnd must be greater than variable nStart.')
-            if (nStart < self.n[0]) or (nEnd > self.n[-1]):
-                raise ValueError('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
-            if (nStart not in self.n) or (nEnd not in self.n):
-                raise ValueError('Error: Fit limits must be included in the window\'s sizes vector.')
+        if len(self.n) > 1:
+            if self.isComputed:
+                if nStart == -999:
+                    nStart = self.n[0]
+                if nEnd == -999:
+                    nEnd = self.n[-1]
+                if nStart > nEnd:
+                    raise ValueError('Error: Variable nEnd must be greater than variable nStart.')
+                if (nStart < self.n[0]) or (nEnd > self.n[-1]):
+                    raise ValueError('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
+                if (nStart not in self.n) or (nEnd not in self.n):
+                    raise ValueError('Error: Fit limits must be included in the window\'s sizes vector.')
 
-            start = np.where(self.n==nStart)[0][0]
-            end = np.where(self.n==nEnd)[0][0]
-            log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase), np.log(self.F[start:end+1]) / np.log(logBase), 1)
+                start = np.where(self.n==nStart)[0][0]
+                end = np.where(self.n==nEnd)[0][0]
+                log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase), np.log(self.F[start:end+1]) / np.log(logBase), 1)
             
-            if verbose:
-                print('Fit limits: [{}, {}]'.format(nStart, nEnd))
-                print('Fit result: H intercept = {:.2f}, H = {:.2f}'.format(log_fit[1], log_fit[0]))
+                if verbose:
+                    print('Fit limits: [{}, {}]'.format(nStart, nEnd))
+                    print('Fit result: H intercept = {:.2f}, H = {:.2f}'.format(log_fit[1], log_fit[0]))
                 
-            return log_fit[0], log_fit[1]
+                return log_fit[0], log_fit[1]
+            else:
+                print('Nothing to fit, fluctuations vector has not been computed yet.')
         else:
-            print('Nothing to fit, fluctuations vector has not been computed yet.')
+            print('At least two points are required.')
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
