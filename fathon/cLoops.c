@@ -671,7 +671,8 @@ double flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int curr_wi
             f += (pow(rms1 / (double)curr_win_size, 0.5 * q) + pow(rms2 / (double)curr_win_size, 0.5 * q));
         }
 
-        free(fit_coeffs);
+        free(fit_coeffs_1);
+        free(fit_coeffs_2);
     }
 
     if(q == 0.0)
