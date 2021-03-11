@@ -25,3 +25,5 @@ extern double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t,
 extern double flucDCCAForwBackwAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
 extern double flucDCCAForwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
 extern double flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
+extern double flucMFDCCAForwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord);
+extern double flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord);

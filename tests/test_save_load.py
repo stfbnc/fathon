@@ -169,4 +169,38 @@ def test_dcca_save_load():
     assert np.array_equal(n_thr_load, n_thr)
     assert np.array_equal(conf_up_load, conf_up)
     assert np.array_equal(conf_down_load, conf_down)
+    
+#####
+# Functionality test 5
+# Save MFDCCA object and reload
+#####
+def test_mfdcca_save_load():
+    mfdcca = fathon.MFDCCA(fu.toAggregated(ts), fu.toAggregated(ts))
+    # save and load with empty results
+    mfdcca.saveObject(get_object_path('mfdcca_obj'))
+    n_load = fu.getObjectMember(get_object_path('mfdcca_obj', ext=True), 'n')
+    F_load = fu.getObjectMember(get_object_path('mfdcca_obj', ext=True), 'F')
+    q_list_load = fu.getObjectMember(get_object_path('mfdcca_obj', ext=True), 'qList')
+    list_h_load = fu.getObjectMember(get_object_path('mfdcca_obj', ext=True), 'listH')
+    assert np.array_equal(n_load, [])
+    assert np.array_equal(F_load, [])
+    assert np.array_equal(q_list_load, [])
+    assert np.array_equal(list_h_load, [])
+    #save and load with results
+    n, F = mfdcca.computeFlucVec(fu.linRangeByStep(10, 500), fu.linRangeByStep(-1, 1))
+    H, I = mfdcca.fitFlucVec(100, 300)
+    mfdcca.saveObject(get_object_path('mfdcca_obj'))
+    n_load = fu.getObjectMember(get_object_path('mfdcca_obj', ext=True), 'n')
+    F_load = fu.getObjectMember(get_object_path('mfdcca_obj', ext=True), 'F')
+    q_list_load = fu.getObjectMember(get_object_path('mfdcca_obj', ext=True), 'qList')
+    list_h_load = fu.getObjectMember(get_object_path('mfdcca_obj', ext=True), 'listH')
+    assert np.array_equal(n_load, n)
+    assert np.array_equal(F_load, F)
+    assert np.array_equal(q_list_load, fu.linRangeByStep(-1, 1))
+    assert np.array_equal(list_h_load, H)
+    # MFDFA from file
+    mfdcca_2 = fathon.MFDCCA(get_object_path('mfdcca_obj', ext=True))
+    H_2, I_2 = mfdcca_2.fitFlucVec(100, 300)
+    assert np.array_equal(H_2, H)
+    assert np.array_equal(I_2, I)
 

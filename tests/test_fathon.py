@@ -379,3 +379,33 @@ def test_rho_2():
     n3, rho = pydcca.computeRho(winSizes, overlap=False, revSeg=False)
 
     assert math.isclose(rho[28], 0.39579454461767466)
+    
+#####
+# Regression test 14
+# It tests if the generalised Hurst exponent of `ts1` and `ts3`
+# for q = 3 and q = 0 is correct
+#####
+def test_mfdcca():
+    pymfdcca = fathon.MFDCCA(ts1, ts3)
+    qs = np.arange(-3, 4, 1)
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n2, F2 = pymfdcca.computeFlucVec(winSizes, qs, revSeg=True)
+    H2, H_int2 = pymfdcca.fitFlucVec()
+
+    assert math.isclose(H2[3], 0.9702432083885226)
+    assert math.isclose(H2[6], 0.8611368333991902)
+
+#####
+# Regression test 15
+# It tests if the second element of the multifractal
+# spectrum of `ts1` and `ts3` is correct
+#####
+def test_multifractal_crosscorr_spectrum():
+    pymfdcca = fathon.MFDCCA(ts1, ts3)
+    qs = np.arange(-3, 4, 1)
+    winSizes = fu.linRangeByStep(10, 200, step=2)
+    n2, F2 = pymfdcca.computeFlucVec(winSizes, qs, revSeg=True)
+    H2, H_int2 = pymfdcca.fitFlucVec()
+    a2, m2 = pymfdcca.computeMultifractalSpectrum()
+
+    assert math.isclose(m2[1], 0.9355109825234913)

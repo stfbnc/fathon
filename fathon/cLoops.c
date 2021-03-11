@@ -548,3 +548,140 @@ double flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t,
 
     return f;
 }
+
+//main loop for MFDCCA (computes fluctuations starting from the beginning of the array y)
+double flucMFDCCAForwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord)
+{
+    int N_s = N / curr_win_size;
+    double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
+
+    #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
+    for(int v = 0; v < N_s; v++)
+#endif
+    {
+        double rms = 0.0;
+        int start_lim = v * curr_win_size;
+        double *fit_coeffs_1 = malloc((pol_ord + 1) * sizeof(double));
+        double *fit_coeffs_2 = malloc((pol_ord + 1) * sizeof(double));
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y1[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            rms += fabs(var_1 * var_2);
+        }
+
+        if(q == 0.0)
+        {
+            f += log(rms / (double)curr_win_size);
+        }
+        else
+        {
+            f += pow(rms / (double)curr_win_size, 0.5 * q);
+        }
+
+        free(fit_coeffs_1);
+        free(fit_coeffs_2);
+    }
+
+    if(q == 0.0)
+    {
+        f = exp(f / (double)(2 * N_s));
+    }
+    else
+    {
+        f = pow(f / (double)N_s, 1 / (double)q);
+    }
+
+    return f;
+}
+
+//main loop for MFDCCA (computes fluctuations starting from the beginning of the array y
+//and then computes fluctuations again starting from the end of the array y)
+double flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord)
+{
+    int N_s = N / curr_win_size;
+    double f = 0.0;
+#ifdef _WIN64
+    int v = 0;
+#endif
+
+    #pragma omp parallel for reduction(+ : f)
+#ifdef _WIN64
+    for(v = 0; v < N_s; v++)
+#else
+    for(int v = 0; v < N_s; v++)
+#endif
+    {
+        double rms1 = 0.0;
+        double rms2 = 0.0;
+        int start_lim = v * curr_win_size;
+        double *fit_coeffs_1 = malloc((pol_ord + 1) * sizeof(double));
+        double *fit_coeffs_2 = malloc((pol_ord + 1) * sizeof(double));
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y1[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            rms1 += fabs(var_1 * var_2);
+        }
+
+        start_lim = v * curr_win_size + (N - N_s * curr_win_size);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y1 + start_lim, fit_coeffs_1);
+        polynomialFit(curr_win_size, pol_ord + 1, t + start_lim, y2 + start_lim, fit_coeffs_2);
+
+        for(int j = 0; j < curr_win_size; j++)
+        {
+            double var_1 = y1[start_lim + j];
+            double var_2 = y2[start_lim + j];
+            for(int k = 0; k < (pol_ord + 1); k++)
+            {
+                var_1 -= fit_coeffs_1[k] * pow(t[start_lim + j], k);
+                var_2 -= fit_coeffs_2[k] * pow(t[start_lim + j], k);
+            }
+            rms2 += fabs(var_1 * var_2);
+        }
+
+        if(q == 0.0)
+        {
+            f += (log(rms1 / (double)curr_win_size) + log(rms2 / (double)curr_win_size));
+        }
+        else
+        {
+            f += (pow(rms1 / (double)curr_win_size, 0.5 * q) + pow(rms2 / (double)curr_win_size, 0.5 * q));
+        }
+
+        free(fit_coeffs);
+    }
+
+    if(q == 0.0)
+    {
+        f = exp(f / (double)(4 * N_s));
+    }
+    else
+    {
+        f = pow(f / (double)(2 * N_s), 1 / (double)q);
+    }
+
+    return f;
+}
