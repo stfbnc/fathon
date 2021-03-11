@@ -3,20 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-fathon (v1.2)
+fathon (v1.3)
 ***************
 
 Current version is available for Linux (x86_64 and ARM64), macOS, and Windows (64bit).
 
 Python package for detrended fluctuation analysis (DFA) and related algorithms.
-`fathon` provides four main algorithms, namely
+`fathon` provides five main algorithms, namely
 
 - `DFA` (Detrended Fluctuation Analysis)
 - `MFDFA` (Multifractal Detrended Fluctuation Analysis)
 - `DCCA` (Detrended Cross-Correlation Analysis)
+- `MFDCCA` (Multifractal  Detrended Cross-Correlation Analysis)
 - `HT` (Time-dependent Hurst exponent)
 
-`MFDFA` also provides methods for the mass exponent τ and the multifractal spectrum f(α).
+`MFDFA` and `MFDCCA` also provides methods for the mass exponent τ and the multifractal spectrum f(α).
 
 `DCCA` has methods for computing the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
 
@@ -41,4 +42,5 @@ Documentation for the Code
    fun_class/fathon.DFA
    fun_class/fathon.MFDFA
    fun_class/fathon.DCCA
+   fun_class/fathon.MFDCCA
    fun_class/fathon.HT

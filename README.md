@@ -10,14 +10,15 @@
 
 It is mostly written in Cython and C in order to speed up computations.
 
-`fathon` provides four main algorithms, namely
+`fathon` provides five main algorithms, namely
 
 - <code>DFA</code> (*Detrended Fluctuation Analysis*)
 - <code>MFDFA</code> (*Multifractal Detrended Fluctuation Analysis*)
 - <code>DCCA</code> (*Detrended Cross-Correlation Analysis*)
+- <code>MFDCCA</code> (*Multifractal Detrended Cross-Correlation Analysis*)
 - <code>HT</code> (*Time-dependent Hurst exponent*)
 
-<code>MFDFA</code> also provides methods for the mass exponent τ and the multifractal spectrum *f*(α).
+<code>MFDFA</code> and <code>MFDCCA</code> also provides methods for the mass exponent τ and the multifractal spectrum *f*(α).
 
 <code>DCCA</code> has methods for computing the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
 
@@ -39,9 +40,9 @@ As easy as `pip install fathon`
 
 ### Examples
 
-A jupyter notebook can be used (<code>fathon_example.ipynb</code>) to play with the four algorithms provided by the `fathon` package.
+A jupyter notebook can be used (<code>fathon_example.ipynb</code>) to play with the five algorithms provided by the `fathon` package.
 
-If you cannot use the notebook, four Python scripts are provided, <code>dfa.py</code>, <code>mfdfa.py</code>, <code>dcca.py</code>, and <code>ht.py</code>.
+If you cannot use the notebook, five Python scripts are provided, <code>dfa.py</code>, <code>mfdfa.py</code>, <code>dcca.py</code>, <code>mfdcca.py</code>, and <code>ht.py</code>.
 
 Algorithms are implemented on two time series of gaussian white noise, but you can replace them with any time series you like.
 
@@ -61,9 +62,15 @@ Bianchi, S., (2020). fathon: A Python package for a fast computation of  detrend
 
 ## Version  [![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon)
 
-fathon v1.2
+fathon v1.3
 
 ## Changelog
+
+#### v1.3
+
+- <code>MFDCCA</code> algorithm
+- <code>overlap</code> option for <code>DCCA</code>, to allow using both overlapping and non-overlapping windows
+- OpenMP also for Windows
 
 #### v1.2
 
