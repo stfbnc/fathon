@@ -66,6 +66,7 @@ if __name__ == "__main__":
         extensions = [get_extension("fathon.dfa", os.path.join("fathon", "dfa.pyx"), running_os),
                       get_extension("fathon.dcca", os.path.join("fathon", "dcca.pyx"), running_os),
                       get_extension("fathon.mfdfa", os.path.join("fathon", "mfdfa.pyx"), running_os),
+                      get_extension("fathon.mfdcca", os.path.join("fathon", "mfdcca.pyx"), running_os),
                       get_extension("fathon.ht", os.path.join("fathon", "ht.pyx"), running_os)]
                           
         README = ""
