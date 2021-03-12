@@ -19,7 +19,7 @@ Python package for detrended fluctuation analysis (DFA) and related algorithms.
 
 `MFDFA` and `MFDCCA` also provides methods for the mass exponent τ and the multifractal spectrum f(α).
 
-`DCCA` has methods for computing the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
+`DCCA` has methods to compute the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
 
 Requirements
 ============
