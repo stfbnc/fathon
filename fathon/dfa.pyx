@@ -19,12 +19,13 @@
 import numpy as np
 cimport numpy as np
 cimport cython
+from cython.parallel import prange
 import ctypes
 import pickle
 
 cdef extern from "cLoops.h" nogil:
-    double flucDFAForwCompute(double *y, int curr_win_size, int N, int pol_ord)
-    double flucDFAForwBackwCompute(double *y, int curr_win_size, int N, int pol_ord)
+    double flucDFAForwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord)
+    double flucDFAForwBackwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord)
 
 cdef class DFA:
     """Detrended Fluctuation Analysis class.
@@ -36,9 +37,10 @@ cdef class DFA:
     tsVec : iterable
         Time series used for the analysis.
     F : numpy ndarray
-        Array containing the values of the fluctuations in every window.
+        Array containing the values of the fluctuations in each window.
     isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
+        Boolean value to know if `F` has been computed in order to prevent the
+        computation of other functions that need `F`.
     """
 
     cdef:
@@ -69,33 +71,38 @@ cdef class DFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn,
-                        np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg):
+    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg):
         cdef int nLen, tsLen
-        cdef Py_ssize_t i
+        cdef Py_ssize_t i, j
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
 
         nLen = len(vecn)
         tsLen = len(vects)
+        
+        t = np.empty((tsLen, ), dtype=ctypes.c_double)
+        for j in prange(tsLen, nogil=True):
+            t[j] = float(j) + 1.0
+        
         with nogil:
             if revSeg:
                 for i in range(nLen):
-                    vecf[i] = flucDFAForwBackwCompute(&vects[0], vecn[i], tsLen, polOrd)
+                    vecf[i] = flucDFAForwBackwCompute(&vects[0], &t[0], vecn[i], tsLen, polOrd)
             else:
                 for i in range(nLen):
-                    vecf[i] = flucDFAForwCompute(&vects[0], vecn[i], tsLen, polOrd)
+                    vecf[i] = flucDFAForwCompute(&vects[0], &t[0], vecn[i], tsLen, polOrd)
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint revSeg=False):
-        """Computation of the fluctuations in every window.
+        """Computation of the fluctuations in each window.
 
         Parameters
         ----------
         winSizes : numpy ndarray
             Array of window's sizes.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         revSeg : bool, optional
             If True, the computation of `F` is repeated starting from the end of the time series (default : False).
 
@@ -104,14 +111,15 @@ cdef class DFA:
         numpy ndarray
             Array `n` of window's sizes.
         numpy ndarray
-            Array `F` containing the values of the fluctuations in every window.
+            Array `F` containing the values of the fluctuations in each window.
         """
         cdef int tsLen = len(self.tsVec)
 
         if polOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
-        if winSizes[len(winSizes)-1] <= winSizes[0]:
-            raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
+        if len(winSizes) > 1:
+            if winSizes[len(winSizes)-1] <= winSizes[0]:
+                raise ValueError('Error: `winSizes[-1]` must be greater than variable `winSizes[0]`.')
         if winSizes[len(winSizes)-1] > tsLen:
             raise ValueError('Error: `winSizes[-1]` must be smaller than the input vector length.')
         if winSizes[0] < (polOrd + 2):
@@ -150,29 +158,32 @@ cdef class DFA:
         cdef int start, end
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit
 
-        if self.isComputed:
-            if nStart == -999:
-                nStart = self.n[0]
-            if nEnd == -999:
-                nEnd = self.n[-1]
-            if nStart > nEnd:
-                raise ValueError('Error: Variable nEnd must be greater than variable nStart.')
-            if (nStart < self.n[0]) or (nEnd > self.n[-1]):
-                raise ValueError('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
-            if (nStart not in self.n) or (nEnd not in self.n):
-                raise ValueError('Error: Fit limits must be included in the window\'s sizes vector.')
+        if len(self.n) > 1:
+            if self.isComputed:
+                if nStart == -999:
+                    nStart = self.n[0]
+                if nEnd == -999:
+                    nEnd = self.n[-1]
+                if nStart > nEnd:
+                    raise ValueError('Error: Variable nEnd must be greater than variable nStart.')
+                if (nStart < self.n[0]) or (nEnd > self.n[-1]):
+                    raise ValueError('Error: Fit limits must be included in interval [{}, {}].'.format(self.n[0], self.n[-1]))
+                if (nStart not in self.n) or (nEnd not in self.n):
+                    raise ValueError('Error: Fit limits must be included in the window\'s sizes vector.')
 
-            start = np.where(self.n==nStart)[0][0]
-            end = np.where(self.n==nEnd)[0][0]
-            log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase), np.log(self.F[start:end+1]) / np.log(logBase), 1)
+                start = np.where(self.n==nStart)[0][0]
+                end = np.where(self.n==nEnd)[0][0]
+                log_fit = np.polyfit(np.log(self.n[start:end+1]) / np.log(logBase), np.log(self.F[start:end+1]) / np.log(logBase), 1)
             
-            if verbose:
-                print('Fit limits: [{}, {}]'.format(nStart, nEnd))
-                print('Fit result: H intercept = {:.2f}, H = {:.2f}'.format(log_fit[1], log_fit[0]))
+                if verbose:
+                    print('Fit limits: [{}, {}]'.format(nStart, nEnd))
+                    print('Fit result: H intercept = {:.2f}, H = {:.2f}'.format(log_fit[1], log_fit[0]))
                 
-            return log_fit[0], log_fit[1]
+                return log_fit[0], log_fit[1]
+            else:
+                print('Nothing to fit, fluctuations vector has not been computed yet.')
         else:
-            print('Nothing to fit, fluctuations vector has not been computed yet.')
+            print('At least two points are required.')
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -207,7 +218,8 @@ cdef class DFA:
             for i in range(limLen):
                 if verbose:
                     print('----------')
-                list_H[i], list_H_intercept[i] = self.fitFlucVec(nStart=limitsList[i][0], nEnd=limitsList[i][1], logBase=logBase, verbose=verbose)
+                list_H[i], list_H_intercept[i] = self.fitFlucVec(nStart=limitsList[i][0], nEnd=limitsList[i][1],
+                                                                 logBase=logBase, verbose=verbose)
                 
             if verbose:
                 print('----------')

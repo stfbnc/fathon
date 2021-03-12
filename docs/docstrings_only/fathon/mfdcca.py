@@ -1,4 +1,4 @@
-#    mfdfa.pyx - mfdfa algorithm of fathon package
+#    mfdcca.pyx - mfdcca algorithm of fathon package
 #    Copyright (C) 2019-2021  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -14,15 +14,18 @@ import numpy as np
 from cython.parallel import prange
 import ctypes
 import pickle
-class MFDFA:
-    """MultiFractal Detrended Fluctuation Analysis class.
+import warnings
+class MFDCCA:
+    """MultiFractal Detrended Cross-Correlation Analysis class.
 
     Parameters
     ----------
     n : numpy ndarray
         Array of window's sizes used for the computation.
-    tsVec : iterable
-        Time series used for the analysis.
+    tsVec1 : iterable
+        First time series used for the analysis.
+    tsVec2 : iterable
+        Second time series used for the analysis.
     F : numpy ndarray
         Array containing the values of the fluctuations in each window.
     listH : numpy ndarray
@@ -34,7 +37,7 @@ class MFDFA:
         computation of other functions that need `F`.
     """
 
-    def __init__(self, tsVec):
+    def __init__(self, tsVec1, tsVec2=[]):
     	pass
 
     def computeFlucVec(self, winSizes, qList, polOrd=1, revSeg=False):

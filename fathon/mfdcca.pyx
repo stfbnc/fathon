@@ -1,4 +1,4 @@
-#    mfdfa.pyx - mfdfa algorithm of fathon package
+#    mfdcca.pyx - mfdcca algorithm of fathon package
 #    Copyright (C) 2019-2021  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,20 +22,23 @@ cimport cython
 from cython.parallel import prange
 import ctypes
 import pickle
+import warnings
 
 cdef extern from "cLoops.h" nogil:
-    double flucMFDFAForwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
-    double flucMFDFAForwBackwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
+    double flucMFDCCAForwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord)
+    double flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord)
 
-cdef class MFDFA:
-    """MultiFractal Detrended Fluctuation Analysis class.
+cdef class MFDCCA:
+    """MultiFractal Detrended Cross-Correlation Analysis class.
 
     Parameters
     ----------
     n : numpy ndarray
         Array of window's sizes used for the computation.
-    tsVec : iterable
-        Time series used for the analysis.
+    tsVec1 : iterable
+        First time series used for the analysis.
+    tsVec2 : iterable
+        Second time series used for the analysis.
     F : numpy ndarray
         Array containing the values of the fluctuations in each window.
     listH : numpy ndarray
@@ -49,19 +52,20 @@ cdef class MFDFA:
 
     cdef:
         np.ndarray n
-        np.ndarray tsVec, F, listH, qList
+        np.ndarray tsVec1, tsVec2, F, listH, qList
         bint isComputed
 
-    def __init__(self, tsVec):
-        if isinstance(tsVec, str):
-            if len(tsVec.split('.')) > 1 and tsVec.split('.')[-1] == 'fathon':
-                f = open(tsVec, 'rb')
+    def __init__(self, tsVec1, tsVec2=[]):
+        if isinstance(tsVec1, str) and len(tsVec2) == 0:
+            if len(tsVec1.split('.')) > 1 and tsVec1.split('.')[-1] == 'fathon':
+                f = open(tsVec1, 'rb')
                 data = pickle.load(f)
                 f.close()
-                if data['kind'] != 'mfdfa':
+                if data['kind'] != 'mfdcca':
                     raise ValueError('Error: Loaded object is not a MFDFA object.')
                 else:
-                    self.tsVec = np.array(data['tsVec'], dtype=float)
+                    self.tsVec1 = np.array(data['tsVec1'], dtype=float)
+                    self.tsVec2 = np.array(data['tsVec2'], dtype=float)
                     self.n = np.array(data['n'], dtype=ctypes.c_int)
                     self.F = np.array(data['F'], dtype=ctypes.c_double)
                     self.listH = np.array(data['listH'], dtype=ctypes.c_double)
@@ -69,10 +73,19 @@ cdef class MFDFA:
                     self.isComputed = data['isComputed']
             else:
                 raise ValueError('Error: Not recognized extension.')
-        else:
-            self.tsVec = np.array(tsVec, dtype=float)
-            self.tsVec = self.tsVec[~np.isnan(self.tsVec)]
+        elif (isinstance(tsVec1, list) or isinstance(tsVec1, np.ndarray)) and (isinstance(tsVec2, list) or isinstance(tsVec2, np.ndarray)):
+            if len(tsVec1) != 0 and len(tsVec2) != 0:
+                self.tsVec1 = np.array(tsVec1, dtype=float)
+                self.tsVec1 = self.tsVec1[~np.isnan(self.tsVec1)]
+                self.tsVec2 = np.array(tsVec2, dtype=float)
+                self.tsVec2 = self.tsVec2[~np.isnan(self.tsVec2)]
+                if len(self.tsVec1) != len(self.tsVec2):
+                    warnings.warn("Warning: Input vectors have different length. The longest vector has been reduced to the size of the shortest one.")
+                    self.tsVec1 = self.tsVec1[0:np.min([len(self.tsVec1), len(self.tsVec2)])]
+                    self.tsVec2 = self.tsVec2[0:np.min([len(self.tsVec1), len(self.tsVec2)])]
             self.isComputed = False
+        else:
+            raise ValueError('Error: Wrong inputs, expected two arrays or a single string.')
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -80,7 +93,7 @@ cdef class MFDFA:
     cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
         cdef Py_ssize_t i, j
         cdef int nLen
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects
+        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects1, vects2
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
 
@@ -88,7 +101,8 @@ cdef class MFDFA:
         vecn = np.array(winSizes, dtype=ctypes.c_int)
         nLen = len(vecn)
         mtxf = np.zeros((len(q_list) * nLen, ), dtype=ctypes.c_double)
-        vects = np.array(self.tsVec, dtype=ctypes.c_double)
+        vects1 = np.array(self.tsVec1, dtype=ctypes.c_double)
+        vects2 = np.array(self.tsVec2, dtype=ctypes.c_double)
         q_list_len = len(q_list)
         
         t = np.empty((tsLen, ), dtype=ctypes.c_double)
@@ -99,13 +113,13 @@ cdef class MFDFA:
             if revSeg:
                 for i in range(q_list_len):
                     for j in range(nLen):
-                        mtxf[i*nLen+j] = flucMFDFAForwBackwCompute(&vects[0], &t[0], vecn[j],
-                                                                   q_list[i], tsLen, polOrd)
+                        mtxf[i*nLen+j] = flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
+                                                                    q_list[i], tsLen, polOrd)
             else:
                 for i in range(q_list_len):
                     for j in range(nLen):
-                        mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], &t[0], vecn[j],
-                                                              q_list[i], tsLen, polOrd)
+                        mtxf[i*nLen+j] = flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
+                                                               q_list[i], tsLen, polOrd)
                         
         return vecn, np.reshape(mtxf, (len(self.qList), nLen))
 
@@ -132,7 +146,7 @@ cdef class MFDFA:
             qxn array `F` containing the values of the fluctuations in each
             window for each q-order.
         """
-        tsLen = len(self.tsVec)
+        tsLen = len(self.tsVec1)
 
         if polOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
@@ -272,8 +286,9 @@ cdef class MFDFA:
             Output binary file. `.fathon` extension will be appended to the file name.
         """
         saveDict = {}
-        saveDict['kind'] = 'mfdfa'
-        saveDict['tsVec'] = self.tsVec.tolist()
+        saveDict['kind'] = 'mfdcca'
+        saveDict['tsVec1'] = self.tsVec1.tolist()
+        saveDict['tsVec2'] = self.tsVec2.tolist()
         try:
             saveDict['n'] = self.n.tolist()
         except:

@@ -1,6 +1,6 @@
-# fathon [![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon)[![Build status](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p?svg=true)](https://ci.appveyor.com/project/stfbnc/fathon)
+# fathon [![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon) [![Build status](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p?svg=true)](https://ci.appveyor.com/project/stfbnc/fathon)
 
-[![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]() [![Python 3.5+](https://img.shields.io/badge/python-3.5+-blue.svg)](https://www.python.org/)
+[![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]() [![Python 3.6+](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/)
 
 [![DOI](https://zenodo.org/badge/214290119.svg)](https://zenodo.org/badge/latestdoi/214290119) [![DOI](https://joss.theoj.org/papers/10.21105/joss.01828/status.svg)](https://doi.org/10.21105/joss.01828)
 
@@ -10,28 +10,27 @@
 
 It is mostly written in Cython and C in order to speed up computations.
 
-`fathon` provides four main algorithms, namely
+`fathon` provides five main algorithms, namely
 
 - <code>DFA</code> (*Detrended Fluctuation Analysis*)
 - <code>MFDFA</code> (*Multifractal Detrended Fluctuation Analysis*)
 - <code>DCCA</code> (*Detrended Cross-Correlation Analysis*)
+- <code>MFDCCA</code> (*Multifractal Detrended Cross-Correlation Analysis*)
 - <code>HT</code> (*Time-dependent Hurst exponent*)
 
-<code>MFDFA</code> also provides methods for the mass exponent τ and the multifractal spectrum *f*(α).
+<code>MFDFA</code> and <code>MFDCCA</code> also provides methods for the mass exponent τ and the multifractal spectrum *f*(α).
 
-<code>DCCA</code> has methods for computing the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
+<code>DCCA</code> has methods to compute the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
 
 
 
 ### Prerequisites
 
-| Linux i686 |    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | Windows 32bit |    Windows 64bit    |
-| :--------: | :----------------: | :----------------: | :----------------: | :-----------: | :-----------------: |
-|    :x:     | :white_check_mark: | :white_check_mark: | :white_check_mark: |      :x:      | :white_check_mark:* |
+| Linux i686 |    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | Windows 32bit |   Windows 64bit    |
+| :--------: | :----------------: | :----------------: | :----------------: | :-----------: | :----------------: |
+|    :x:     | :white_check_mark: | :white_check_mark: | :white_check_mark: |      :x:      | :white_check_mark: |
 
-<sub>*It is possible that OpenMP was not activated during compilation, so `fathon` could run slower on Windows compared to macOS and Linux</sub>
-
-- Python 3.5 or higher
+- Python 3.6 or higher
  - numpy (version >= 1.15)
  - Cython
 
@@ -41,9 +40,9 @@ As easy as `pip install fathon`
 
 ### Examples
 
-A jupyter notebook can be used (<code>fathon_example.ipynb</code>) to play with the four algorithms provided by the `fathon` package.
+A jupyter notebook can be used (<code>fathon_example.ipynb</code>) to play with the five algorithms provided by the `fathon` package.
 
-If you cannot use the notebook, four Python scripts are provided, <code>dfa.py</code>, <code>mfdfa.py</code>, <code>dcca.py</code>, and <code>ht.py</code>.
+If you cannot use the notebook, five Python scripts are provided, <code>dfa.py</code>, <code>mfdfa.py</code>, <code>dcca.py</code>, <code>mfdcca.py</code>, and <code>ht.py</code>.
 
 Algorithms are implemented on two time series of gaussian white noise, but you can replace them with any time series you like.
 
@@ -63,9 +62,15 @@ Bianchi, S., (2020). fathon: A Python package for a fast computation of  detrend
 
 ## Version  [![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon)
 
-fathon v1.2
+fathon v1.3
 
 ## Changelog
+
+#### v1.3
+
+- <code>MFDCCA</code> algorithm
+- <code>overlap</code> option for <code>DCCA</code>, to allow using both overlapping and non-overlapping windows
+- OpenMP also for Windows
 
 #### v1.2
 

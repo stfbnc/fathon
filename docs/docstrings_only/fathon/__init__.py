@@ -1,5 +1,5 @@
 #    __init__.py - init for fathon package
-#    Copyright (C) 2019-2020  Stefano Bianchi
+#    Copyright (C) 2019-2021  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ if platform.system() == "Linux":
 from .dfa import DFA
 from .mfdfa import MFDFA
 from .dcca import DCCA
+from .mfdcca import MFDCCA
 from .ht import HT
 
 from .fathonUtils import *

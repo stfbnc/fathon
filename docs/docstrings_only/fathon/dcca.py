@@ -1,5 +1,5 @@
 #    dcca.pyx - dcca algorithm of fathon package
-#    Copyright (C) 2019-2020  Stefano Bianchi
+#    Copyright (C) 2019-2021  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -11,9 +11,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
+from cython.parallel import prange
 import ctypes
 import pickle
 import warnings
+from . import dfa
 class DCCA:
     """Detrended Cross-Correlation Analysis class.
 
@@ -26,42 +28,49 @@ class DCCA:
     tsVec2 : iterable
         Second time series used for the analysis.
     F : numpy ndarray
-        Array containing the values of the fluctuations in every window.
+        Array containing the values of the fluctuations in each window.
     nRho : numpy ndarray
         Array of window's sizes used for the computation of `rho`.
     rho : numpy ndarray
-        Array containing the cross-correlation index in every window.
+        Array containing the cross-correlation index in each window.
     nThr : numpy ndarray
         Array of window's sizes used for the computation of `rho` thresholds.
     confUp : numpy ndarray
-        Array containing the first confidence interval in every window.
+        Array containing the first confidence interval in each window.
     confDown : numpy ndarray
-        Array containing the second confidence interval in every window.
+        Array containing the second confidence interval in each window.
     isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the computation of other functions that need `F`.
+        Boolean value to know if `F` has been computed in order to prevent the
+        computation of other functions that need `F`.
     """
 
     def __init__(self, tsVec1=[], tsVec2=[]):
     	pass
 
-    def computeFlucVec(self, winSizes, polOrd=1, absVals=True):
-        """Computation of the fluctuations in every window.
+    def computeFlucVec(self, winSizes, polOrd=1, absVals=True, overlap=False, revSeg=False):
+        """Computation of the fluctuations in each window.
 
         Parameters
         ----------
         winSizes : numpy ndarray
             Array of window's sizes.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         absVals : bool, optional
-            If True, the computation of `F` is performed using the abolute values of the fluctuations of both `tsVec1` and `tsVec2` (default : True).
+            If True, the computation of `F` is performed using the abolute values of
+            the fluctuations of both `tsVec1` and `tsVec2` (default : True).
+        overlap : bool, optional
+            If True, computes `F` using overlapping segments (default : False).
+        revSeg : bool, optional
+            If True, the computation of `F` is repeated starting from the end of
+            the time series, ignored if `overlap` is True (default : False).
 
         Returns
         -------
         numpy ndarray
             Array `n` of window's sizes.
         numpy ndarray
-            Array `F` containing the values of the fluctuations in every window.
+            Array `F` containing the values of the fluctuations in each window.
         """
         return 0
 
@@ -109,17 +118,22 @@ class DCCA:
         """
         return 0
 
-    def computeRho(self, winSizes, polOrd=1, verbose=False):
-        """Computation of the cross-correlation index in every window.
+    def computeRho(self, winSizes, polOrd=1, verbose=False, overlap=False, revSeg=False):
+        """Computation of the cross-correlation index in each window.
 
         Parameters
         ----------
         winSizes : numpy ndarray
             Array of window's sizes.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         verbose : bool, optional
             Verbosity (default : False).
+        overlap : bool, optional
+            If True, computes `F` using overlapping segments (default : False).
+        revSeg : bool, optional
+            If True, the computation of `F` is repeated starting from the end of
+            the time series, ignored if `overlap` is True (default : False).
 
         Returns
         -------
@@ -131,7 +145,7 @@ class DCCA:
         return 0
 
     def rhoThresholds(self, winSizes, nSim, confLvl, polOrd=1, verbose=False):
-        """Computation of the cross-correlation index's confidence levels in every window.
+        """Computation of the cross-correlation index's confidence levels in each window.
 
         Parameters
         ----------
@@ -140,11 +154,12 @@ class DCCA:
         winSizes : numpy ndarray
             Array of window's sizes.
         nSim : int
-            Number of times the cross-correlation index between two random time series is computed in order to evaluate the confidence levels.
+            Number of times the cross-correlation index between two random time series
+            is computed in order to evaluate the confidence levels.
         confLvl : float
             Confidence level.
         polOrd : int, optional
-            Order of the polynomial to be fitted in every window (default : 1).
+            Order of the polynomial to be fitted in each window (default : 1).
         verbose : bool, optional
             Verbosity (default : False).
 

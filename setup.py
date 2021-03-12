@@ -56,8 +56,8 @@ def get_extension(module_name, src_name, current_os):
                          include_dirs=[numpy.get_include(), gsl_inc],
                          library_dirs=[gsl_lib],
                          libraries=["gsl", "gslcblas"],
-                         extra_compile_args=["/O2", "/OpenMP"],
-                         extra_link_args=["/OpenMP"])
+                         extra_compile_args=["/O2", "-openmp"],
+                         extra_link_args=[])
 
 if __name__ == "__main__":
     if sys.version_info[0] == 3:
@@ -66,6 +66,7 @@ if __name__ == "__main__":
         extensions = [get_extension("fathon.dfa", os.path.join("fathon", "dfa.pyx"), running_os),
                       get_extension("fathon.dcca", os.path.join("fathon", "dcca.pyx"), running_os),
                       get_extension("fathon.mfdfa", os.path.join("fathon", "mfdfa.pyx"), running_os),
+                      get_extension("fathon.mfdcca", os.path.join("fathon", "mfdcca.pyx"), running_os),
                       get_extension("fathon.ht", os.path.join("fathon", "ht.pyx"), running_os)]
                           
         README = ""
@@ -81,7 +82,7 @@ if __name__ == "__main__":
         readme_file.close()
 
         setup(name="fathon",
-              version="1.2",
+              version="1.3",
               author="Stefano Bianchi",
               author_email="fathon.package@gmail.com",
               url="https://github.com/stfbnc/fathon.git",
@@ -96,13 +97,12 @@ if __name__ == "__main__":
                            "Operating System :: Microsoft :: Windows",
                            "Programming Language :: Cython",
                            "Programming Language :: C",
-                           "Programming Language :: Python :: 3.5",
                            "Programming Language :: Python :: 3.6",
                            "Programming Language :: Python :: 3.7",
                            "Programming Language :: Python :: 3.8",
                            "Programming Language :: Python :: 3.9",
                            "Topic :: Scientific/Engineering"],
-              python_requires=">=3.5",
+              python_requires=">=3.6",
               install_requires=["numpy>=1.15", "Cython"],
               project_urls={"Documentation": "https://fathon.readthedocs.io/",
                             "Bug Reports": "https://github.com/stfbnc/fathon/issues",

@@ -14,7 +14,7 @@
     <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="DCCA" href="fathon.DCCA.html" /> 
+    <link rel="prev" title="MFDCCA" href="fathon.MFDCCA.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -23,7 +23,7 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="fathon.DCCA.html" title="DCCA"
+          <a href="fathon.MFDCCA.html" title="MFDCCA"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
       </ul>
@@ -54,17 +54,19 @@
 <dl class="method">
 <dt id="fathon.HT.computeHt">
 <code class="sig-name descname">computeHt</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">scales</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">mfdfaPolOrd=1</em>, <em class="sig-param">q0Fit=[]</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT.computeHt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computation of the time-dependent local Hurst exponent at every scale, using Ihlen’s approach.</p>
+<dd><p>Computation of the time-dependent local Hurst exponent at each scale, using Ihlen’s approach.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>scales</strong><span class="classifier">int or iterable or numpy ndarray</span></dt><dd><p>Window’s sizes used for the computation of the time-dependent local Hurst exponent.</p>
 </dd>
-<dt><strong>polOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted in every window (default : 1).</p>
+<dt><strong>polOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted in each window (default : 1).</p>
 </dd>
 <dt><strong>mfdfaPolOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted to MFDFA’s fluctuations at q = 0 (default : 1).</p>
 </dd>
-<dt><strong>q0Fit</strong><span class="classifier">iterable or numpy ndarray of floats, optional</span></dt><dd><p>MFDFA’s Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept]. These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPolOrd</cite> value (default : []).</p>
+<dt><strong>q0Fit</strong><span class="classifier">iterable or numpy ndarray of floats, optional</span></dt><dd><p>MFDFA’s Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept].
+These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly
+used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPolOrd</cite> value (default : []).</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool, optional</span></dt><dd><p>Verbosity (default : False).</p>
 </dd>
@@ -97,7 +99,7 @@
 
 <div class="section" id="usage-examples">
 <h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fathon</span>
 <span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
 
@@ -131,8 +133,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="fathon.DCCA.html"
-                        title="previous chapter">DCCA</a></p>
+  <p class="topless"><a href="fathon.MFDCCA.html"
+                        title="previous chapter">MFDCCA</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -161,13 +163,13 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="fathon.DCCA.html" title="DCCA"
+          <a href="fathon.MFDCCA.html" title="MFDCCA"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2020, Stefano Bianchi.
+        &#169; Copyright 2019-2021, Stefano Bianchi.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>

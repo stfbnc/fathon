@@ -24,12 +24,13 @@ if platform.system() == "Linux":
 from .dfa import DFA
 from .mfdfa import MFDFA
 from .dcca import DCCA
+from .mfdcca import MFDCCA
 from .ht import HT
 
 """A Python package for detrended fluctuation analysis (DFA)
     and related algorithms.
 """
 
-__version__ = '1.2'
+__version__ = '1.3'
 __author__ = 'Stefano Bianchi'
 __git_repo__ = 'https://github.com/stfbnc/fathon'
