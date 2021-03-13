@@ -13,7 +13,6 @@ environment:
     CIBW_BEFORE_BUILD: "python -m pip install -r requirements.txt"
 
   matrix:
-    - CIBW_BUILD: "cp36-win_amd64"
     - CIBW_BUILD: "cp37-win_amd64"
     - CIBW_BUILD: "cp38-win_amd64"
     - CIBW_BUILD: "cp39-win_amd64"
