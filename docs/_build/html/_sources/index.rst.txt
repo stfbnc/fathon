@@ -24,7 +24,7 @@ Python package for detrended fluctuation analysis (DFA) and related algorithms.
 Requirements
 ============
 
-- Python 3.6+
+- Python 3.7+
 - numpy (>=1.20)
 - Cython
 
