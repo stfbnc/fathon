@@ -31,7 +31,7 @@ It is mostly written in Cython and C in order to speed up computations.
 |    :x:     | :white_check_mark: | :white_check_mark: | :white_check_mark: |      :x:      | :white_check_mark: |
 
 - Python 3.6 or higher
- - numpy (version >= 1.15)
+ - numpy (version >= 1.20)
  - Cython
 
 ### Installing

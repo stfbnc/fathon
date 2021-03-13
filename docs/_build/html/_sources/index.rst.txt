@@ -25,7 +25,7 @@ Requirements
 ============
 
 - Python 3.6+
-- numpy (>=1.15)
+- numpy (>=1.20)
 - Cython
 
 Installation
