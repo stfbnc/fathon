@@ -26,7 +26,8 @@ double flucDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, in
     int i = 0;
 #endif
 
-#pragma omp parallel for reduction(+ : f)
+#pragma omp parallel for
+// reduction(+ : f)
 #ifdef _WIN64
     for(i = 0; i < n_wins; i++)
 #else
@@ -83,7 +84,8 @@ double flucDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_win
     int i = 0;
 #endif
 
-#pragma omp parallel for reduction(+ : f)
+#pragma omp parallel for
+//reduction(+ : f)
 #ifdef _WIN64
     for(i = 0; i < n_wins; i++)
 #else
