@@ -82,7 +82,7 @@ if __name__ == "__main__":
         readme_file.close()
 
         setup(name="fathon",
-              version="1.3",
+              version="1.3.post1",
               author="Stefano Bianchi",
               author_email="fathon.package@gmail.com",
               url="https://github.com/stfbnc/fathon.git",
