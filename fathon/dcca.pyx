@@ -27,8 +27,8 @@ import warnings
 
 cdef extern from "cLoops.h" nogil:
     double flucDCCAAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
-    double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_win, int pol_ord, double *f_vec)
-    double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *nwins, int n_win, int pol_ord, double *f_vec)
+    double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
     double flucDCCAForwBackwAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
     double flucDCCAForwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
     double flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)

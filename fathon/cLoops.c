@@ -333,7 +333,7 @@ double flucDCCAAbsCompute(double *y1, double *y2, double *t, int N, int *wins, i
 
 //main loop for DCCA (computes fluctuations without using absolute values)
 //double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
-double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_win, int pol_ord, double *f_vec)
+double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
     int i = 0;
@@ -418,7 +418,7 @@ double HTCompute(double *y, double *t, int scale, int N, int pol_ord, int v)
 //main loop for DCCA without overlap (computes fluctuations starting from the beginning
 // of the array y and using absolute values)
 //double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
-double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_win, int pol_ord, double *f_vec)
+double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
     int i = 0;
