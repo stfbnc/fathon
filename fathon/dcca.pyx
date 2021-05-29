@@ -211,16 +211,16 @@ cdef class DCCA:
             if overlap:
 #                for i in range(nLen):
 #                    F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
-                flucDCCAAbsCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
+                flucDCCAAbsCompute(&vec[0], &vec[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &F_same[0])
             else:
                 if revSeg:
 #                    for i in range(nLen):
 #                        F_same[i] = flucDCCAForwBackwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
-                    flucDCCAForwBackwAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
+                    flucDCCAForwBackwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &F_same[0])
                 else:
 #                    for i in range(nLen):
 #                        F_same[i] = flucDCCAForwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
-                    flucDCCAForwAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
+                    flucDCCAForwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &F_same[0])
                 
         return F_same
 
