@@ -24,10 +24,8 @@ import ctypes
 import pickle
 
 cdef extern from "cLoops.h" nogil:
-#    double flucDFAForwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord)
-    double flucDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
-#    double flucDFAForwBackwCompute(double *y, double *t, int curr_win_size, int N, int pol_ord)
-    double flucDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    void flucDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    void flucDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
 
 cdef class DFA:
     """Detrended Fluctuation Analysis class.
@@ -87,12 +85,8 @@ cdef class DFA:
         
         with nogil:
             if revSeg:
-#                for i in range(nLen):
-#                    vecf[i] = flucDFAForwBackwCompute(&vects[0], &t[0], vecn[i], tsLen, polOrd)
                 flucDFAForwBackwCompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
             else:
-#                for i in range(nLen):
-#                    vecf[i] = flucDFAForwCompute(&vects[0], &t[0], vecn[i], tsLen, polOrd)
                 flucDFAForwCompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
 
     @cython.boundscheck(False)

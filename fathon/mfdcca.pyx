@@ -25,8 +25,8 @@ import pickle
 import warnings
 
 cdef extern from "cLoops.h" nogil:
-    double flucMFDCCAForwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord)
-    double flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord)
+    void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
+    void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
 
 cdef class MFDCCA:
     """MultiFractal Detrended Cross-Correlation Analysis class.
@@ -112,14 +112,16 @@ cdef class MFDCCA:
         with nogil:
             if revSeg:
                 for i in range(q_list_len):
-                    for j in range(nLen):
-                        mtxf[i*nLen+j] = flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
-                                                                    q_list[i], tsLen, polOrd)
+                    flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, mtxf[i*nLen])
+#                    for j in range(nLen):
+#                        mtxf[i*nLen+j] = flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
+#                                                                    q_list[i], tsLen, polOrd)
             else:
                 for i in range(q_list_len):
-                    for j in range(nLen):
-                        mtxf[i*nLen+j] = flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
-                                                               q_list[i], tsLen, polOrd)
+                    flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, mtxf[i*nLen])
+#                    for j in range(nLen):
+#                        mtxf[i*nLen+j] = flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
+#                                                               q_list[i], tsLen, polOrd)
                         
         return vecn, np.reshape(mtxf, (len(self.qList), nLen))
 
@@ -249,7 +251,7 @@ cdef class MFDCCA:
             
             return tau
         else:
-            print('Nothing to fit, fluctuations vector has not been computed yet.')
+            print('Cannot compute mass exponents, fluctuations vector has not been computed yet.')
 
     @cython.boundscheck(False)
     @cython.nonecheck(False)
@@ -275,7 +277,7 @@ cdef class MFDCCA:
             else:
                 raise ValueError('Error: Number of q moments must be greater than one to compute multifractal spectrum.')
         else:
-            print('Nothing to fit, fluctuations vector has not been computed yet.')
+            print('Cannot compute multifractal spectrum, fluctuations vector has not been computed yet.')
 
     def saveObject(self, outFileName):
         """Save current object state to binary file.

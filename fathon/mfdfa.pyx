@@ -24,8 +24,8 @@ import ctypes
 import pickle
 
 cdef extern from "cLoops.h" nogil:
-    double flucMFDFAForwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
-    double flucMFDFAForwBackwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
+    void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
+    void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
 
 cdef class MFDFA:
     """MultiFractal Detrended Fluctuation Analysis class.
@@ -98,14 +98,16 @@ cdef class MFDFA:
         with nogil:
             if revSeg:
                 for i in range(q_list_len):
-                    for j in range(nLen):
-                        mtxf[i*nLen+j] = flucMFDFAForwBackwCompute(&vects[0], &t[0], vecn[j],
-                                                                   q_list[i], tsLen, polOrd)
+                    flucMFDFAForwBackwCompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, &mtxf[i*nLen])
+#                    for j in range(nLen):
+#                        mtxf[i*nLen+j] = flucMFDFAForwBackwCompute(&vects[0], &t[0], vecn[j],
+#                                                                   q_list[i], tsLen, polOrd)
             else:
                 for i in range(q_list_len):
-                    for j in range(nLen):
-                        mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], &t[0], vecn[j],
-                                                              q_list[i], tsLen, polOrd)
+                    flucMFDFAForwCompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, &mtxf[i*nLen])
+#                    for j in range(nLen):
+#                        mtxf[i*nLen+j] = flucMFDFAForwCompute(&vects[0], &t[0], vecn[j],
+#                                                              q_list[i], tsLen, polOrd)
                         
         return vecn, np.reshape(mtxf, (len(self.qList), nLen))
 
@@ -235,7 +237,7 @@ cdef class MFDFA:
             
             return tau
         else:
-            print('Nothing to fit, fluctuations vector has not been computed yet.')
+            print('Cannot compute mass exponents, fluctuations vector has not been computed yet.')
 
     @cython.boundscheck(False)
     @cython.nonecheck(False)
@@ -261,7 +263,7 @@ cdef class MFDFA:
             else:
                 raise ValueError('Error: Number of q moments must be greater than one to compute multifractal spectrum.')
         else:
-            print('Nothing to fit, fluctuations vector has not been computed yet.')
+            print('Cannot compute multifractal spectrum, fluctuations vector has not been computed yet.')
 
     def saveObject(self, outFileName):
         """Save current object state to binary file.
