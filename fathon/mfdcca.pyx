@@ -112,13 +112,13 @@ cdef class MFDCCA:
         with nogil:
             if revSeg:
                 for i in range(q_list_len):
-                    flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, mtxf[i*nLen])
+                    flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, &mtxf[i*nLen])
 #                    for j in range(nLen):
 #                        mtxf[i*nLen+j] = flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
 #                                                                    q_list[i], tsLen, polOrd)
             else:
                 for i in range(q_list_len):
-                    flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, mtxf[i*nLen])
+                    flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, &mtxf[i*nLen])
 #                    for j in range(nLen):
 #                        mtxf[i*nLen+j] = flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
 #                                                               q_list[i], tsLen, polOrd)
