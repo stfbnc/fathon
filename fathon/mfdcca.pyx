@@ -25,8 +25,8 @@ import pickle
 import warnings
 
 cdef extern from "cLoops.h" nogil:
-    void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
-    void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
+    void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
+    void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 
 cdef class MFDCCA:
     """MultiFractal Detrended Cross-Correlation Analysis class.
@@ -91,8 +91,8 @@ cdef class MFDCCA:
     @cython.wraparound(False)
     @cython.nonecheck(False)
     cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
-        cdef Py_ssize_t i, j
-        cdef int nLen
+        cdef Py_ssize_t j #i, j
+        cdef int nLen, q_list_len
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects1, vects2
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
@@ -111,19 +111,22 @@ cdef class MFDCCA:
         
         with nogil:
             if revSeg:
-                for i in range(q_list_len):
-                    flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, &mtxf[i*nLen])
+#                for i in range(q_list_len):
+#                    flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, &mtxf[i*nLen])
+                flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, &q_list[0], q_list_len, polOrd, &mtxf[0])
 #                    for j in range(nLen):
 #                        mtxf[i*nLen+j] = flucMFDCCAForwBackwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
 #                                                                    q_list[i], tsLen, polOrd)
             else:
-                for i in range(q_list_len):
-                    flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, &mtxf[i*nLen])
+#                for i in range(q_list_len):
+#                    flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, q_list[i], polOrd, &mtxf[i*nLen])
+                flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, &q_list[0], q_list_len, polOrd, &mtxf[0])
 #                    for j in range(nLen):
 #                        mtxf[i*nLen+j] = flucMFDCCAForwCompute(&vects1[0], &vects2[0], &t[0], vecn[j],
 #                                                               q_list[i], tsLen, polOrd)
                         
-        return vecn, np.reshape(mtxf, (len(self.qList), nLen))
+        #return vecn, np.reshape(mtxf, (len(self.qList), nLen))
+        return vecn, np.reshape(mtxf, (q_list_len, nLen))
 
     def computeFlucVec(self, winSizes, qList, polOrd=1, revSeg=False):
         """Computation of the fluctuations in each window for each q-order.

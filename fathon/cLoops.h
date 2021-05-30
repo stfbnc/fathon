@@ -17,8 +17,8 @@
 
 extern void flucDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec);
 extern void flucDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec);
-extern void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec);
-extern void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec);
+extern void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec);
+extern void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec);
 extern void flucDCCAAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec);
 extern void flucDCCANoAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec);
 extern double HTCompute(double *y, double *t, int scale, int N, int pol_ord, int v);
@@ -26,5 +26,5 @@ extern void flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, i
 extern void flucDCCAForwBackwAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec);
 extern void flucDCCAForwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec);
 extern void flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec);
-extern void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec);
-extern void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec);
+extern void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec);
+extern void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec);
