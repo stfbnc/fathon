@@ -123,8 +123,6 @@ void flucDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins,
 }
 
 //main loop for MFDFA (computes fluctuations starting from the beginning of the array y)
-//double flucMFDFAForwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
-//void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
 void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
@@ -132,12 +130,13 @@ void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, do
     int iq = 0;
 #endif
 
-#pragma omp parallel for collapse(2)
 #ifdef _WIN64
+#pragma omp parallel for
     for(iq = 0; iq < n_q; iq++)
     {
         for(i = 0; i < n_wins; i++)
 #else
+#pragma omp parallel for collapse(2)
     for(int iq = 0; iq < n_q; iq++)
     {
         for(int i = 0; i < n_wins; i++)
@@ -153,13 +152,6 @@ void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, do
 #else
             for(int v = 0; v < N_s; v++)
 #endif
-
-//    #pragma omp parallel for reduction(+ : f)
-//#ifdef _WIN64
-//    for(v = 0; v < N_s; v++)
-//#else
-//    for(int v = 0; v < N_s; v++)
-//#endif
             {
                 double rms = 0.0;
                 int start_lim = v * curr_win_size;
@@ -190,24 +182,18 @@ void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, do
     
             if(q == 0.0)
             {
-                //f = exp(f / (double)(2 * N_s));
                 f_vec[iq * n_wins + i] = exp(f / (double)(2 * N_s));
             }
             else
             {
-                //f = pow(f / (double)N_s, 1 / (double)q);
                 f_vec[iq * n_wins + i] = pow(f / (double)N_s, 1 / (double)q);
             }
         }
     }
-
-//    return f;
 }
 
 //main loop for MFDFA (computes fluctuations starting from the beginning of the array y
 //and then computes fluctuations again starting from the end of the array y)
-//double flucMFDFAForwBackwCompute(double *y, double *t, int curr_win_size, double q, int N, int pol_ord)
-//void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
 void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
@@ -215,12 +201,13 @@ void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_win
     int iq = 0;
 #endif
 
-#pragma omp parallel for collapse(2)
 #ifdef _WIN64
+#pragma omp parallel for
     for(iq = 0; iq < n_q; iq++)
     {
         for(i = 0; i < n_wins; i++)
 #else
+#pragma omp parallel for collapse(2)
     for(int iq = 0; iq < n_q; iq++)
     {
         for(int i = 0; i < n_wins; i++)
@@ -236,13 +223,6 @@ void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_win
 #else
             for(int v = 0; v < N_s; v++)
 #endif
-
-//    #pragma omp parallel for reduction(+ : f)
-//#ifdef _WIN64
-//    for(v = 0; v < N_s; v++)
-//#else
-//    for(int v = 0; v < N_s; v++)
-//#endif
             {
                 double rms1 = 0.0;
                 double rms2 = 0.0;
@@ -287,18 +267,14 @@ void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_win
         
             if(q == 0.0)
             {
-                //f = exp(f / (double)(4 * N_s));
                 f_vec[iq * n_wins + i] = exp(f / (double)(4 * N_s));
             }
             else
             {
-                //f = pow(f / (double)(2 * N_s), 1 / (double)q);
                 f_vec[iq * n_wins + i] = pow(f / (double)(2 * N_s), 1 / (double)q);
             }
         }
     }
-
-//    return f;
 }
 
 //main loop for DCCA (computes fluctuations using absolute values)
@@ -660,8 +636,6 @@ void flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, i
 }
 
 //main loop for MFDCCA (computes fluctuations starting from the beginning of the array y)
-//double flucMFDCCAForwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord)
-//void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
 void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
@@ -669,12 +643,13 @@ void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, 
     int iq = 0;
 #endif
 
-#pragma omp parallel for collapse(2)
 #ifdef _WIN64
+#pragma omp parallel for
     for(iq = 0; iq < n_q; iq++)
     {
         for(i = 0; i < n_wins; i++)
 #else
+#pragma omp parallel for collapse(2)
     for(int iq = 0; iq < n_q; iq++)
     {
         for(int i = 0; i < n_wins; i++)
@@ -690,13 +665,6 @@ void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, 
 #else
             for(int v = 0; v < N_s; v++)
 #endif
-
-//    #pragma omp parallel for reduction(+ : f)
-//#ifdef _WIN64
-//    for(v = 0; v < N_s; v++)
-//#else
-//    for(int v = 0; v < N_s; v++)
-//#endif
             {
                 double rms = 0.0;
                 int start_lim = v * curr_win_size;
@@ -732,24 +700,18 @@ void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, 
         
             if(q == 0.0)
             {
-                //f = exp(f / (double)(2 * N_s));
                 f_vec[iq * n_wins + i] = exp(f / (double)(2 * N_s));
             }
             else
             {
-                //f = pow(f / (double)N_s, 1 / (double)q);
                 f_vec[iq * n_wins + i] = pow(f / (double)N_s, 1 / (double)q);
             }
         }
     }
-
-//    return f;
 }
 
 //main loop for MFDCCA (computes fluctuations starting from the beginning of the array y
 //and then computes fluctuations again starting from the end of the array y)
-//double flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int curr_win_size, double q, int N, int pol_ord)
-//void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double q, int pol_ord, double *f_vec)
 void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
@@ -757,12 +719,13 @@ void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *w
     int iq = 0;
 #endif
 
-#pragma omp parallel for collapse(2)
 #ifdef _WIN64
+#pragma omp parallel for
     for(iq = 0; iq < n_q; iq++)
     {
         for(i = 0; i < n_wins; i++)
 #else
+#pragma omp parallel for collapse(2)
     for(int iq = 0; iq < n_q; iq++)
     {
         for(int i = 0; i < n_wins; i++)
@@ -778,13 +741,6 @@ void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *w
 #else
             for(int v = 0; v < N_s; v++)
 #endif
-
-//    #pragma omp parallel for reduction(+ : f)
-//#ifdef _WIN64
-//    for(v = 0; v < N_s; v++)
-//#else
-//    for(int v = 0; v < N_s; v++)
-//#endif
             {
                 double rms1 = 0.0;
                 double rms2 = 0.0;
@@ -837,16 +793,12 @@ void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *w
         
             if(q == 0.0)
             {
-                //f = exp(f / (double)(4 * N_s));
                 f_vec[iq * n_wins + i] = exp(f / (double)(4 * N_s));
             }
             else
             {
-                //f = pow(f / (double)(2 * N_s), 1 / (double)q);
                 f_vec[iq * n_wins + i] = pow(f / (double)(2 * N_s), 1 / (double)q);
             }
         }
     }
-
-//    return f;
 }
