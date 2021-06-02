@@ -1,17 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>DCCA &#8212; fathon  documentation</title>
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="MFDCCA" href="fathon.MFDCCA.html" />
@@ -29,7 +30,8 @@
         <li class="right" >
           <a href="fathon.MFDFA.html" title="MFDFA"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DCCA</a></li> 
       </ul>
     </div>  
 
@@ -38,11 +40,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="dcca">
+  <section id="dcca">
 <h1>DCCA<a class="headerlink" href="#dcca" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="fathon.DCCA">
-<em class="property">class </em><code class="sig-prename descclassname">fathon.</code><code class="sig-name descname">DCCA</code><span class="sig-paren">(</span><em class="sig-param">tsVec1=[]</em>, <em class="sig-param">tsVec2=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="fathon.DCCA">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">fathon.</span></span><span class="sig-name descname"><span class="pre">DCCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsVec1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsVec2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Detrended Cross-Correlation Analysis class.</p>
 <dl class="field-list simple">
@@ -72,9 +74,9 @@ computation of other functions that need <cite>F</cite>.</p>
 </dl>
 </dd>
 </dl>
-<dl class="method">
-<dt id="fathon.DCCA.computeFlucVec">
-<code class="sig-name descname">computeFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">winSizes</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">absVals=True</em>, <em class="sig-param">overlap=False</em>, <em class="sig-param">revSeg=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="fathon.DCCA.computeFlucVec">
+<span class="sig-name descname"><span class="pre">computeFlucVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">winSizes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polOrd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absVals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revSeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the fluctuations in each window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -104,9 +106,9 @@ the time series, ignored if <cite>overlap</cite> is True (default : False).</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="fathon.DCCA.computeRho">
-<code class="sig-name descname">computeRho</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">winSizes</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">overlap=False</em>, <em class="sig-param">revSeg=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.computeRho" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="fathon.DCCA.computeRho">
+<span class="sig-name descname"><span class="pre">computeRho</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">winSizes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polOrd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revSeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.computeRho" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the cross-correlation index in each window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -135,9 +137,9 @@ the time series, ignored if <cite>overlap</cite> is True (default : False).</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="fathon.DCCA.fitFlucVec">
-<code class="sig-name descname">fitFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nStart=-999</em>, <em class="sig-param">nEnd=-999</em>, <em class="sig-param">logBase=2.718281828459045</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.fitFlucVec" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="fathon.DCCA.fitFlucVec">
+<span class="sig-name descname"><span class="pre">fitFlucVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nStart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nEnd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logBase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.718281828459045</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.fitFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit of the fluctuations values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -163,9 +165,9 @@ the time series, ignored if <cite>overlap</cite> is True (default : False).</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="fathon.DCCA.multiFitFlucVec">
-<code class="sig-name descname">multiFitFlucVec</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">limitsList</em>, <em class="sig-param">logBase=2.718281828459045</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.multiFitFlucVec" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="fathon.DCCA.multiFitFlucVec">
+<span class="sig-name descname"><span class="pre">multiFitFlucVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limitsList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logBase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.718281828459045</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.multiFitFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit of the fluctuations values in different intervals at the same time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -189,9 +191,9 @@ the time series, ignored if <cite>overlap</cite> is True (default : False).</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="fathon.DCCA.rhoThresholds">
-<code class="sig-name descname">rhoThresholds</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">winSizes</em>, <em class="sig-param">nSim</em>, <em class="sig-param">confLvl</em>, <em class="sig-param">polOrd=1</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.rhoThresholds" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="fathon.DCCA.rhoThresholds">
+<span class="sig-name descname"><span class="pre">rhoThresholds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winSizes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nSim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confLvl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polOrd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.rhoThresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the cross-correlation index’s confidence levels in each window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -224,9 +226,9 @@ is computed in order to evaluate the confidence levels.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="fathon.DCCA.saveObject">
-<code class="sig-name descname">saveObject</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">outFileName</em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.saveObject" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="fathon.DCCA.saveObject">
+<span class="sig-name descname"><span class="pre">saveObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outFileName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DCCA.saveObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save current object state to binary file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -240,7 +242,7 @@ is computed in order to evaluate the confidence levels.</p>
 
 </dd></dl>
 
-<div class="section" id="usage-examples">
+<section id="usage-examples">
 <h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fathon</span>
@@ -276,10 +278,11 @@ is computed in order to evaluate the confidence levels.</p>
 <span class="n">n</span><span class="p">,</span> <span class="n">cInt1</span><span class="p">,</span> <span class="n">cInt2</span> <span class="o">=</span> <span class="n">pythresh</span><span class="o">.</span><span class="n">rhoThresholds</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="n">wins</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">polOrd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -315,7 +318,7 @@ is computed in order to evaluate the confidence levels.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -332,12 +335,13 @@ is computed in order to evaluate the confidence levels.</p>
         <li class="right" >
           <a href="fathon.MFDFA.html" title="MFDFA"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">fathon  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DCCA</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019-2021, Stefano Bianchi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>

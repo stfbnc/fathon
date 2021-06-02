@@ -23,15 +23,14 @@ from cython.parallel import prange
 import ctypes
 import pickle
 import warnings
-from . import dfa
 
 cdef extern from "cLoops.h" nogil:
-    double flucDCCAAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
-    double flucDCCANoAbsCompute(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord)
-    double flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
-    double flucDCCAForwBackwAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
-    double flucDCCAForwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
-    double flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int curr_win_size, int N, int pol_ord);
+    void flucDCCAAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    void flucDCCANoAbsCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    void flucDCCAForwAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    void flucDCCAForwBackwAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    void flucDCCAForwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    void flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
 
 cdef class DCCA:
     """Detrended Cross-Correlation Analysis class.
@@ -114,26 +113,20 @@ cdef class DCCA:
         with nogil:
             if absVals:
                 if overlap:
-                    for i in range(nLen):
-                        vecf[i] = flucDCCAAbsCompute(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                    flucDCCAAbsCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
                 else:
                     if revSeg:
-                        for i in range(nLen):
-                            vecf[i] = flucDCCAForwBackwAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                        flucDCCAForwBackwAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
                     else:
-                        for i in range(nLen):
-                            vecf[i] = flucDCCAForwAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                        flucDCCAForwAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
             else:
                 if overlap:
-                    for i in range(nLen):
-                        vecf[i] = flucDCCANoAbsCompute(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                    flucDCCANoAbsCompute(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
                 else:
                     if revSeg:
-                        for i in range(nLen):
-                            vecf[i] = flucDCCAForwBackwNoAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                        flucDCCAForwBackwNoAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
                     else:
-                        for i in range(nLen):
-                            vecf[i] = flucDCCAForwNoAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], vecn[i], tsLen, polOrd)
+                        flucDCCAForwNoAbsComputeNoOverlap(&vects1[0], &vects2[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
@@ -203,15 +196,12 @@ cdef class DCCA:
         
         with nogil:
             if overlap:
-                for i in range(nLen):
-                    F_same[i] = flucDCCAAbsCompute(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
+                flucDCCAAbsCompute(&vec[0], &vec[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &F_same[0])
             else:
                 if revSeg:
-                    for i in range(nLen):
-                        F_same[i] = flucDCCAForwBackwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
+                    flucDCCAForwBackwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &F_same[0])
                 else:
-                    for i in range(nLen):
-                        F_same[i] = flucDCCAForwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], vecn[i], tsLen, polOrd)
+                    flucDCCAForwAbsComputeNoOverlap(&vec[0], &vec[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &F_same[0])
                 
         return F_same
 

@@ -144,7 +144,7 @@ class DCCA:
         """
         return 0
 
-    def rhoThresholds(self, winSizes, nSim, confLvl, polOrd=1, verbose=False):
+    def rhoThresholds(self, L, winSizes, nSim, confLvl, polOrd=1, verbose=False):
         """Computation of the cross-correlation index's confidence levels in each window.
 
         Parameters

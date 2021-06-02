@@ -1,4 +1,4 @@
-# fathon [![Build Status](https://travis-ci.org/stfbnc/fathon.svg?branch=master)](https://travis-ci.org/stfbnc/fathon) [![Build status](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p?svg=true)](https://ci.appveyor.com/project/stfbnc/fathon)
+# fathon [![Build Status](https://travis-ci.com/stfbnc/fathon.svg?branch=master)](https://travis-ci.com/stfbnc/fathon) [![Build status](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p?svg=true)](https://ci.appveyor.com/project/stfbnc/fathon)
 
 [![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]() [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/)
 
@@ -62,9 +62,13 @@ Bianchi, S., (2020). fathon: A Python package for a fast computation of  detrend
 
 ## Version  [![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon)
 
-fathon v1.3
+fathon v1.3.1
 
 ## Changelog
+
+#### v1.3.1
+
+- faster algorithms
 
 #### v1.3
 
