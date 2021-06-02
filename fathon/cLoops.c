@@ -37,9 +37,14 @@ int n_threads = omp_get_max_threads() / 2;
         int curr_win_size = wins[i];
         int N_s = N / curr_win_size;
         double f = 0.0;
-#pragma omp parallel for num_threads(n_threads) reduction(+ : f)
+        
 #ifdef _WIN64
         int v = 0;
+#endif
+
+#pragma omp parallel for num_threads(n_threads) reduction(+ : f)
+#ifdef _WIN64
+        //int v = 0;
         for(v = 0; v < N_s; v++)
 #else
         for(int v = 0; v < N_s; v++)
