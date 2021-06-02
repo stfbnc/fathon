@@ -25,7 +25,9 @@ void flucDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, int 
     int i = 0;
 #endif
 
-#pragma omp parallel for
+int n_threads = omp_get_max_threads() / 2;
+
+#pragma omp parallel for num_threads(n_threads)
 #ifdef _WIN64
     for(i = 0; i < n_wins; i++)
 #else
@@ -35,6 +37,7 @@ void flucDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, int 
         int curr_win_size = wins[i];
         int N_s = N / curr_win_size;
         double f = 0.0;
+#pragma omp parallel for num_threads(n_threads) reduction(+ : f)
 #ifdef _WIN64
         int v = 0;
         for(v = 0; v < N_s; v++)
