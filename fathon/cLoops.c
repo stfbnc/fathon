@@ -126,7 +126,6 @@ void flucDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins,
 void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
-    int i = 0;
     int iq = 0;
 #endif
 
@@ -134,6 +133,7 @@ void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, do
 #pragma omp parallel for
     for(iq = 0; iq < n_q; iq++)
     {
+        int i = 0;
         for(i = 0; i < n_wins; i++)
 #else
 #pragma omp parallel for collapse(2)
@@ -197,7 +197,6 @@ void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, do
 void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
-    int i = 0;
     int iq = 0;
 #endif
 
@@ -205,6 +204,7 @@ void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_win
 #pragma omp parallel for
     for(iq = 0; iq < n_q; iq++)
     {
+        int i = 0;
         for(i = 0; i < n_wins; i++)
 #else
 #pragma omp parallel for collapse(2)
@@ -639,7 +639,6 @@ void flucDCCAForwBackwNoAbsComputeNoOverlap(double *y1, double *y2, double *t, i
 void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
-    int i = 0;
     int iq = 0;
 #endif
 
@@ -647,6 +646,7 @@ void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, 
 #pragma omp parallel for
     for(iq = 0; iq < n_q; iq++)
     {
+        int i = 0;
         for(i = 0; i < n_wins; i++)
 #else
 #pragma omp parallel for collapse(2)
@@ -715,7 +715,6 @@ void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, 
 void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *wins, int n_wins, double *qs, int n_q, int pol_ord, double *f_vec)
 {
 #ifdef _WIN64
-    int i = 0;
     int iq = 0;
 #endif
 
@@ -723,6 +722,7 @@ void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *w
 #pragma omp parallel for
     for(iq = 0; iq < n_q; iq++)
     {
+        int i = 0;
         for(i = 0; i < n_wins; i++)
 #else
 #pragma omp parallel for collapse(2)
