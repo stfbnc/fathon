@@ -111,17 +111,17 @@ matrix:
     #    - docker
     ### 3.10 ###
     #- name: "Python 3.10 on Linux amd64"
-    #  arch:
-    #    - amd64
-    #  env:
-    #    - CIBW_BUILD="cp310-manylinux*"
-    #    - CIBW_SKIP: "*-manylinux_i686"
-    #  language: python
-    #  dist: bionic
-    #  sudo: required
-    #  python: "3.8"
-    #  services:
-    #    - docker
+      arch:
+        - amd64
+      env:
+        - CIBW_BUILD="cp310-manylinux*"
+        - CIBW_SKIP: "*-manylinux_i686"
+      language: python
+      dist: bionic
+      sudo: required
+      python: "3.8"
+      services:
+        - docker
     ##### macOS #####
     ### 3.7 ###
     #- name: "Python 3.7 on macOS 10.14"
@@ -145,12 +145,12 @@ matrix:
     #  osx_image: xcode11
     #  language: shell
     ### 3.10 ###
-    #- name: "Python 3.10 on macOS 10.14"
-    #  env:
-    #    - CIBW_BUILD="cp310-macosx_x86_64"
-    #  os: osx
-    #  osx_image: xcode11
-    #  language: shell
+    - name: "Python 3.10 on macOS 10.14"
+      env:
+        - CIBW_BUILD="cp310-macosx_x86_64"
+      os: osx
+      osx_image: xcode11
+      language: shell
 
 before_install:
   - python3 --version
