@@ -110,7 +110,7 @@ matrix:
     #  services:
     #    - docker
     ### 3.10 ###
-    #- name: "Python 3.10 on Linux amd64"
+    - name: "Python 3.10 on Linux amd64"
       arch:
         - amd64
       env:
