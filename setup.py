@@ -9,10 +9,11 @@ import re
 
 
 if platform.system() == "Darwin":
-    pass
-    # os.environ["CC"] = "gcc-9"
-    # os.environ["CXX"] = "g++-9"
+    os.environ["CC"] = "gcc-11"
+    os.environ["CXX"] = "g++-11"
 
+    gsl_inc = "/usr/local/include"
+    gsl_lib = "/usr/local/lib/"
     # gsl_inc = "./fathon/3rd_party/gsl/include"
     # gsl_lib = "./fathon/3rd_party/gsl/lib/"
 elif platform.system() == "Linux":
@@ -42,8 +43,8 @@ def get_extension(module_name, src_name, current_os):
 
         return Extension(module_name,
                          sources=sources,
-                         include_dirs=[numpy.get_include()],  # , gsl_inc],
-                         # library_dirs=[gsl_lib],
+                         include_dirs=[numpy.get_include(), gsl_inc],
+                         library_dirs=[gsl_lib],
                          libraries=["gsl", "gslcblas", "m"],
                          extra_compile_args=["-O2", "-fopenmp"],
                          extra_link_args=["-fopenmp"])
