@@ -12,13 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Pre Build
-        run: |
-                sudo apt-get install wget
-                cd {project}
-                wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz
-        shell: bash
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.5.0
         env:
@@ -26,6 +19,8 @@ jobs:
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "pytest {project}/tests"
           CIBW_BEFORE_ALL: >
+                  yum install -y wget &&
+                  wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz &&
                   tar -zxvf gsl-latest.tar.gz &&
                   cd gsl-latest &&
                   ./configure &&
@@ -38,6 +33,7 @@ jobs:
           CIBW_BUILD: "cp38-manylinux*"
           CIBW_SKIP: "*-manylinux_i686"
           CIBW_ARCHS_LINUX: "x86_64"
+          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"
           
       - name: Show files
         run: ls -lh wheelhouse
