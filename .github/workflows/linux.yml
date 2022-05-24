@@ -13,7 +13,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Pre Build
-        run: sudo apt-get install wget
+        run: |
+                sudo apt-get install wget
+                cd {project}
+                wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz
         shell: bash
 
       - name: Build wheels
@@ -23,8 +26,6 @@ jobs:
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "pytest {project}/tests"
           CIBW_BEFORE_ALL: >
-                  cd "$HOME" &&
-                  wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz &&
                   tar -zxvf gsl-latest.tar.gz &&
                   cd gsl-latest &&
                   ./configure &&
