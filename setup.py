@@ -9,8 +9,9 @@ import re
 
 
 if platform.system() == "Darwin":
-    os.environ["CC"] = "gcc-9"
-    os.environ["CXX"] = "g++-9"
+    pass
+    # os.environ["CC"] = "gcc-9"
+    # os.environ["CXX"] = "g++-9"
 
     # gsl_inc = "./fathon/3rd_party/gsl/include"
     # gsl_lib = "./fathon/3rd_party/gsl/lib/"

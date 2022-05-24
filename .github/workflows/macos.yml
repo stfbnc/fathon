@@ -14,10 +14,11 @@ jobs:
 
       - name: Before build
         run: |
-                which gcc
-                which gcc-9
-                which gcc-11
+                export CC=gcc-11
+                export CXX=g++-11
                 brew install gsl
+                export CPATH=/usr/local/include
+                export LIBRARY_PATH=/usr/local/lib
         shell: bash
 
       - name: Build wheels
