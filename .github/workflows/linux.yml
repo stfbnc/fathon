@@ -22,7 +22,7 @@ jobs:
                   yum install -y wget &&
                   wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz &&
                   tar -zxvf gsl-latest.tar.gz &&
-                  cd gsl-latest &&
+                  cd gsl-* &&
                   ./configure &&
                   make &&
                   make install
