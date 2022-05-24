@@ -22,17 +22,16 @@ It is mostly written in Cython and C in order to speed up computations.
 
 <code>DCCA</code> has methods to compute the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
 
+### Supported OSes
 
+|    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | macOS ARM64 |   Windows 64bit    |
+|:------------------:| :----------------: | :----------------: |:-----------:| :----------------: |
+| :white_check_mark: | :white_check_mark: | :white_check_mark: |     :x:     | :white_check_mark: |
 
 ### Prerequisites
 
-| Linux i686 |    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | Windows 32bit |   Windows 64bit    |
-| :--------: | :----------------: | :----------------: | :----------------: | :-----------: | :----------------: |
-|    :x:     | :white_check_mark: | :white_check_mark: | :white_check_mark: |      :x:      | :white_check_mark: |
-
-- Python 3.7 or higher
+ - Python 3.7 or higher
  - numpy (version >= 1.20)
- - Cython
 
 ### Installing
 

@@ -1,6 +1,6 @@
 branches:
   only:
-    - master
+    - fathon-dev
 
 environment:
   global:
