@@ -14,11 +14,10 @@ jobs:
 
       - name: Before build
         run: |
-                brew install gcc
                 which gcc
+                which gcc-9
+                which gcc-11
                 brew install gsl
-                locate libgsl.so
-                locate libgslcblas.so
         shell: bash
 
       - name: Build wheels
