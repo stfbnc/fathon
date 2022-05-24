@@ -12,6 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Pre Build
+        run: apt-get install wget
+        shell: bash
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.5.0
         env:
@@ -29,7 +33,7 @@ jobs:
           CIBW_BEFORE_BUILD: >
                   pip3 install --upgrade pip &&
                   pip3 install Cython &&
-                  pip3 install -r requirements.txt"
+                  pip3 install -r requirements.txt
           CIBW_BUILD: "cp38-manylinux*"
           CIBW_SKIP: "*-manylinux_i686"
           CIBW_ARCHS_LINUX: "x86_64"

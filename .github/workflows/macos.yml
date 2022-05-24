@@ -25,7 +25,10 @@ jobs:
           CIBW_BUILD_VERBOSITY: 1
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "pytest {project}/tests"
-          CIBW_BEFORE_BUILD: "pip3 install --upgrade pip && pip3 install Cython && pip3 install -r requirements.txt"
+          CIBW_BEFORE_BUILD: >
+                  pip3 install --upgrade pip &&
+                  pip3 install Cython &&
+                  pip3 install -r requirements.txt
           CIBW_BUILD: "cp38-macosx_x86_64"
           CIBW_ARCHS_MACOS: "x86_64"
           
