@@ -6,7 +6,7 @@
 fathon (v1.3.1)
 ***************
 
-Current version is available for Linux (x86_64 and ARM64), macOS, and Windows (64bit).
+Current version is available for Linux (x86_64 and ARM64), macOS (x86_64), and Windows (64bit).
 
 Python package for detrended fluctuation analysis (DFA) and related algorithms.
 `fathon` provides five main algorithms, namely
@@ -26,7 +26,6 @@ Requirements
 
 - Python 3.7+
 - numpy (>=1.20)
-- Cython
 
 Installation
 ============

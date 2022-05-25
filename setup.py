@@ -14,17 +14,8 @@ if platform.system() == "Darwin":
 
     gsl_inc = "/usr/local/include"
     gsl_lib = "/usr/local/lib/"
-    # gsl_inc = "./fathon/3rd_party/gsl/include"
-    # gsl_lib = "./fathon/3rd_party/gsl/lib/"
 elif platform.system() == "Linux":
     pass
-    # iGSL_1 = "chmod 777 fathon_gsl_install"
-    # os.system(iGSL_1)
-    # iGSL_2 = "./fathon_gsl_install"
-    # os.system(iGSL_2)
-
-    # gsl_inc = "./fathon/3rd_party/gsl/include"
-    # gsl_lib = "./fathon/3rd_party/gsl/lib/"
 elif platform.system() == "Windows":
     gsl_inc = "fathon\\3rd_party\\gsl\\include"
     gsl_lib = "fathon\\3rd_party\\gsl\\lib"
@@ -36,11 +27,6 @@ def get_extension(module_name, src_name, current_os):
     sources = [src_name, os.path.join("fathon", "cLoops.c")]
 
     if current_os == "Darwin":
-        # cmd1 = "install_name_tool -id \"@loader_path/3rd_party/gsl/lib/libgslcblas.dylib\" " + gsl_lib + "libgslcblas.dylib"
-        # cmd2 = "install_name_tool -id \"@loader_path/3rd_party/gsl/lib/libgsl.dylib\" " + gsl_lib + "libgsl.dylib"
-        # os.system(cmd1)
-        # os.system(cmd2)
-
         return Extension(module_name,
                          sources=sources,
                          include_dirs=[numpy.get_include(), gsl_inc],
@@ -48,17 +34,13 @@ def get_extension(module_name, src_name, current_os):
                          libraries=["gsl", "gslcblas", "m"],
                          extra_compile_args=["-O2", "-fopenmp"],
                          extra_link_args=["-fopenmp"])
-
     elif current_os == "Linux":
         return Extension(module_name,
                          sources=sources,
-                         include_dirs=[numpy.get_include()],  # , gsl_inc],
-                         # runtime_library_dirs=["$ORIGIN/3rd_party/gsl/lib/"],
+                         include_dirs=[numpy.get_include()],
                          libraries=["gsl", "gslcblas", "m"],
-                         # library_dirs=[gsl_lib],
                          extra_compile_args=["-O2", "-fopenmp"],
                          extra_link_args=["-fopenmp"])
-                         
     elif current_os == "Windows":
         return Extension(module_name,
                          sources=sources,

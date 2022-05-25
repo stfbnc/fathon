@@ -22,7 +22,7 @@ It is mostly written in Cython and C in order to speed up computations.
 
 <code>DCCA</code> has methods to compute the cross-correlation coefficient ρ_DCCA and the corresponding confidence intervals.
 
-### Supported OSes
+### Supported platforms
 
 |    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | macOS ARM64 |   Windows 64bit    |
 |:------------------:| :----------------: | :----------------: |:-----------:| :----------------: |
