@@ -42,9 +42,13 @@ jobs:
       - name: Upload wheels
         shell: bash
         env:
+                PYPI_UPLOAD: ${{ secrets.PYPI_UPLOAD }}
+                PYPI_USR: ${{ secrets.PYPI_USR }}
+                PYPI_PWD: ${{ secrets.PYPI_PWD }}
                 TEST_PYPI_USR: ${{ secrets.TEST_PYPI_USR }}
                 TEST_PYPI_PWD: ${{ secrets.TEST_PYPI_PWD }}
         run: |
+                pip3 install --upgrade pip
                 pip3 install twine
                 chmod +x upload_wheels.sh
                 ./upload_wheels.sh
