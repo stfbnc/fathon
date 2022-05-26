@@ -10,7 +10,10 @@ environment:
     CIBW_BUILD_VERBOSITY: 1
     CIBW_TEST_REQUIRES: pytest
     CIBW_TEST_COMMAND: "pytest %APPVEYOR_BUILD_FOLDER%\\tests"
-    CIBW_BEFORE_BUILD: "python -m pip install -r requirements.txt"
+    CIBW_BEFORE_BUILD: >
+      python -m pip install --upgrade pip &&
+      python -m pip install --upgrade Cython &&
+      python -m pip install -r requirements.txt
 
   matrix:
     #- CIBW_BUILD: "cp37-win_amd64"
@@ -35,9 +38,7 @@ install:
   # - md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib
   # - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\lib %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib /f /s /e
   ### PYTHON ###
-  - "python -m pip install --upgrade pip"
   - "python -m pip install --upgrade cibuildwheel"
-  - "python -m pip install --upgrade Cython"
   - "python -m pip install --upgrade twine"
 
 build_script:
