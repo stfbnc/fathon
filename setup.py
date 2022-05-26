@@ -17,8 +17,8 @@ if platform.system() == "Darwin":
 elif platform.system() == "Linux":
     pass
 elif platform.system() == "Windows":
-    gsl_inc = "fathon\\3rd_party\\gsl\\include"
-    gsl_lib = "fathon\\3rd_party\\gsl\\lib"
+    gsl_inc = "C:\\gsl\\include"
+    gsl_lib = "C:\\gsl\\lib"
 else:
     raise ValueError("Cannot build wheel for OS: {}".format(platform.system()))
 
