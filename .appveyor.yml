@@ -1,6 +1,6 @@
 branches:
   only:
-    - fathon-dev
+    - reorg
 
 environment:
   global:
@@ -30,10 +30,10 @@ install:
   - .\bootstrap-vcpkg.bat
   - .\vcpkg integrate install
   - .\vcpkg.exe install gsl:x64-windows-static
-  - md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\include
-  - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\include %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\include /f /s /e
-  - md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib
-  - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\lib %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib /f /s /e
+  #- md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\include
+  #- xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\include %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\include /f /s /e
+  #- md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib
+  #- xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\lib %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib /f /s /e
   ### PYTHON ###
   - "python -m pip install --upgrade pip"
   - "python -m pip install --upgrade cibuildwheel"
