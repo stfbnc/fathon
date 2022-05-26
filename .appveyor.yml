@@ -4,8 +4,8 @@ branches:
 
 environment:
   global:
-    PYTHON: "C:\\Python37-x64"
-    PYTHON_VERSION: "3.7.x"
+    PYTHON: "C:\\Python38-x64"
+    PYTHON_VERSION: "3.8.x"
     PYTHON_ARCH: "64"
     CIBW_BUILD_VERBOSITY: 1
     CIBW_TEST_REQUIRES: pytest
@@ -14,9 +14,9 @@ environment:
 
   matrix:
     #- CIBW_BUILD: "cp37-win_amd64"
-    #- CIBW_BUILD: "cp38-win_amd64"
+    - CIBW_BUILD: "cp38-win_amd64"
     #- CIBW_BUILD: "cp39-win_amd64"
-    - CIBW_BUILD: "cp310-win_amd64"
+    #- CIBW_BUILD: "cp310-win_amd64"
 
 stack: python 3.8
 
@@ -37,6 +37,7 @@ install:
   ### PYTHON ###
   - "python -m pip install --upgrade pip"
   - "python -m pip install --upgrade cibuildwheel"
+  - "python -m pip install --upgrade Cython"
   - "python -m pip install --upgrade twine"
 
 build_script:
