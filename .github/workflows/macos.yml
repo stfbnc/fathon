@@ -2,8 +2,8 @@ name: macOS
 
 on:
   push:
-    branches:
-      - reorg
+    tags-ignore:
+      - '*'
 
 jobs:
   build_wheels_macos:
