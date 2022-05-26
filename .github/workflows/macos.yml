@@ -2,8 +2,10 @@ name: macOS
 
 on:
   push:
+    branches:
+      - '**'
     tags-ignore:
-      - '*'
+      - '**'
 
 jobs:
   build_wheels_macos:
