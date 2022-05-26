@@ -33,9 +33,17 @@ jobs:
           CIBW_ARCHS_MACOS: "x86_64"
           
       - name: Show files
-        run: ls -lh wheelhouse
+        run: |
+                ls -lh wheelhouse
+                pip3 install twine
         shell: bash
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: ./wheelhouse/*.whl
+      - name: Upload wheels
+        shell: bash
+        env:
+                TEST_PYPI_USR: ${{ secrets.TEST_PYPI_USR }}
+                TEST_PYPI_PWD: ${{ secrets.TEST_PYPI_PWD }}
+        run: |
+                pip3 install twine
+                chmod +x upload_wheels.sh
+                ./upload_wheels.sh

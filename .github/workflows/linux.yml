@@ -32,14 +32,19 @@ jobs:
                   pip3 install -r requirements.txt
           CIBW_BUILD: "cp38-manylinux*"
           CIBW_SKIP: "*-manylinux_i686"
-          CIBW_ARCHS_LINUX: "x86_64 aarch64"
+          CIBW_ARCHS_LINUX: "x86_64"
           CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"
-          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux2014"
           
       - name: Show files
         run: ls -lh wheelhouse
         shell: bash
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: ./wheelhouse/*.whl
+      - name: Upload wheels
+        shell: bash
+        env:
+                TEST_PYPI_USR: ${{ secrets.TEST_PYPI_USR }}
+                TEST_PYPI_PWD: ${{ secrets.TEST_PYPI_PWD }}
+        run: |
+                pip3 install twine
+                chmod +x upload_wheels.sh
+                ./upload_wheels.sh
