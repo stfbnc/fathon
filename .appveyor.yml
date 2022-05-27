@@ -50,10 +50,7 @@ build_script:
   - "python -m twine --version"
   - "python -m cibuildwheel --output-dir wheelhouse"
   - dir wheelhouse
-  - ps: >-
-      Set-ExecutionPolicy Unrestricted
-      
-      .\upload_wheels.ps1
+  - ps: .\upload_wheels.ps1
 
 #if ($env:PYPI_UPLOAD -eq "test") {
 #  python -m twine upload --skip-existing wheelhouse\* --repository-url https://test.pypi.org/legacy/ -u $env:TEST_PYPI_USR -p $env:TEST_PYPI_PWD
