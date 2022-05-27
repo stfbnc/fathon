@@ -51,7 +51,7 @@ build_script:
   - "python -m cibuildwheel --output-dir wheelhouse"
   - dir wheelhouse
   - ps: >-
-      Set-ExecutionPolicy RemoteSigned
+      Set-ExecutionPolicy Unrestricted
       
       .\upload_wheels.ps1
 
