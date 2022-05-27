@@ -52,6 +52,7 @@ build_script:
   - dir wheelhouse
   - ps: >-
       Set-ExecutionPolicy RemoteSigned
+      
       .\upload_wheels.ps1
 
 #if ($env:PYPI_UPLOAD -eq "test") {
