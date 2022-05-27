@@ -36,11 +36,7 @@ install:
   - md C:\gsl
   - md C:\gsl\include
   - md C:\gsl\lib
-  # - md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\include
-  # - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\include %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\include /f /s /e
   - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\include C:\gsl\include /f /s /e
-  # - md %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib
-  # - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\lib %APPVEYOR_BUILD_FOLDER%\fathon\3rd_party\gsl\lib /f /s /e
   - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\lib C:\gsl\lib /f /s /e
   ### PYTHON ###
   - "python -m pip install --upgrade cibuildwheel"
@@ -60,3 +56,4 @@ build_script:
       } elseif ($env:PYPI_UPLOAD -eq "release") {
         python -m twine upload --skip-existing wheelhouse\* -u $env:PYPI_USR -p $env:PYPI_PWD
       }
+# TODO: put ps in a script like in linux and macos
