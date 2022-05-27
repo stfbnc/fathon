@@ -16,10 +16,10 @@ environment:
       python -m pip install -r requirements.txt
 
   matrix:
-    #- CIBW_BUILD: "cp37-win_amd64"
+    - CIBW_BUILD: "cp37-win_amd64"
     - CIBW_BUILD: "cp38-win_amd64"
-    #- CIBW_BUILD: "cp39-win_amd64"
-    #- CIBW_BUILD: "cp310-win_amd64"
+    - CIBW_BUILD: "cp39-win_amd64"
+    - CIBW_BUILD: "cp310-win_amd64"
 
 stack: python 3.8
 
@@ -51,10 +51,3 @@ build_script:
   - "python -m cibuildwheel --output-dir wheelhouse"
   - dir wheelhouse
   - ps: .\upload_wheels.ps1
-
-#if ($env:PYPI_UPLOAD -eq "test") {
-#  python -m twine upload --skip-existing wheelhouse\* --repository-url https://test.pypi.org/legacy/ -u $env:TEST_PYPI_USR -p $env:TEST_PYPI_PWD
-#} elseif ($env:PYPI_UPLOAD -eq "release") {
-#python -m twine upload --skip-existing wheelhouse\* -u $env:PYPI_USR -p $env:PYPI_PWD
-#}
-# TODO: put ps in a script like in linux and macos

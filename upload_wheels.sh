@@ -9,4 +9,3 @@ elif [ "$PYPI_UPLOAD" = "release" ]; then
 fi
 
 exit 0
-
