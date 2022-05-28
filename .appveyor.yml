@@ -53,7 +53,7 @@ build_script:
 after_build:
   - dir %APPVEYOR_BUILD_FOLDER%\wheelhouse
   - 7z a wheels.zip %APPVEYOR_BUILD_FOLDER%\wheelhouse\*
-  - ps: %APPVEYOR_BUILD_FOLDER%\upload_wheels.ps1
+  - %APPVEYOR_BUILD_FOLDER%\upload_wheels.ps1
 
 artifacts:
   - path: wheels.zip
