@@ -10,9 +10,9 @@ import re
 
 if platform.system() == "Darwin":
     # if platform.processor() == "arm":
-    #    os.environ["CC"] = "/opt/homebrew/opt/llvm/bin/clang"
-    #    os.environ["LDFLAGS"] = "-L/opt/homebrew/opt/llvm/lib"
-    #    os.environ["CPPFLAGS"] = "-I/opt/homebrew/opt/llvm/include"
+    os.environ["CC"] = "/usr/local/opt/llvm/bin/clang"
+    os.environ["LDFLAGS"] = "-L/usr/local/opt/llvm/lib"
+    os.environ["CPPFLAGS"] = "-I/usr/local/opt/llvm/include"
     # else:
     #    os.environ["CC"] = "gcc-11"
     #    os.environ["CXX"] = "g++-11"
