@@ -9,6 +9,7 @@ import re
 
 
 if platform.system() == "Darwin":
+    print("AAAAAAAAAAAAAAA -> {}".format(platform.processor()))
     if platform.processor() == "arm":
         os.environ["CC"] = "/opt/homebrew/opt/llvm/bin/clang"
         os.environ["LDFLAGS"] = "-L/opt/homebrew/opt/llvm/lib"
