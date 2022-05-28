@@ -1,6 +1,6 @@
-branches:
-  only:
-    - reorg
+#branches:
+#  only:
+#    - reorg
 
 environment:
   global:
@@ -49,5 +49,12 @@ build_script:
   - "python -m pip --version"
   - "python -m twine --version"
   - "python -m cibuildwheel --output-dir wheelhouse"
-  - dir wheelhouse
-  - ps: .\upload_wheels.ps1
+
+after_build:
+  - dir %APPVEYOR_BUILD_FOLDER%\wheelhouse
+  - 7z a wheels.zip %APPVEYOR_BUILD_FOLDER%\wheelhouse\*
+  - ps: %APPVEYOR_BUILD_FOLDER%\upload_wheels.ps1
+
+artifacts:
+  - path: wheels.zip
+    name: Wheels
