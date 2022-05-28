@@ -9,8 +9,13 @@ import re
 
 
 if platform.system() == "Darwin":
-    os.environ["CC"] = "gcc-11"
-    os.environ["CXX"] = "g++-11"
+    if platform.processor() == "arm":
+        os.environ["CC"] = "/opt/homebrew/opt/llvm/bin/clang"
+        os.environ["LDFLAGS"] = "-L/opt/homebrew/opt/llvm/lib"
+        os.environ["CPPFLAGS"] = "-I/opt/homebrew/opt/llvm/include"
+    else:
+        os.environ["CC"] = "gcc-11"
+        os.environ["CXX"] = "g++-11"
 
     gsl_inc = "/usr/local/include"
     gsl_lib = "/usr/local/lib/"

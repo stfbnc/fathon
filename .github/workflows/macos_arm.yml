@@ -1,4 +1,4 @@
-name: Linux aarch64
+name: macOS arm64
 
 on:
   push:
@@ -9,15 +9,18 @@ on:
 
 jobs:
   build_wheels:
-    name: Build wheels on ubuntu-latest
-    runs-on: ubuntu-latest
+    name: Build wheels on macos-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          platforms: arm64
+      - name: Before build
+        run: |
+                brew install gsl
+                brew info gsl
+                brew install llvm
+                brew info llvm
+        shell: bash
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.5.0
@@ -25,22 +28,12 @@ jobs:
           CIBW_BUILD_VERBOSITY: 1
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "pytest {project}/tests"
-          CIBW_BEFORE_ALL: >
-                  yum install -y wget &&
-                  wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz &&
-                  tar -zxvf gsl-latest.tar.gz &&
-                  cd gsl-* &&
-                  ./configure &&
-                  make &&
-                  make install
           CIBW_BEFORE_BUILD: >
                   pip3 install --upgrade pip &&
                   pip3 install Cython &&
                   pip3 install -r requirements.txt
-          CIBW_BUILD: "cp37-manylinux* cp38-manylinux* cp39-manylinux* cp310-manylinux*"
-          CIBW_SKIP: "*-manylinux_i686"
-          CIBW_ARCHS_LINUX: "aarch64"
-          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"
+          CIBW_BUILD: "cp38-macosx_arm64 cp39-macosx_arm64 cp310-macosx_arm64"
+          CIBW_ARCHS_MACOS: "arm64"
           
       - name: Show files
         run: ls -lh wheelhouse
@@ -63,6 +56,6 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Linux_arm64_wheels
+          name: macOS_arm64_wheels
           path: ./wheelhouse/*.whl
           if-no-files-found: warn
