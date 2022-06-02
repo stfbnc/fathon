@@ -47,7 +47,7 @@ jobs:
         run: |
                 pip3 install --upgrade pip
                 pip3 install twine
-                chmod +x upload_wheels.sh
+                chmod +x upload_test_wheels.sh
                 ./upload_test_wheels.sh
 
       - name: Upload artifacts
