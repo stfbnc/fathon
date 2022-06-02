@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     wheels_folder = "./tmp_folder"
     for py3_ver in range(min_py3, max_py3 + 1):
-        print("Downloading Windows whhels for python 3." + str(py3_ver))
+        print("Downloading Windows wheels for python 3." + str(py3_ver))
         wheel_url = "https://ci.appveyor.com/api/projects/stfbnc/fathon/artifacts/wheels.zip?" \
                     "job=Environment:%20CIBW_BUILD=cp3" + str(py3_ver) + "-win_amd64"
         download_file(wheel_url, wheels_folder)
