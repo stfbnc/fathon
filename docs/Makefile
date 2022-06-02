@@ -4,7 +4,7 @@
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
-SPHINXBUILD   ?= "/opt/anaconda3/envs/fathon-env/bin/sphinx-build"
+SPHINXBUILD   ?= "/opt/anaconda3/envs/general/bin/sphinx-build"
 SOURCEDIR     = .
 BUILDDIR      = _build
 

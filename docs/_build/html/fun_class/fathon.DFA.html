@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>DFA &#8212; fathon  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,14 +42,14 @@
           <div class="body" role="main">
             
   <section id="dfa">
-<h1>DFA<a class="headerlink" href="#dfa" title="Permalink to this headline">¶</a></h1>
+<h1>DFA<a class="headerlink" href="#dfa" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="fathon.DFA">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">fathon.</span></span><span class="sig-name descname"><span class="pre">DFA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsVec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fathon.</span></span><span class="sig-name descname"><span class="pre">DFA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsVec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Detrended Fluctuation Analysis class.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>n</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array of window’s sizes used for the computation.</p>
 </dd>
@@ -67,7 +68,7 @@ computation of other functions that need <cite>F</cite>.</p>
 <span class="sig-name descname"><span class="pre">computeFlucVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">winSizes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polOrd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revSeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.computeFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the fluctuations in each window.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>winSizes</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array of window’s sizes.</p>
 </dd>
@@ -77,7 +78,7 @@ computation of other functions that need <cite>F</cite>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>numpy ndarray</dt><dd><p>Array <cite>n</cite> of window’s sizes.</p>
 </dd>
@@ -93,7 +94,7 @@ computation of other functions that need <cite>F</cite>.</p>
 <span class="sig-name descname"><span class="pre">fitFlucVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nStart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nEnd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logBase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.718281828459045</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.fitFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit of the fluctuations values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>nStart</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the smaller window used to fit <cite>F</cite> (default : first value of <cite>n</cite>).</p>
 </dd>
@@ -105,7 +106,7 @@ computation of other functions that need <cite>F</cite>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>float</dt><dd><p>Slope of the fit.</p>
 </dd>
@@ -121,7 +122,7 @@ computation of other functions that need <cite>F</cite>.</p>
 <span class="sig-name descname"><span class="pre">multiFitFlucVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limitsList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logBase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.718281828459045</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.multiFitFlucVec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit of the fluctuations values in different intervals at the same time.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>limitsList</strong><span class="classifier">numpy ndarray</span></dt><dd><p>kx2 array with the sizes of k starting and ending windows used to fit <cite>F</cite>.</p>
 </dd>
@@ -131,7 +132,7 @@ computation of other functions that need <cite>F</cite>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>numpy ndarray</dt><dd><p>Slopes of the fits.</p>
 </dd>
@@ -147,7 +148,7 @@ computation of other functions that need <cite>F</cite>.</p>
 <span class="sig-name descname"><span class="pre">saveObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outFileName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.DFA.saveObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save current object state to binary file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>outFileName</strong><span class="classifier">str</span></dt><dd><p>Output binary file. <cite>.fathon</cite> extension will be appended to the file name.</p>
 </dd>
@@ -159,7 +160,7 @@ computation of other functions that need <cite>F</cite>.</p>
 </dd></dl>
 
 <section id="usage-examples">
-<h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
+<h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fathon</span>
 <span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
@@ -192,20 +193,26 @@ computation of other functions that need <cite>F</cite>.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">DFA</a><ul>
 <li><a class="reference internal" href="#usage-examples">Usage examples</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="fu/fathonUtils.getObjectMember.html"
-                        title="previous chapter">getObjectMember</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="fathon.MFDFA.html"
-                        title="next chapter">MFDFA</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="fu/fathonUtils.getObjectMember.html"
+                          title="previous chapter">getObjectMember</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="fathon.MFDFA.html"
+                          title="next chapter">MFDFA</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -217,12 +224,12 @@ computation of other functions that need <cite>F</cite>.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -245,7 +252,7 @@ computation of other functions that need <cite>F</cite>.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019-2021, Stefano Bianchi.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.0.
     </div>
   </body>
 </html>

@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>linRangeByCount &#8212; fathon  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -42,13 +43,13 @@
           <div class="body" role="main">
             
   <section id="linrangebycount">
-<h1>linRangeByCount<a class="headerlink" href="#linrangebycount" title="Permalink to this headline">¶</a></h1>
+<h1>linRangeByCount<a class="headerlink" href="#linrangebycount" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="fathon.fathonUtils.linRangeByCount">
 <span class="sig-prename descclassname"><span class="pre">fathon.fathonUtils.</span></span><span class="sig-name descname"><span class="pre">linRangeByCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.fathonUtils.linRangeByCount" title="Permalink to this definition">¶</a></dt>
 <dd><p>Array of linearly separated elements.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>start</strong><span class="classifier">int</span></dt><dd><p>Smallest element.</p>
 </dd>
@@ -58,7 +59,7 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>numpy ndarray</dt><dd><p>Array of linearly separated elements.</p>
 </dd>
@@ -68,7 +69,7 @@
 </dd></dl>
 
 <section id="usage-examples">
-<h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
+<h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
 
 <span class="c1">#linearly separated elements</span>
@@ -85,20 +86,26 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">linRangeByCount</a><ul>
 <li><a class="reference internal" href="#usage-examples">Usage examples</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="fathonUtils.linRangeByStep.html"
-                        title="previous chapter">linRangeByStep</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="fathonUtils.powRangeByStep.html"
-                        title="next chapter">powRangeByStep</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="fathonUtils.linRangeByStep.html"
+                          title="previous chapter">linRangeByStep</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="fathonUtils.powRangeByStep.html"
+                          title="next chapter">powRangeByStep</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -110,12 +117,12 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -139,7 +146,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019-2021, Stefano Bianchi.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.0.
     </div>
   </body>
 </html>

@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>HT &#8212; fathon  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,14 +38,14 @@
           <div class="body" role="main">
             
   <section id="ht">
-<h1>HT<a class="headerlink" href="#ht" title="Permalink to this headline">¶</a></h1>
+<h1>HT<a class="headerlink" href="#ht" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="fathon.HT">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">fathon.</span></span><span class="sig-name descname"><span class="pre">HT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsVec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fathon.</span></span><span class="sig-name descname"><span class="pre">HT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsVec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Time-dependent local Hurst exponent class.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>tsVec</strong><span class="classifier">iterable</span></dt><dd><p>Time series used for the analysis.</p>
 </dd>
@@ -58,7 +59,7 @@
 <span class="sig-name descname"><span class="pre">computeHt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scales</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polOrd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mfdfaPolOrd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q0Fit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT.computeHt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computation of the time-dependent local Hurst exponent at each scale, using Ihlen’s approach.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>scales</strong><span class="classifier">int or iterable or numpy ndarray</span></dt><dd><p>Window’s sizes used for the computation of the time-dependent local Hurst exponent.</p>
 </dd>
@@ -74,7 +75,7 @@ used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPol
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>numpy ndarray</dt><dd><p>Time-dependent local Hurst exponent.</p>
 </dd>
@@ -88,7 +89,7 @@ used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPol
 <span class="sig-name descname"><span class="pre">saveObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outFileName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fathon.HT.saveObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save current object state to binary file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>outFileName</strong><span class="classifier">str</span></dt><dd><p>Output binary file. <cite>.fathon</cite> extension will be appended to the file name.</p>
 </dd>
@@ -100,7 +101,7 @@ used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPol
 </dd></dl>
 
 <section id="usage-examples">
-<h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
+<h2>Usage examples<a class="headerlink" href="#usage-examples" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fathon</span>
 <span class="kn">from</span> <span class="nn">fathon</span> <span class="kn">import</span> <span class="n">fathonUtils</span> <span class="k">as</span> <span class="n">fu</span>
@@ -127,17 +128,21 @@ used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPol
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">HT</a><ul>
 <li><a class="reference internal" href="#usage-examples">Usage examples</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="fathon.MFDCCA.html"
-                        title="previous chapter">MFDCCA</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="fathon.MFDCCA.html"
+                          title="previous chapter">MFDCCA</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -149,12 +154,12 @@ used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPol
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -174,7 +179,7 @@ used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPol
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019-2021, Stefano Bianchi.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.0.
     </div>
   </body>
 </html>
