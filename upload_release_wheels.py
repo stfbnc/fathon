@@ -31,6 +31,13 @@ if __name__ == "__main__":
     print("Downloading latest artifacts from github")
     os.system("gh run download --dir " + wheels_folder)
 
+    for f in os.listdir(wheels_folder):
+        if os.path.isdir(os.path.join(wheels_folder, f)):
+            curr_dir = os.path.join(wheels_folder, f)
+            os.system("mv " + curr_dir + "/* " + wheels_folder)
+            os.system("rm -rf " + curr_dir)
+
     if upload == 1:
         print("Uploading on Pypi")
         os.system("twine upload --verbose --skip-existing " + wheels_folder + "/*")
+        os.system("rm " + wheels_folder + "/*")
