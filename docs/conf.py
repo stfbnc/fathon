@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('./docstrings_only'))
 # -- Project information -----------------------------------------------------
 
 project = 'fathon'
-copyright = '2019-2021, Stefano Bianchi'
+copyright = '2019-, Stefano Bianchi'
 author = 'Stefano Bianchi'
 
 # -- General configuration ---------------------------------------------------
