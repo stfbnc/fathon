@@ -82,12 +82,7 @@
 <p>Time-dependent local Hurst exponent class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>tsVec</strong><span class="classifier">iterable</span></dt><dd><p>Time series used for the analysis.</p>
-</dd>
-<dt><strong>ht</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Time-dependent local Hurst exponent.</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>tsVec</strong> (<em>iterable</em>) – Time series used for the analysis.</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -96,26 +91,21 @@
 <dd><p>Computation of the time-dependent local Hurst exponent at each scale, using Ihlen’s approach.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>scales</strong><span class="classifier">int or iterable or numpy ndarray</span></dt><dd><p>Window’s sizes used for the computation of the time-dependent local Hurst exponent.</p>
-</dd>
-<dt><strong>polOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted in each window (default : 1).</p>
-</dd>
-<dt><strong>mfdfaPolOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted to MFDFA’s fluctuations at q = 0 (default : 1).</p>
-</dd>
-<dt><strong>q0Fit</strong><span class="classifier">iterable or numpy ndarray of floats, optional</span></dt><dd><p>MFDFA’s Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept].
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scales</strong> (<em>int</em><em> or </em><em>iterable</em><em> or </em><em>numpy ndarray</em>) – Window’s sizes used for the computation of the time-dependent local Hurst exponent.</p></li>
+<li><p><strong>polOrd</strong> (<em>int</em><em>, </em><em>optional</em>) – Order of the polynomial to be fitted in each window (default : 1).</p></li>
+<li><p><strong>mfdfaPolOrd</strong> (<em>int</em><em>, </em><em>optional</em>) – Order of the polynomial to be fitted to MFDFA’s fluctuations at q = 0 (default : 1).</p></li>
+<li><p><strong>q0Fit</strong> (<em>iterable</em><em> or </em><em>numpy ndarray of floats</em><em>, </em><em>optional</em>) – MFDFA’s Hurst exponent at order q = 0 and the corresponding intercept of the fit, [hq0, hq0_intercept].
 These values must come from a log-log fit, with the log base equal to e. If not empty, it will be directly
-used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPolOrd</cite> value (default : []).</p>
-</dd>
-<dt><strong>verbose</strong><span class="classifier">bool, optional</span></dt><dd><p>Verbosity (default : False).</p>
-</dd>
-</dl>
+used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPolOrd</cite> value (default : []).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbosity (default : False).</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>numpy ndarray</dt><dd><p>Time-dependent local Hurst exponent.</p>
+<dd class="field-even"><p>Time-dependent local Hurst exponent.</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -126,10 +116,7 @@ used to compute the time-dependent local Hurst exponent, ignoring <cite>mfdfaPol
 <dd><p>Save current object state to binary file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>outFileName</strong><span class="classifier">str</span></dt><dd><p>Output binary file. <cite>.fathon</cite> extension will be appended to the file name.</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>outFileName</strong> (<em>str</em>) – Output binary file. <cite>.fathon</cite> extension will be appended to the file name.</p>
 </dd>
 </dl>
 </dd></dl>

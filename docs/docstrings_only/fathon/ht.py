@@ -23,8 +23,6 @@ class HT:
     ----------
     tsVec : iterable
         Time series used for the analysis.
-    ht : numpy ndarray
-        Time-dependent local Hurst exponent.
     """
 
     def __init__(self, tsVec):

@@ -20,21 +20,10 @@ class MFDCCA:
 
     Parameters
     ----------
-    n : numpy ndarray
-        Array of window's sizes used for the computation.
     tsVec1 : iterable
         First time series used for the analysis.
     tsVec2 : iterable
         Second time series used for the analysis.
-    F : numpy ndarray
-        Array containing the values of the fluctuations in each window.
-    listH : numpy ndarray
-        Array containing the values of the slope of the fit at each q-order.
-    qList : numpy ndarray
-        Array containing the values of the q-orders.
-    isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the
-        computation of other functions that need `F`.
     """
 
     def __init__(self, tsVec1, tsVec2=[]):

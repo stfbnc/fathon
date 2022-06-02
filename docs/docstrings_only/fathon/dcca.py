@@ -21,27 +21,10 @@ class DCCA:
 
     Parameters
     ----------
-    n : numpy ndarray
-        Array of window's sizes used for the computation.
     tsVec1 : iterable
         First time series used for the analysis.
     tsVec2 : iterable
         Second time series used for the analysis.
-    F : numpy ndarray
-        Array containing the values of the fluctuations in each window.
-    nRho : numpy ndarray
-        Array of window's sizes used for the computation of `rho`.
-    rho : numpy ndarray
-        Array containing the cross-correlation index in each window.
-    nThr : numpy ndarray
-        Array of window's sizes used for the computation of `rho` thresholds.
-    confUp : numpy ndarray
-        Array containing the first confidence interval in each window.
-    confDown : numpy ndarray
-        Array containing the second confidence interval in each window.
-    isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the
-        computation of other functions that need `F`.
     """
 
     def __init__(self, tsVec1=[], tsVec2=[]):

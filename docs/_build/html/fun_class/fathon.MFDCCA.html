@@ -83,23 +83,10 @@
 <p>MultiFractal Detrended Cross-Correlation Analysis class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>n</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array of window’s sizes used for the computation.</p>
-</dd>
-<dt><strong>tsVec1</strong><span class="classifier">iterable</span></dt><dd><p>First time series used for the analysis.</p>
-</dd>
-<dt><strong>tsVec2</strong><span class="classifier">iterable</span></dt><dd><p>Second time series used for the analysis.</p>
-</dd>
-<dt><strong>F</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the fluctuations in each window.</p>
-</dd>
-<dt><strong>listH</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the slope of the fit at each q-order.</p>
-</dd>
-<dt><strong>qList</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array containing the values of the q-orders.</p>
-</dd>
-<dt><strong>isComputed</strong><span class="classifier">bool</span></dt><dd><p>Boolean value to know if <cite>F</cite> has been computed in order to prevent the
-computation of other functions that need <cite>F</cite>.</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tsVec1</strong> (<em>iterable</em>) – First time series used for the analysis.</p></li>
+<li><p><strong>tsVec2</strong> (<em>iterable</em>) – Second time series used for the analysis.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py method">
@@ -108,26 +95,21 @@ computation of other functions that need <cite>F</cite>.</p>
 <dd><p>Computation of the fluctuations in each window for each q-order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>winSizes</strong><span class="classifier">numpy ndarray</span></dt><dd><p>Array of window’s sizes.</p>
-</dd>
-<dt><strong>qList</strong><span class="classifier">float or iterable or numpy ndarray</span></dt><dd><p>List of q-orders used to compute <cite>F</cite>.</p>
-</dd>
-<dt><strong>polOrd</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the polynomial to be fitted in each window (default : 1).</p>
-</dd>
-<dt><strong>revSeg</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the computation of <cite>F</cite> is repeated starting from the end
-of the time series (default : False).</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>winSizes</strong> (<em>numpy ndarray</em>) – Array of window’s sizes.</p></li>
+<li><p><strong>qList</strong> (<em>float</em><em> or </em><em>iterable</em><em> or </em><em>numpy ndarray</em>) – List of q-orders used to compute <cite>F</cite>.</p></li>
+<li><p><strong>polOrd</strong> (<em>int</em><em>, </em><em>optional</em>) – Order of the polynomial to be fitted in each window (default : 1).</p></li>
+<li><p><strong>revSeg</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the computation of <cite>F</cite> is repeated starting from the end
+of the time series (default : False).</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>numpy ndarray</dt><dd><p>Array <cite>n</cite> of window’s sizes.</p>
-</dd>
-<dt>numpy ndarray</dt><dd><p>qxn array <cite>F</cite> containing the values of the fluctuations in each
-window for each q-order.</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>numpy ndarray</em> – Array <cite>n</cite> of window’s sizes.</p></li>
+<li><p><em>numpy ndarray</em> – qxn array <cite>F</cite> containing the values of the fluctuations in each
+window for each q-order.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -138,10 +120,10 @@ window for each q-order.</p>
 <dd><p>Computation of the mass exponents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><dl class="simple">
-<dt>numpy ndarray</dt><dd><p>Mass exponents.</p>
+<dd class="field-odd"><p>Mass exponents.</p>
 </dd>
-</dl>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -152,12 +134,11 @@ window for each q-order.</p>
 <dd><p>Computation of the multifractal spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><dl class="simple">
-<dt>numpy ndarray</dt><dd><p>Singularity strengths.</p>
-</dd>
-<dt>numpy ndarray</dt><dd><p>Multifractal spectrum.</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>numpy ndarray</em> – Singularity strengths.</p></li>
+<li><p><em>numpy ndarray</em> – Multifractal spectrum.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -168,24 +149,19 @@ window for each q-order.</p>
 <dd><p>Fit of the fluctuations values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>nStart</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the smaller window used to fit <cite>F</cite> at each q-order (default : first value of <cite>n</cite>).</p>
-</dd>
-<dt><strong>nEnd</strong><span class="classifier">int, optional</span></dt><dd><p>Size of the bigger window used to fit <cite>F</cite> at each q-order (default : last value of <cite>n</cite>).</p>
-</dd>
-<dt><strong>logBase</strong><span class="classifier">float, optional</span></dt><dd><p>Base of the logarithm for the log-log fit of <cite>n</cite> vs <cite>F</cite> (default : e).</p>
-</dd>
-<dt><strong>verbose</strong><span class="classifier">bool, optional</span></dt><dd><p>Verbosity (default : False).</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nStart</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of the smaller window used to fit <cite>F</cite> at each q-order (default : first value of <cite>n</cite>).</p></li>
+<li><p><strong>nEnd</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of the bigger window used to fit <cite>F</cite> at each q-order (default : last value of <cite>n</cite>).</p></li>
+<li><p><strong>logBase</strong> (<em>float</em><em>, </em><em>optional</em>) – Base of the logarithm for the log-log fit of <cite>n</cite> vs <cite>F</cite> (default : e).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbosity (default : False).</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>numpy ndarray</dt><dd><p>Slope of the fit for each q-order.</p>
-</dd>
-<dt>numpy ndarray</dt><dd><p>Intercept of the fit for each q-order.</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>numpy ndarray</em> – Slope of the fit for each q-order.</p></li>
+<li><p><em>numpy ndarray</em> – Intercept of the fit for each q-order.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -196,10 +172,7 @@ window for each q-order.</p>
 <dd><p>Save current object state to binary file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>outFileName</strong><span class="classifier">str</span></dt><dd><p>Output binary file. <cite>.fathon</cite> extension will be appended to the file name.</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>outFileName</strong> (<em>str</em>) – Output binary file. <cite>.fathon</cite> extension will be appended to the file name.</p>
 </dd>
 </dl>
 </dd></dl>

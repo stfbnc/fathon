@@ -19,15 +19,8 @@ class DFA:
 
     Parameters
     ----------
-    n : numpy ndarray
-        Array of window's sizes used for the computation.
     tsVec : iterable
         Time series used for the analysis.
-    F : numpy ndarray
-        Array containing the values of the fluctuations in each window.
-    isComputed : bool
-        Boolean value to know if `F` has been computed in order to prevent the
-        computation of other functions that need `F`.
     """
 
     def __init__(self, tsVec):
