@@ -1,5 +1,5 @@
 #    dcca.pyx - dcca algorithm of fathon package
-#    Copyright (C) 2019-2021  Stefano Bianchi
+#    Copyright (C) 2019-  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -45,7 +45,7 @@ class DCCA:
     """
 
     def __init__(self, tsVec1=[], tsVec2=[]):
-    	pass
+        pass
 
     def computeFlucVec(self, winSizes, polOrd=1, absVals=True, overlap=False, revSeg=False):
         """Computation of the fluctuations in each window.

@@ -1,5 +1,5 @@
 #    __init__.py - init for fathon package
-#    Copyright (C) 2019-2021  Stefano Bianchi
+#    Copyright (C) 2019-  Stefano Bianchi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -16,10 +16,6 @@
 
 import platform
 import os
-init_dir = os.path.dirname(os.path.abspath(__file__))
-if platform.system() == "Linux":
-    cmd = "cp " + init_dir + "/3rd_party/gsl/lib/*.so* " + init_dir + "/../fathon.libs"
-    os.system(cmd)
     
 from .dfa import DFA
 from .mfdfa import MFDFA

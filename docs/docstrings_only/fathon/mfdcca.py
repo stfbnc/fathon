@@ -1,5 +1,5 @@
 #    mfdcca.pyx - mfdcca algorithm of fathon package
-#    Copyright (C) 2019-2021  Stefano Bianchi
+#    Copyright (C) 2019-  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -38,7 +38,7 @@ class MFDCCA:
     """
 
     def __init__(self, tsVec1, tsVec2=[]):
-    	pass
+        pass
 
     def computeFlucVec(self, winSizes, qList, polOrd=1, revSeg=False):
         """Computation of the fluctuations in each window for each q-order.

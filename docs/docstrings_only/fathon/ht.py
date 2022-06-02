@@ -1,5 +1,5 @@
 #    ht.pyx - ht algorithm of fathon package
-#    Copyright (C) 2019-2021  Stefano Bianchi
+#    Copyright (C) 2019-  Stefano Bianchi
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -28,7 +28,7 @@ class HT:
     """
 
     def __init__(self, tsVec):
-    	pass
+        pass
 
     def computeHt(self, scales, polOrd=1, mfdfaPolOrd=1, q0Fit=[], verbose=False):
         """Computation of the time-dependent local Hurst exponent at each scale, using Ihlen's approach.
