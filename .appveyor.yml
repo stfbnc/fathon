@@ -1,0 +1,61 @@
+branches:
+  except:
+    - master
+    - /v\d+\.\d+\.\d+/
+
+environment:
+  global:
+    PYTHON: "C:\\Python38-x64"
+    PYTHON_VERSION: "3.8.x"
+    PYTHON_ARCH: "64"
+    CIBW_BUILD_VERBOSITY: 1
+    CIBW_TEST_REQUIRES: pytest
+    CIBW_TEST_COMMAND: "pytest %APPVEYOR_BUILD_FOLDER%\\tests"
+    CIBW_BEFORE_BUILD: >
+      python -m pip install --upgrade pip &&
+      python -m pip install --upgrade Cython &&
+      python -m pip install -r requirements.txt
+
+  matrix:
+    - CIBW_BUILD: "cp37-win_amd64"
+    - CIBW_BUILD: "cp38-win_amd64"
+    - CIBW_BUILD: "cp39-win_amd64"
+    - CIBW_BUILD: "cp310-win_amd64"
+
+stack: python 3.8
+
+init:
+  - cmd: PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+
+install:
+  ### GSL ###
+  - cd C:\Tools\vcpkg
+  - git pull
+  - .\bootstrap-vcpkg.bat
+  - .\vcpkg integrate install
+  - .\vcpkg.exe install gsl:x64-windows-static
+  - md C:\gsl
+  - md C:\gsl\include
+  - md C:\gsl\lib
+  - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\include C:\gsl\include /f /s /e
+  - xcopy C:\Tools\vcpkg\packages\gsl_x64-windows-static\lib C:\gsl\lib /f /s /e
+  ### PYTHON ###
+  - "python -m pip install --upgrade cibuildwheel"
+  - "python -m pip install --upgrade twine"
+
+build_script:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - "python --version"
+  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+  - "python -m pip --version"
+  - "python -m twine --version"
+  - "python -m cibuildwheel --output-dir wheelhouse"
+  - dir wheelhouse
+  - ps: .\upload_test_wheels.ps1
+
+after_build:
+  - 7z a wheels.zip %APPVEYOR_BUILD_FOLDER%\wheelhouse\*
+
+artifacts:
+  - path: wheels.zip
+    name: Wheels

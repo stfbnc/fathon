@@ -1,10 +1,10 @@
-# fathon ![Linux](https://github.com/stfbnc/fathon/actions/workflows/linux.yml/badge.svg) ![macOS](https://github.com/stfbnc/fathon/actions/workflows/macos.yml/badge.svg) ![Windows](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p/branch/master?svg=true&passingText=Windows&pendingText=Windows&failingText=Windows)
+# fathon ![Linux](https://github.com/stfbnc/fathon/actions/workflows/linux.yml/badge.svg) ![macOS](https://github.com/stfbnc/fathon/actions/workflows/macos.yml/badge.svg) ![Windows](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p/branch/reorg?svg=true&passingText=Windows&pendingText=Windows&failingText=Windows)
 
-[![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]() [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/)
+[![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon) [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/)
+
+[![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]()
 
 [![DOI](https://zenodo.org/badge/214290119.svg)](https://zenodo.org/badge/latestdoi/214290119) [![DOI](https://joss.theoj.org/papers/10.21105/joss.01828/status.svg)](https://doi.org/10.21105/joss.01828)
-
-
 
 `fathon` is a python package for DFA (*Detrended Fluctuation Analysis*) and related algorithms.
 
@@ -58,10 +58,6 @@ To report bugs or improvements, or for any other question, please see [CONTRIBUT
 If you are using `fathon` in your research, please cite:
 
 Bianchi, S., (2020). fathon: A Python package for a fast computation of  detrendend fluctuation analysis and related algorithms. Journal of Open  Source Software, 5(45), 1828, https://doi.org/10.21105/joss.01828
-
-## Version  [![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon)
-
-fathon v1.3.1
 
 ## Changelog
 
