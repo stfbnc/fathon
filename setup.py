@@ -14,8 +14,8 @@ if platform.system() == "Darwin":
         os.environ["LDFLAGS"] = "-L/usr/local/opt/llvm/lib"
         os.environ["CPPFLAGS"] = "-I/usr/local/opt/llvm/include"
     else:
-        os.environ["CC"] = "gcc-12"
-        os.environ["CXX"] = "g++-12"
+        os.environ["CC"] = "gcc-11"
+        os.environ["CXX"] = "g++-11"
 
     gsl_inc = "/usr/local/include"
     gsl_lib = "/usr/local/lib/"

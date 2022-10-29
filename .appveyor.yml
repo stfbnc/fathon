@@ -1,6 +1,7 @@
 branches:
   except:
     - master
+    - udfa
     - /v\d+\.\d+\.\d+/
 
 environment:
