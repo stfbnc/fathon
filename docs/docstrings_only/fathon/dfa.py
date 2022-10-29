@@ -26,7 +26,7 @@ class DFA:
     def __init__(self, tsVec):
         pass
 
-    def computeFlucVec(self, winSizes, polOrd=1, revSeg=False):
+    def computeFlucVec(self, winSizes, polOrd=1, revSeg=False, unbiased=False):
         """Computation of the fluctuations in each window.
 
         Parameters
@@ -37,6 +37,8 @@ class DFA:
             Order of the polynomial to be fitted in each window (default : 1).
         revSeg : bool, optional
             If True, the computation of `F` is repeated starting from the end of the time series (default : False).
+        unbiased : bool, optional
+            If True, the unbiased version of DFA is computed, and `revSeg` is ignored. To be used on short time series (default : False).
 
         Returns
         -------

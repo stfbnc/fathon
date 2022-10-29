@@ -26,6 +26,7 @@ import pickle
 cdef extern from "cLoops.h" nogil:
     void flucDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
     void flucDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
+    void flucUDFACompute(double *y_vec, double *t_vec, int y_len, int *wins_vec, int num_wins, int pol, double *f_vec)
 
 cdef class DFA:
     """Detrended Fluctuation Analysis class.
@@ -71,7 +72,7 @@ cdef class DFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg):
+    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg, bint unbiased):
         cdef int nLen, tsLen
         cdef Py_ssize_t i, j
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
@@ -84,15 +85,18 @@ cdef class DFA:
             t[j] = float(j) + 1.0
         
         with nogil:
-            if revSeg:
-                flucDFAForwBackwCompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
+            if unbiased:
+                flucUDFACompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
             else:
-                flucDFAForwCompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
+                if revSeg:
+                    flucDFAForwBackwCompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
+                else:
+                    flucDFAForwCompute(&vects[0], &t[0], tsLen, &vecn[0], nLen, polOrd, &vecf[0])
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint revSeg=False):
+    cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint revSeg=False, bint unbiased=False):
         """Computation of the fluctuations in each window.
 
         Parameters
@@ -103,6 +107,8 @@ cdef class DFA:
             Order of the polynomial to be fitted in each window (default : 1).
         revSeg : bool, optional
             If True, the computation of `F` is repeated starting from the end of the time series (default : False).
+        unbiased : bool, optional
+            If True, the unbiased version of DFA is computed, and `revSeg` is ignored. To be used on short time series (default : False).
 
         Returns
         -------
@@ -125,7 +131,7 @@ cdef class DFA:
 
         self.n = np.array(winSizes, dtype=ctypes.c_int)
         self.F = np.zeros((len(self.n), ), dtype=ctypes.c_double)
-        self.cy_flucCompute(np.array(self.tsVec, dtype=ctypes.c_double), self.n, self.F, polOrd, revSeg)
+        self.cy_flucCompute(np.array(self.tsVec, dtype=ctypes.c_double), self.n, self.F, polOrd, revSeg, unbiased)
         self.isComputed = True
         
         return self.n, self.F

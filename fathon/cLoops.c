@@ -18,6 +18,84 @@
 #include "cLoops.h"
 #include "omp.h"
 
+//main loop for unbiased DFA
+void flucUDFACompute(double *y_vec, double *t_vec, int y_len, int *wins_vec, int num_wins, int pol, double *f_vec)
+{
+#ifdef _WIN64
+    int i = 0;
+#endif
+
+#pragma omp parallel for
+#ifdef _WIN64
+    for(i = 0; i < num_wins; i++)
+#else
+    for(int i = 0; i < num_wins; i++)
+#endif
+    {
+        int s = wins_vec[i];
+        int n_wins = y_len - s + 1;
+
+        double *fit_coeffs = malloc((pol + 1) * sizeof(double));
+        double *df = malloc(s * sizeof(double));
+
+        double f = 0.0;
+#ifdef _WIN64
+        int start = 0;
+        for(start = 0; start < n_wins; start++)
+#else
+        for(int start = 0; start < n_wins; start++)
+#endif
+        {
+            polynomialFit(s, pol + 1, t_vec + start, y_vec + start, fit_coeffs);
+            for(int j = 0; j < s; j++)
+            {
+                df[j] = y_vec[start + j];
+                for(int k = 0; k < (pol + 1); k++)
+                {
+                    df[j] -= fit_coeffs[k] * pow(t_vec[start + j], k);
+                }
+            }
+        
+            double df_sum = 0.0, df_2_sum = 0.0, df_even_sum = 0.0, df_odd_sum = 0.0, df_shift_sum = 0.0;
+            for(int j = 0; j < s; j++)
+            {
+                df_sum += df[j];
+                df_2_sum += df[j] * df[j];
+            }
+            for(int j = 0; j < s; j += 2)
+            {
+                df_odd_sum += df[j];
+            }
+            for(int j = 1; j < s; j += 2)
+            {
+                df_even_sum += df[j];
+            }
+            for(int j = 0; j < (s - 1); j++)
+            {
+                df_shift_sum += (df[j] * df[j + 1]);
+            }
+    
+            double df_neg_mean = (df_odd_sum - df_even_sum) / (double)s;
+            double df_neg_var = df_2_sum / (double)s - df_neg_mean * df_neg_mean;
+            double df_pos_mean = df_sum / (double)s;
+            double df_pos_var = df_2_sum / (double)s - df_pos_mean * df_pos_mean;
+        
+            double df_pos_shift = (df_shift_sum + df_pos_mean * (df[0] + df[s - 1] - df_pos_mean * (s + 1))) / df_pos_var;
+            double df_neg_shift = (-df_shift_sum + df_neg_mean * (df[0] + pow(-1.0, s + 1) * df[s - 1] - df_neg_mean * (s + 1))) / df_neg_var;
+            double rho_A = (s + df_pos_shift) / (double)(2 * s - 1);
+            double rho_B = (s + df_neg_shift) / (double)(2 * s - 1);
+        
+            double rho_A_star = rho_A + (1 + 3 * rho_A) / (double)(2 * s);
+            double rho_B_star = rho_B + (1 + 3 * rho_B) / (double)(2 * s);
+            f += ((rho_A_star + rho_B_star) * (1 - 1.0 / (double)(2 * s)) * df_pos_var);
+        }
+        f_vec[i] = sqrt(f * sqrt((s - 1) / (double)s) / (double)(n_wins));
+
+        free(fit_coeffs);
+        free(df);
+    }
+}
+
 //main loop for DFA (computes fluctuations starting from the beginning of the array y)
 void flucDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, int pol_ord, double *f_vec)
 {

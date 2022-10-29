@@ -159,6 +159,8 @@ ts2 = fu.toAggregated(ts2)
 # multifractal data
 ts3 = np.loadtxt(os.path.join(TESTS_PATH, 'ts3.txt'))
 ts3 = fu.toAggregated(ts3)
+# udfa data
+ts4 = np.loadtxt(os.path.join(TESTS_PATH, 'ts4.txt'))
 #####
 
 #####
@@ -225,6 +227,18 @@ def test_dfa_H_log():
     
     assert (math.isclose(H1, H2) and math.isclose(H1, H3) and math.isclose(H1, H4)
             and math.isclose(H2, H3) and math.isclose(H2, H4) and math.isclose(H3, H4))
+
+#####
+# Regression test 1.5
+# It tests if the Hurst exponent of `ts4` is correct
+#####
+def test_udfa():
+    pydfa = fathon.DFA(ts4)
+    winSizes = fu.linRangeByStep(10, 100)
+    n1, F1 = pydfa.computeFlucVec(winSizes, unbiased=True)
+    H1, H_int1 = pydfa.fitFlucVec()
+
+    assert math.isclose(H1, 0.47674272167783543)
 
 #####
 # Regression test 2

@@ -14,8 +14,8 @@ if platform.system() == "Darwin":
         os.environ["LDFLAGS"] = "-L/usr/local/opt/llvm/lib"
         os.environ["CPPFLAGS"] = "-I/usr/local/opt/llvm/include"
     else:
-        os.environ["CC"] = "gcc-11"
-        os.environ["CXX"] = "g++-11"
+        os.environ["CC"] = "gcc-12"
+        os.environ["CXX"] = "g++-12"
 
     gsl_inc = "/usr/local/include"
     gsl_lib = "/usr/local/lib/"
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         readme_file.close()
 
         setup(name="fathon",
-              version="1.3.1",
+              version="1.3.2",
               author="Stefano Bianchi",
               author_email="fathon.package@gmail.com",
               url="https://github.com/stfbnc/fathon.git",

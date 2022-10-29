@@ -61,6 +61,10 @@ Bianchi, S., (2020). fathon: A Python package for a fast computation of  detrend
 
 ## Changelog
 
+#### v1.3.2
+
+- unbiased version of DFA, as described [here](https://doi.org/10.1016/j.physa.2018.03.043)
+
 #### v1.3.1
 
 - faster algorithms

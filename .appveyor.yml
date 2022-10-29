@@ -21,6 +21,7 @@ environment:
     - CIBW_BUILD: "cp38-win_amd64"
     - CIBW_BUILD: "cp39-win_amd64"
     - CIBW_BUILD: "cp310-win_amd64"
+    - CIBW_BUILD: "cp311-win_amd64"
 
 stack: python 3.8
 
