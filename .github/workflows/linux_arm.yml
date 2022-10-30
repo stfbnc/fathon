@@ -37,8 +37,7 @@ jobs:
                   pip3 install --upgrade pip &&
                   pip3 install Cython &&
                   pip3 install -r requirements.txt
-          #CIBW_BUILD: "cp37-manylinux* cp38-manylinux* cp39-manylinux* cp310-manylinux* cp311-manylinux*"
-          CIBW_BUILD: "cp311-manylinux*"
+          CIBW_BUILD: "cp37-manylinux* cp38-manylinux* cp39-manylinux* cp310-manylinux* cp311-manylinux*"
           CIBW_SKIP: "*-manylinux_i686"
           CIBW_ARCHS_LINUX: "aarch64"
           CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"

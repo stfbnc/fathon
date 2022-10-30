@@ -5,7 +5,7 @@ import os
 import argparse
 
 min_py3 = 7
-max_py3 = 10
+max_py3 = 11
 
 
 def download_file(url, folder_name):
