@@ -101,7 +101,7 @@ if __name__ == "__main__":
                            "Programming Language :: Python :: 3.11",
                            "Topic :: Scientific/Engineering"],
               python_requires=">=3.7",
-              install_requires=["numpy>=1.20"],
+              install_requires=["numpy>=1.22"],
               project_urls={"Documentation": "https://fathon.readthedocs.io/",
                             "Bug Reports": "https://github.com/stfbnc/fathon/issues",
                             "Source": "https://github.com/stfbnc/fathon/"},

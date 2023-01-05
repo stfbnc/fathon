@@ -25,7 +25,7 @@ Requirements
 ============
 
 - Python 3.7+
-- numpy (>=1.20)
+- numpy (>=1.22)
 
 Installation
 ============
