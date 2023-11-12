@@ -18,6 +18,9 @@
 #include "cLoops.h"
 #include "omp.h"
 
+#define LQ -3.0e-15
+#define HQ 3.0e-15
+
 //main loop for unbiased DFA
 void flucUDFACompute(double *y_vec, double *t_vec, int y_len, int *wins_vec, int num_wins, int pol, double *f_vec)
 {
@@ -246,7 +249,7 @@ void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, do
                     rms += pow(var, 2.0);
                 }
         
-                if(q == 0.0)
+                if((q >= LQ) && (q <= HQ))
                 {
                     f += log(rms / (double)curr_win_size);
                 }
@@ -258,7 +261,7 @@ void flucMFDFAForwCompute(double *y, double *t, int N, int *wins, int n_wins, do
                 free(fit_coeffs);
             }
     
-            if(q == 0.0)
+            if((q >= LQ) && (q <= HQ))
             {
                 f_vec[iq * n_wins + i] = exp(f / (double)(2 * N_s));
             }
@@ -331,7 +334,7 @@ void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_win
                     rms2 += pow(var_2, 2.0);
                 }
         
-                if(q == 0.0)
+                if((q >= LQ) && (q <= HQ))
                 {
                     f += (log(rms1 / (double)curr_win_size) + log(rms2 / (double)curr_win_size));
                 }
@@ -343,7 +346,7 @@ void flucMFDFAForwBackwCompute(double *y, double *t, int N, int *wins, int n_win
                 free(fit_coeffs);
             }
         
-            if(q == 0.0)
+            if((q >= LQ) && (q <= HQ))
             {
                 f_vec[iq * n_wins + i] = exp(f / (double)(4 * N_s));
             }
@@ -763,7 +766,7 @@ void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, 
                     rms += fabs(var_1 * var_2);
                 }
         
-                if(q == 0.0)
+                if((q >= LQ) && (q <= HQ))
                 {
                     f += log(rms / (double)curr_win_size);
                 }
@@ -776,7 +779,7 @@ void flucMFDCCAForwCompute(double *y1, double *y2, double *t, int N, int *wins, 
                 free(fit_coeffs_2);
             }
         
-            if(q == 0.0)
+            if((q >= LQ) && (q <= HQ))
             {
                 f_vec[iq * n_wins + i] = exp(f / (double)(2 * N_s));
             }
@@ -856,7 +859,7 @@ void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *w
                     rms2 += fabs(var_1 * var_2);
                 }
         
-                if(q == 0.0)
+                if((q >= LQ) && (q <= HQ))
                 {
                     f += (log(rms1 / (double)curr_win_size) + log(rms2 / (double)curr_win_size));
                 }
@@ -869,7 +872,7 @@ void flucMFDCCAForwBackwCompute(double *y1, double *y2, double *t, int N, int *w
                 free(fit_coeffs_2);
             }
         
-            if(q == 0.0)
+            if((q >= LQ) && (q <= HQ))
             {
                 f_vec[iq * n_wins + i] = exp(f / (double)(4 * N_s));
             }
