@@ -1,7 +1,6 @@
 branches:
   except:
     - master
-    - accuracy
     - /v\d+\.\d+\.\d+/
 
 environment:

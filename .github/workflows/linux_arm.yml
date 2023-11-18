@@ -3,8 +3,7 @@ name: Linux aarch64
 on:
   push:
     branches-ignore:
-      - '**'
-      #- master
+      - master
     tags-ignore:
       - '**'
 

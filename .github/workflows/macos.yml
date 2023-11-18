@@ -3,8 +3,7 @@ name: macOS
 on:
   push:
     branches-ignore:
-      - '**'
-      #- master
+      - master
     tags-ignore:
       - '**'
 
