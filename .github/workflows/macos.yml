@@ -9,8 +9,8 @@ on:
 
 jobs:
   build_wheels:
-    name: Build wheels on macos-10.15
-    runs-on: macos-10.15
+    name: Build wheels on macos-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -22,7 +22,7 @@ jobs:
         shell: bash
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.11.2
+        uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_BUILD_VERBOSITY: 1
           CIBW_TEST_REQUIRES: pytest
@@ -32,7 +32,7 @@ jobs:
                   pip3 install Cython &&
                   pip3 install setuptools &&
                   pip3 install -r requirements.txt
-          CIBW_BUILD: "cp37-macosx_x86_64 cp38-macosx_x86_64 cp39-macosx_x86_64 cp310-macosx_x86_64 cp311-macosx_x86_64"
+          CIBW_BUILD: "cp38-macosx_x86_64 cp39-macosx_x86_64 cp310-macosx_x86_64 cp311-macosx_x86_64 cp312-macosx_x86_64"
           CIBW_ARCHS_MACOS: "x86_64"
           
       - name: Show files

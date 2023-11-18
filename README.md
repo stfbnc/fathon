@@ -30,8 +30,8 @@ It is mostly written in Cython and C in order to speed up computations.
 
 ### Prerequisites
 
- - Python 3.7 or higher
- - numpy (version >= 1.22)
+ - Python 3.8 or higher
+ - numpy (version >= 1.24.4)
 
 ### Installing
 
@@ -60,6 +60,10 @@ If you are using `fathon` in your research, please cite:
 Bianchi, S., (2020). fathon: A Python package for a fast computation of  detrendend fluctuation analysis and related algorithms. Journal of Open  Source Software, 5(45), 1828, https://doi.org/10.21105/joss.01828
 
 ## Changelog
+
+#### v1.3.3
+
+- fix divergent results when `q` approaches 0 (affects MFDFA-like algorithms)
 
 #### v1.3.2
 
