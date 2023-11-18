@@ -3,7 +3,8 @@ name: macOS
 on:
   push:
     branches-ignore:
-      - master
+      - '**'
+      #- master
     tags-ignore:
       - '**'
 
@@ -12,7 +13,7 @@ jobs:
     name: Build wheels on macos-latest
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Before build
         run: |
@@ -32,8 +33,7 @@ jobs:
                   pip3 install Cython &&
                   pip3 install setuptools &&
                   pip3 install -r requirements.txt
-          #CIBW_BUILD: "cp38-macosx_x86_64 cp39-macosx_x86_64 cp310-macosx_x86_64 cp311-macosx_x86_64"
-          CIBW_BUILD: "cp312-macosx_x86_64"
+          CIBW_BUILD: "cp38-macosx_x86_64 cp39-macosx_x86_64 cp310-macosx_x86_64 cp311-macosx_x86_64 cp312-macosx_x86_64"
           CIBW_ARCHS_MACOS: "x86_64"
           
       - name: Show files
@@ -52,7 +52,7 @@ jobs:
                 ./upload_test_wheels.sh
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: macOS_x86_64_wheels
           path: ./wheelhouse/*.whl

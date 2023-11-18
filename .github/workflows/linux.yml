@@ -3,7 +3,8 @@ name: Linux
 on:
   push:
     branches-ignore:
-      - master
+      - '**'
+      #- master
     tags-ignore:
       - '**'
 
@@ -12,7 +13,7 @@ jobs:
     name: Build wheels on ubuntu-latest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
@@ -32,8 +33,7 @@ jobs:
                   pip3 install --upgrade pip &&
                   pip3 install Cython &&
                   pip3 install -r requirements.txt
-          #CIBW_BUILD: "cp38-manylinux* cp39-manylinux* cp310-manylinux* cp311-manylinux*"
-          CIBW_BUILD: "cp312-manylinux*"
+          CIBW_BUILD: "cp38-manylinux* cp39-manylinux* cp310-manylinux* cp311-manylinux* cp312-manylinux*"
           CIBW_SKIP: "*-manylinux_i686"
           CIBW_ARCHS_LINUX: "x86_64"
           CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"
@@ -54,7 +54,7 @@ jobs:
                 ./upload_test_wheels.sh
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Linux_x86_64_wheels
           path: ./wheelhouse/*.whl
