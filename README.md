@@ -31,7 +31,7 @@ It is mostly written in Cython and C in order to speed up computations.
 ### Prerequisites
 
  - Python 3.8 or higher
- - numpy (version >= 1.24.4)
+ - numpy (version >= 1.24.4 for Python < 3.12, version >= 1.26.2 for Python >= 3.12)
 
 ### Installing
 
