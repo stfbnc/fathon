@@ -79,12 +79,12 @@ if __name__ == "__main__":
         readme_file.close()
 
         setup(name="fathon",
-              version="1.3.3",
+              version="1.3.3.post1",
               author="Stefano Bianchi",
               author_email="fathon.package@gmail.com",
               url="https://github.com/stfbnc/fathon.git",
               license="GPLv3.0",
-              description="A pyhton package for detrended fluctuation analysis (DFA) and related algorithms.",
+              description="A python package for detrended fluctuation analysis (DFA) and related algorithms.",
               long_description_content_type="text/markdown",
               long_description=README,
               packages=find_packages(),
@@ -101,7 +101,7 @@ if __name__ == "__main__":
                            "Programming Language :: Python :: 3.12",
                            "Topic :: Scientific/Engineering"],
               python_requires=">=3.8",
-              install_requires=["numpy==1.24.4"],
+              install_requires=["numpy>=1.24.4"],
               project_urls={"Documentation": "https://fathon.readthedocs.io/",
                             "Bug Reports": "https://github.com/stfbnc/fathon/issues",
                             "Source": "https://github.com/stfbnc/fathon/"},
