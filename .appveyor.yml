@@ -17,11 +17,11 @@ environment:
       python -m pip install -r requirements.txt
 
   matrix:
-    - CIBW_BUILD: "cp38-win_amd64"
-    - CIBW_BUILD: "cp39-win_amd64"
-    - CIBW_BUILD: "cp310-win_amd64"
-    - CIBW_BUILD: "cp311-win_amd64"
-    #- CIBW_BUILD: "cp312-win_amd64"
+    #- CIBW_BUILD: "cp38-win_amd64"
+    #- CIBW_BUILD: "cp39-win_amd64"
+    #- CIBW_BUILD: "cp310-win_amd64"
+    #- CIBW_BUILD: "cp311-win_amd64"
+    - CIBW_BUILD: "cp312-win_amd64"
 
 stack: python 3.8
 
@@ -52,7 +52,7 @@ build_script:
   - "python -m twine --version"
   - "python -m cibuildwheel --output-dir wheelhouse"
   - dir wheelhouse
-  #- ps: .\upload_test_wheels.ps1
+  - ps: .\upload_test_wheels.ps1
 
 after_build:
   - 7z a wheels.zip %APPVEYOR_BUILD_FOLDER%\wheelhouse\*
