@@ -28,10 +28,17 @@ It is mostly written in Cython and C in order to speed up computations.
 |:------------------:| :----------------: | :----------------: |:-----------:| :----------------: |
 | :white_check_mark: | :white_check_mark: | :white_check_mark: |     :x:     | :white_check_mark: |
 
+There are currently no wheels for Apple Silicon (macOS ARM64), but they can be built locally. On your Mac with Apple Silicon:
+- first install the required software:
+  - `brew install llvm`
+  - `brew install gsl`
+- then run `pip install .` within the repository to install `fathon`
+
 ### Prerequisites
 
  - Python 3.8 or higher
- - numpy (version >= 1.24.4 for Python < 3.12, version >= 1.26.2 for Python >= 3.12)
+ - `numpy` (version >= 1.24.4 for Python < 3.12, version >= 1.26.2 for Python >= 3.12)
+ - **Only if building locally on a Mac with Apple Silicon**, `llvm` and `gsl` installed with `brew`
 
 ### Installing
 
