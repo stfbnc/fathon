@@ -10,15 +10,16 @@ import re
 
 if platform.system() == "Darwin":
     if platform.processor() == "arm":
-        os.environ["CC"] = "/usr/local/opt/llvm/bin/clang"
-        os.environ["LDFLAGS"] = "-L/usr/local/opt/llvm/lib"
-        os.environ["CPPFLAGS"] = "-I/usr/local/opt/llvm/include"
+        os.environ["CC"] = "/opt/homebrew/opt/llvm/bin/clang"
+        os.environ["LDFLAGS"] = "-L/opt/homebrew/opt/llvm/lib"
+        os.environ["CPPFLAGS"] = "-I/opt/homebrew/opt/llvm/include"
+        gsl_inc = "/opt/homebrew/opt/gsl/include"
+        gsl_lib = "/opt/homebrew/opt/gsl/lib"
     else:
         os.environ["CC"] = "gcc-11"
         os.environ["CXX"] = "g++-11"
-
-    gsl_inc = "/usr/local/include"
-    gsl_lib = "/usr/local/lib/"
+        gsl_inc = "/usr/local/include"
+        gsl_lib = "/usr/local/lib"
 elif platform.system() == "Linux":
     pass
 elif platform.system() == "Windows":
