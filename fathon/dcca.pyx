@@ -16,6 +16,8 @@
 
 #cython: language_level=3
 
+from libc.stdint cimport int64_t
+
 import numpy as np
 cimport numpy as np
 cimport cython
@@ -98,10 +100,10 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects1, np.ndarray[np.float64_t, ndim=1, mode='c'] vects2, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint absVals, bint overlap, bint revSeg):
+    cdef cy_flucCompute(self, np.ndarray[double, ndim=1, mode='c'] vects1, np.ndarray[double, ndim=1, mode='c'] vects2, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[double, ndim=1, mode='c'] vecf, int polOrd, bint absVals, bint overlap, bint revSeg):
         cdef int nLen, tsLen
         cdef Py_ssize_t i, j
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
+        cdef np.ndarray[double, ndim=1, mode='c'] t
 
         nLen = len(vecn)
         tsLen = len(vects1)
@@ -131,7 +133,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeFlucVec(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint absVals=True, bint overlap=False, bint revSeg=False):
+    cpdef computeFlucVec(self, np.ndarray[int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint absVals=True, bint overlap=False, bint revSeg=False):
         """Computation of the fluctuations in each window.
 
         Parameters
@@ -179,12 +181,12 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef computeFlucVecSameTs(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vec, np.ndarray[int, ndim=1, mode='c'] wins, int polOrd, bint overlap, bint revSeg):
+    cdef computeFlucVecSameTs(self, np.ndarray[double, ndim=1, mode='c'] vec, np.ndarray[int, ndim=1, mode='c'] wins, int polOrd, bint overlap, bint revSeg):
         cdef int nLen, tsLen = len(vec)
         cdef Py_ssize_t i, j
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] F_same
+        cdef np.ndarray[double, ndim=1, mode='c'] F_same
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
+        cdef np.ndarray[double, ndim=1, mode='c'] t
 
         vecn = np.array(wins, dtype=ctypes.c_int)
         nLen = len(vecn)
@@ -229,7 +231,7 @@ cdef class DCCA:
             Intercept of the fit.
         """
         cdef int start, end
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit
+        cdef np.ndarray[double, ndim=1, mode='c'] log_fit
 
         if len(self.n) > 1:
             if self.isComputed:
@@ -261,7 +263,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limitsList, float logBase=np.e, bint verbose=False):
+    cpdef multiFitFlucVec(self, np.ndarray[long, ndim=2, mode='c'] limitsList, float logBase=np.e, bint verbose=False):
         """Fit of the fluctuations values in different intervals at the same time.
 
         Parameters
@@ -282,7 +284,7 @@ cdef class DCCA:
         """
         cdef Py_ssize_t i
         cdef int limLen = len(limitsList)
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] list_H_intercept, list_H
+        cdef np.ndarray[double, ndim=1, mode='c'] list_H_intercept, list_H
 
         if self.isComputed:
             list_H = np.zeros((limLen, ), dtype=float)
@@ -304,7 +306,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef computeRho(self, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint verbose=False, bint overlap=False, bint revSeg=False):
+    cpdef computeRho(self, np.ndarray[int64_t, ndim=1, mode='c'] winSizes, int polOrd=1, bint verbose=False, bint overlap=False, bint revSeg=False):
         """Computation of the cross-correlation index in each window.
 
         Parameters
@@ -330,7 +332,7 @@ cdef class DCCA:
         """
         cdef Py_ssize_t i
         cdef int nLen, tsLen = len(self.tsVec1)
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] Fxy, Fxx, Fyy
+        cdef np.ndarray[double, ndim=1, mode='c'] Fxy, Fxx, Fyy
 
         if polOrd < 1:
             raise ValueError('Error: Polynomial order must be greater than 0.')
@@ -368,7 +370,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef rhoThresholds(self, int L, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int nSim, double confLvl, int polOrd=1, bint verbose=False):
+    cpdef rhoThresholds(self, int L, np.ndarray[int64_t, ndim=1, mode='c'] winSizes, int nSim, double confLvl, int polOrd=1, bint verbose=False):
         """Computation of the cross-correlation index's confidence levels in each window.
 
         Parameters
@@ -396,8 +398,8 @@ cdef class DCCA:
         numpy ndarray
             Array containing the second confidence interval.
         """
-        cdef np.ndarray[np.float64_t, ndim=2, mode='c'] rho_all
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] ran1, ran2, vecfx, vecfy, vecfxy
+        cdef np.ndarray[double, ndim=2, mode='c'] rho_all
+        cdef np.ndarray[double, ndim=1, mode='c'] ran1, ran2, vecfx, vecfy, vecfxy
         cdef int nLen
 
         if polOrd < 1:

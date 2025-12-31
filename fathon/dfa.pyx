@@ -16,6 +16,8 @@
 
 #cython: language_level=3
 
+from libc.stdint cimport int64_t
+
 import numpy as np
 cimport numpy as np
 cimport cython
@@ -72,10 +74,10 @@ cdef class DFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_flucCompute(self, np.ndarray[np.float64_t, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[np.float64_t, ndim=1, mode='c'] vecf, int polOrd, bint revSeg, bint unbiased):
+    cdef cy_flucCompute(self, np.ndarray[double, ndim=1, mode='c'] vects, np.ndarray[int, ndim=1, mode='c'] vecn, np.ndarray[double, ndim=1, mode='c'] vecf, int polOrd, bint revSeg, bint unbiased):
         cdef int nLen, tsLen
         cdef Py_ssize_t i, j
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
+        cdef np.ndarray[double, ndim=1, mode='c'] t
 
         nLen = len(vecn)
         tsLen = len(vects)
@@ -160,7 +162,7 @@ cdef class DFA:
             Intercept of the fit.
         """
         cdef int start, end
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit
+        cdef np.ndarray[double, ndim=1, mode='c'] log_fit
 
         if len(self.n) > 1:
             if self.isComputed:
@@ -192,7 +194,7 @@ cdef class DFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limitsList, float logBase=np.e, bint verbose=False):
+    cpdef multiFitFlucVec(self, np.ndarray[int64_t, ndim=2, mode='c'] limitsList, float logBase=np.e, bint verbose=False):
         """Fit of the fluctuations values in different intervals at the same time.
 
         Parameters
@@ -213,7 +215,7 @@ cdef class DFA:
         """
         cdef Py_ssize_t i
         cdef int limLen = len(limitsList)
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] list_H, list_H_intercept
+        cdef np.ndarray[double, ndim=1, mode='c'] list_H, list_H_intercept
 
         if self.isComputed:
             list_H = np.zeros((limLen, ), dtype=float)
