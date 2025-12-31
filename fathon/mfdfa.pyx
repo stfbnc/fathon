@@ -77,12 +77,12 @@ cdef class MFDFA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
+    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[double, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
         cdef Py_ssize_t j
         cdef int nLen, q_list_len
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects
+        cdef np.ndarray[double, ndim=1, mode='c'] mtxf, vects
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
+        cdef np.ndarray[double, ndim=1, mode='c'] t
 
         self.qList = q_list
         vecn = np.array(winSizes, dtype=ctypes.c_int)
@@ -175,7 +175,7 @@ cdef class MFDFA:
         """
         cdef int start, end, qLen
         cdef Py_ssize_t i
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit, list_H_intercept
+        cdef np.ndarray[double, ndim=1, mode='c'] log_fit, list_H_intercept
 
         if len(self.n) > 1:
             if self.isComputed:
@@ -205,6 +205,7 @@ cdef class MFDFA:
                     if verbose:
                         print('Fit result for q = {:.2f}: H intercept = {:.2f}, H = {:.2f}'.format(self.qList[i], list_H_intercept[i], self.listH[i]))
                     
+                print(self.listH, list_H_intercept)
                 return self.listH, list_H_intercept
             else:
                 print('Nothing to fit, fluctuations vector has not been computed yet.')
@@ -222,7 +223,7 @@ cdef class MFDFA:
         numpy ndarray
             Mass exponents.
         """
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] tau
+        cdef np.ndarray[double, ndim=1, mode='c'] tau
 
         if self.isComputed:
             tau = self.listH * self.qList - 1
@@ -243,7 +244,7 @@ cdef class MFDFA:
         numpy ndarray
             Multifractal spectrum.
         """
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] tau, alpha, mfSpect
+        cdef np.ndarray[double, ndim=1, mode='c'] tau, alpha, mfSpect
 
         if self.isComputed:
             if len(self.qList) > 1:

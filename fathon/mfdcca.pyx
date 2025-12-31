@@ -90,12 +90,12 @@ cdef class MFDCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[np.float64_t, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
+    cdef cy_computeFlucVec(self, int tsLen, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, np.ndarray[double, ndim=1, mode='c'] q_list, int polOrd, bint revSeg):
         cdef Py_ssize_t j
         cdef int nLen, q_list_len
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] mtxf, vects1, vects2
+        cdef np.ndarray[double, ndim=1, mode='c'] mtxf, vects1, vects2
         cdef np.ndarray[int, ndim=1, mode='c'] vecn
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] t
+        cdef np.ndarray[double, ndim=1, mode='c'] t
 
         self.qList = q_list
         vecn = np.array(winSizes, dtype=ctypes.c_int)
@@ -189,7 +189,7 @@ cdef class MFDCCA:
         """
         cdef int start, end, qLen
         cdef Py_ssize_t i
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] log_fit, list_H_intercept
+        cdef np.ndarray[double, ndim=1, mode='c'] log_fit, list_H_intercept
 
         if len(self.n) > 1:
             if self.isComputed:
@@ -236,7 +236,7 @@ cdef class MFDCCA:
         numpy ndarray
             Mass exponents.
         """
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] tau
+        cdef np.ndarray[double, ndim=1, mode='c'] tau
 
         if self.isComputed:
             tau = self.listH * self.qList - 1
@@ -257,7 +257,7 @@ cdef class MFDCCA:
         numpy ndarray
             Multifractal spectrum.
         """
-        cdef np.ndarray[np.float64_t, ndim=1, mode='c'] tau, alpha, mfSpect
+        cdef np.ndarray[double, ndim=1, mode='c'] tau, alpha, mfSpect
 
         if self.isComputed:
             if len(self.qList) > 1:
