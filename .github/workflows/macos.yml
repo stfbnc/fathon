@@ -22,17 +22,17 @@ jobs:
         shell: bash
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v4.1.0
         env:
           CIBW_BUILD_VERBOSITY: 1
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "pytest {project}/tests"
           CIBW_BEFORE_BUILD: >
                   pip3 install --upgrade pip &&
-                  pip3 install Cython &&
+                  pip3 install "Cython>=3.1.4" &&
                   pip3 install setuptools &&
                   pip3 install -r requirements.txt
-          CIBW_BUILD: "cp38-macosx_x86_64 cp39-macosx_x86_64 cp310-macosx_x86_64 cp311-macosx_x86_64 cp312-macosx_x86_64"
+          CIBW_BUILD: "cp39-macosx_x86_64 cp310-macosx_x86_64 cp311-macosx_x86_64 cp312-macosx_x86_64 cp313-macosx_x86_64 cp314-macosx_x86_64"
           CIBW_ARCHS_MACOS: "x86_64"
           
       - name: Show files
@@ -51,7 +51,7 @@ jobs:
                 ./upload_test_wheels.sh
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: macOS_x86_64_wheels
           path: ./wheelhouse/*.whl

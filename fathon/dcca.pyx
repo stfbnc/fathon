@@ -261,7 +261,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef multiFitFlucVec(self, np.ndarray[np.int_t, ndim=2, mode='c'] limitsList, float logBase=np.e, bint verbose=False):
+    cpdef multiFitFlucVec(self, np.ndarray[np.int64_t, ndim=2, mode='c'] limitsList, float logBase=np.e, bint verbose=False):
         """Fit of the fluctuations values in different intervals at the same time.
 
         Parameters
@@ -368,7 +368,7 @@ cdef class DCCA:
     @cython.boundscheck(False)
     @cython.wraparound(False)
     @cython.nonecheck(False)
-    cpdef rhoThresholds(self, int L, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int nSim, double confLvl, int polOrd=1, bint verbose=False):
+    cpdef rhoThresholds(self, int L, np.ndarray[np.int64_t, ndim=1, mode='c'] winSizes, int nSim, double confLvl, int polOrd=1, bint verbose=False, bint returnRhoAll=False):
         """Computation of the cross-correlation index's confidence levels in each window.
 
         Parameters
@@ -386,6 +386,8 @@ cdef class DCCA:
             Order of the polynomial to be fitted in each window (default : 1).
         verbose : bool, optional
             Verbosity (default : False).
+        returnRhoAll : bool, optional
+            If True, return the full matrix of simulated cross-correlation index values (default : False).
 
         Returns
         -------
@@ -395,6 +397,8 @@ cdef class DCCA:
             Array containing the first confidence interval.
         numpy ndarray
             Array containing the second confidence interval.
+        numpy ndarray
+            Matrix (`nSim` x len(`winSizes`)) containing the values of the cross-correlation index for each simulation.
         """
         cdef np.ndarray[np.float64_t, ndim=2, mode='c'] rho_all
         cdef np.ndarray[np.float64_t, ndim=1, mode='c'] ran1, ran2, vecfx, vecfy, vecfxy
@@ -442,7 +446,10 @@ cdef class DCCA:
         self.confUp = np.quantile(rho_all, confLvl, axis=0)
         self.confDown = np.quantile(rho_all, 1 - confLvl, axis=0)
         
-        return self.nThr, self.confUp, self.confDown
+        if returnRhoAll:
+            return self.nThr, self.confUp, self.confDown, rho_all
+        else:
+            return self.nThr, self.confUp, self.confDown
 
     def saveObject(self, outFileName):
         """Save current object state to binary file.

@@ -20,13 +20,17 @@ jobs:
           platforms: arm64
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v4.1.0
         env:
           CIBW_BUILD_VERBOSITY: 1
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "pytest {project}/tests"
           CIBW_BEFORE_ALL: >
-                  yum install -y wget &&
+                  if [ -f /etc/alpine-release ]; then
+                    apk add --no-cache wget build-base;
+                  else
+                    yum install -y wget;
+                  fi &&
                   wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz &&
                   tar -zxvf gsl-latest.tar.gz &&
                   cd gsl-* &&
@@ -35,12 +39,13 @@ jobs:
                   make install
           CIBW_BEFORE_BUILD: >
                   pip3 install --upgrade pip &&
-                  pip3 install Cython &&
+                  pip3 install "Cython>=3.1.4" &&
                   pip3 install -r requirements.txt
-          CIBW_BUILD: "cp38-manylinux* cp39-manylinux* cp310-manylinux* cp311-manylinux* cp312-manylinux*"
-          CIBW_SKIP: "*-manylinux_i686"
+          CIBW_BUILD: "cp39-manylinux* cp39-musllinux* cp310-manylinux* cp310-musllinux* cp311-manylinux* cp311-musllinux* cp312-manylinux* cp312-musllinux* cp313-manylinux* cp313-musllinux* cp314-manylinux* cp314-musllinux*"
+          CIBW_SKIP: "*-manylinux_i686 *-musllinux_i686"
           CIBW_ARCHS_LINUX: "aarch64"
-          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"
+          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux_2_28"
+          CIBW_MUSLLINUX_AARCH64_IMAGE: "musllinux_1_2"
           
       - name: Show files
         run: ls -lh wheelhouse
@@ -58,7 +63,7 @@ jobs:
                 ./upload_test_wheels.sh
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Linux_arm64_wheels
           path: ./wheelhouse/*.whl

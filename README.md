@@ -1,6 +1,6 @@
 # fathon ![Linux](https://github.com/stfbnc/fathon/actions/workflows/linux.yml/badge.svg) ![macOS](https://github.com/stfbnc/fathon/actions/workflows/macos.yml/badge.svg) ![Windows](https://ci.appveyor.com/api/projects/status/tl2a8c84bbvxu37p/branch/reorg?svg=true&passingText=Windows&pendingText=Windows&failingText=Windows)
 
-[![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon) [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
+[![PyPI version](https://badge.fury.io/py/fathon.svg)](https://badge.fury.io/py/fathon) [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
 
 [![Issues](https://img.shields.io/github/issues-raw/stfbnc/fathon.svg?maxAge=25000)](https://github.com/stfbnc/fathon/issues) [![GitHub stars](https://img.shields.io/github/stars/stfbnc/fathon.svg?style=social&label=Stars&style=plastic)]() [![GitHub forks](https://img.shields.io/github/forks/stfbnc/fathon.svg?style=social&label=Fork&style=plastic)]()
 
@@ -24,11 +24,11 @@ It is mostly written in Cython and C in order to speed up computations.
 
 ### Supported platforms
 
-|    Linux x86_64    |    Linux ARM64     |    macOS x86_64    | macOS ARM64 |   Windows 64bit    |
-|:------------------:| :----------------: | :----------------: |:-----------:| :----------------: |
-| :white_check_mark: | :white_check_mark: | :white_check_mark: |     :x:     | :white_check_mark: |
+| Linux glibc x86_64 | Linux glibc ARM64  | Linux musl x86_64  | Linux musl ARM64 |    macOS x86_64    | macOS ARM64 |   Windows 64bit    |
+|:------------------:| :----------------: | :----------------: | :--------------: | :----------------: |:-----------:| :----------------: |
+| :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
-There are currently no wheels for Apple Silicon (macOS ARM64), but they can be built locally. On your Mac with Apple Silicon:
+On your Mac with Apple Silicon, wheels can also be built locally:
 - first install the required software:
   - `brew install llvm`
   - `brew install gsl`
@@ -36,8 +36,8 @@ There are currently no wheels for Apple Silicon (macOS ARM64), but they can be b
 
 ### Prerequisites
 
- - Python 3.8 or higher
- - `numpy` (version >= 1.24.4 for Python < 3.12, version >= 1.26.2 for Python >= 3.12)
+ - Python 3.9 through 3.14
+ - `numpy` 2.x (`>=2.0.0,<2.1.0` for Python 3.9, `>=2.0.0` for Python 3.10-3.13, `>=2.3.4` for Python 3.14)
  - **Only if building locally on a Mac with Apple Silicon**, `llvm` and `gsl` installed with `brew`
 
 ### Installing

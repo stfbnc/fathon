@@ -27,6 +27,6 @@ from .ht import HT
     and related algorithms.
 """
 
-__version__ = '1.3.3'
+__version__ = '1.3.4'
 __author__ = 'Stefano Bianchi'
 __git_repo__ = 'https://github.com/stfbnc/fathon'

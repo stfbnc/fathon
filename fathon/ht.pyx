@@ -78,7 +78,9 @@ cdef class HT:
             pymfdfa = mfdfa.MFDFA(self.tsVec)
             _, _ = pymfdfa.computeFlucVec(fu.linRangeByCount(10, int(tsLen / 4), count=20),
                                           0.0, revSeg=True, polOrd=mfdfaPolOrd)
-            H0, H0_intercept = pymfdfa.fitFlucVec(verbose=verbose)
+            H0_fit, H0_intercept_fit = pymfdfa.fitFlucVec(verbose=verbose)
+            H0 = H0_fit[0]
+            H0_intercept = H0_intercept_fit[0]
         else:
             if verbose:
                 print('Variable q0Fit assigned, variable mfdfaPolOrd will be ignored.')
