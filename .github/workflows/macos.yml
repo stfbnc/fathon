@@ -9,8 +9,8 @@ on:
 
 jobs:
   build_wheels:
-    name: Build wheels on macos-latest
-    runs-on: macos-latest
+    name: Build wheels on macos-13
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
 

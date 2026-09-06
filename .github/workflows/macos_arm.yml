@@ -3,7 +3,7 @@ name: macOS arm64
 on:
   push:
     branches-ignore:
-      - '**'
+      - master
     tags-ignore:
       - '**'
 
