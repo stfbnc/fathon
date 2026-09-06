@@ -52,8 +52,10 @@ jobs:
         env:
                 TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
         run: |
-                pip3 install --upgrade pip
-                pip3 install twine
+                python3 -m venv .upload-venv
+                source .upload-venv/bin/activate
+                python -m pip install --upgrade pip
+                python -m pip install twine
                 chmod +x upload_test_wheels.sh
                 ./upload_test_wheels.sh
 
