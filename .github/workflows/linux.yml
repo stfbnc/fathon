@@ -26,9 +26,10 @@ jobs:
                   else
                     yum install -y wget;
                   fi &&
-                  wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz &&
+                  wget https://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz &&
+                  gsl_dir=$(tar -tzf gsl-latest.tar.gz | head -1 | cut -f1 -d/) &&
                   tar -zxvf gsl-latest.tar.gz &&
-                  cd gsl-* &&
+                  cd "$gsl_dir" &&
                   ./configure &&
                   make &&
                   make install
