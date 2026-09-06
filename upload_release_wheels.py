@@ -4,8 +4,8 @@ import io
 import os
 import argparse
 
-min_py3 = 8
-max_py3 = 12
+min_py3 = 9
+max_py3 = 14
 
 
 def download_file(url, folder_name):
