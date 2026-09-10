@@ -1,7 +1,6 @@
 branches:
   except:
     - master
-    - update
     - /v\d+\.\d+\.\d+/
 
 environment:
